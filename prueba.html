@@ -6,17 +6,18 @@
     <title>Document</title>
 
     <script language="JavaScript">
-        function cambiar(valor) {
-            if (valor == 1) {
+
+        function cambiarFoto(variable_valor) {
+            if (variable_valor == 1) {
                 img.src = "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=100&h=150&fit=crop";
             }
-            else {
+            else if (variable_valor == 2) {
                 img.src = "https://images.unsplash.com/photo-1552053831-71594a27632d?w=100&h=150&fit=crop";
             }
         }
 
         function cambiarBackgroud() {
-            document.getElementById("primer_numero").style.backgroundColor = "yellow";
+            document.getElementById("calculo").style.backgroundColor = "yellow";
         }
 
         function calcular() {
@@ -25,6 +26,10 @@
             var calculo = primer_numero + segundo_numero;
             document.getElementById("calculo").value = calculo;
         }   
+
+        function loguear(valor) {
+            console.log("El valor ingresado es: " + valor);
+        }
     </script>
     <style>
         .centrar {
@@ -41,17 +46,21 @@
     <div class="centrar" on>
         <img 
         name="img" 
-        src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=100&h=150&fit=crop" 
-        onMouseOver="cambiar(2)" 
-        onMouseOut="cambiar(1)" 
+        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100&h=150&fit=crop"
+        onMouseOver="cambiarFoto(2)" 
+        onMouseOut="cambiarFoto(1)" 
         width="100" 
         height="150"
         >
-        <input type="text" name="primer_numero" id="primer_numero" >
         <br><br>
-        <input type="text" name="segundo_numero" id="segundo_numero" >
+        primer numero:<input type="text" name="primer_numero" id="primer_numero" >
+        <br><br>
+        segundo numero:<input type="text" name="segundo_numero" id="segundo_numero" >
+        <!--ejemplo de onchange-->
+        on change <input type="text" name="resultado" id="resultado" onkeyup="loguear(this.value)">
+        
 
-
-        <input type="text" name="calculo" id="calculo" onfocus="cambiarBackgroud(); calcular()">
+<br><br>
+        resultado:<input type="text" name="calculo" id="calculo" onfocus="cambiarBackgroud(); calcular()">
     </div>
 </body>
