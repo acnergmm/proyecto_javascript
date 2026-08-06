@@ -1,31 +1,49 @@
-<!doctype html>
-<html lang="en">
+<html>
+<title>Validacion de Datos - Rango de numeros</title>
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Sample JavaScript</title>
-    <script src="js/javascript.js"></script>
+	<script language="JavaScript">
+		function traerPrimerNumero() {
+			var num = parseInt(document.miformulario.primer_numero.value);
+			//alert(num);
+			if (Number.isNaN(num)) {
+				document.querySelector(".error").innerHTML = "Por favor ingrese un valor entero";
+			} else {
+				if (num >= 1 && num <= 30) {
+				
+					document.querySelector(".error").innerHTML = "es menor o igual a 30 y mayor o igual a 1";
+				}
+				else {
+					document.querySelector(".error").innerHTML = "no muy mayor a 30";
+
+				}
+			}
+		}
+
+	</script>
+	<style>
+		.error {
+			color: red;
+			font-size: 20px;
+			background-color: #f2dede;
+		}
+	</style>
 </head>
+
 <body>
-	<nav>
-		<ul>
-			<li><a href="#">Home</a></li>
-			<li><a href="#">About</a></li>
-			<li><a href="#">Contact</a></li>
-		</ul>
-	</nav>
-		<h1>Sample JavaScript</h1>
-		<button id="btn" on onclick="muestraLog()">HACEME CLICK</button>
-		<p id="output">No clicks yet.</p>
+	<center>
+		<h2>Validacion de Datos - Rango de numeros</h2>
+	</center><br><br>
+	<div class="error">
+aca va a aparecer el mensaje de error
+	</div>
+	<form name="miformulario" type="post">
+		ingrese primer numero :<input type="text" name="primer_numero">
+		<br><br>
 
-<<<<<<< Updated upstream
-	<!-- un comentario en clase de javascript -->
-
-=======
-	
->>>>>>> Stashed changes
-	<h3>Prueba</h3>
-	<p>Comentario de prueba by:Ale</p>
-	
+		
+		<input type="button" value="Ver" onClick="traerPrimerNumero() ">
+	</form>
 </body>
+
 </html>
