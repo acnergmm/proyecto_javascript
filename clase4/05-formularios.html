@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 - Formularios y JavaScript</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; padding: 20px; max-width: 800px;
+               margin: 0 auto; color: #263238; line-height: 1.6; }
+        .caja { border: 1px solid #cfd8dc; border-radius: 6px; padding: 18px; margin-bottom: 20px; }
+        .caja h3 { margin-top: 0; color: #1976d2; }
+        .malo { border-left: 4px solid #d84315; }
+        .malo h3 { color: #d84315; }
+        .bueno { border-left: 4px solid #2e7d32; }
+        .bueno h3 { color: #2e7d32; }
+        label { display: block; margin-top: 12px; font-size: 14px; font-weight: bold; }
+        input[type="text"], input[type="email"], input[type="number"],
+        input[type="password"], input[type="date"], select, textarea {
+            width: 100%; padding: 9px; margin-top: 4px; border: 1px solid #b0bec5;
+            border-radius: 4px; font-family: inherit; font-size: 14px; }
+        .fila { display: flex; gap: 16px; align-items: center; margin-top: 6px; font-weight: normal; }
+        .fila label { margin-top: 0; font-weight: normal; }
+        button { padding: 10px 18px; margin-top: 16px; border: none; border-radius: 4px;
+                 background: #1976d2; color: white; font-size: 14px; cursor: pointer;
+                 font-family: inherit; }
+        button:hover { background: #1565c0; }
+        .resumen { background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 12px 16px;
+                   margin-top: 16px; font-size: 14px; }
+        .resumen.oculto { display: none; }
+        .resumen dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; }
+        .resumen dt { font-weight: bold; }
+        .resumen dd { margin: 0; }
+        .aviso { background: #fff8e1; border-left: 4px solid #f9a825; padding: 12px 16px;
+                 margin-bottom: 20px; font-size: 14px; }
+        code { background: #eceff1; padding: 2px 5px; border-radius: 3px; font-size: 13px; }
+        pre { background: #eceff1; padding: 12px; border-radius: 4px; overflow-x: auto;
+              font-size: 13px; margin: 8px 0; }
+    </style>
+</head>
+
+<body>
+
+    <h2>Formularios: acá se ve para qué sirve JavaScript</h2>
+
+    <p>
+        Un formulario es la razón por la que existe casi todo el JavaScript del mundo.
+        Registrarse, iniciar sesión, comprar, buscar, comentar: todo es un formulario.
+        Y sin JavaScript, todos funcionan mal.
+    </p>
+
+    <!-- ================================================================ -->
+    <!-- EL PROBLEMA                                                       -->
+    <!-- ================================================================ -->
+    <div class="caja malo">
+        <h3>Formulario 1 — sin JavaScript (el problema)</h3>
+
+        <div class="aviso">
+            <b>Atención:</b> este formulario se manda de verdad. Completalo y apretá Enviar:
+            la página <b>se recarga</b>, se pierde todo lo que escribiste, y los datos
+            aparecen a la vista de todos en la barra de direcciones.
+            Después volvé con la flecha atrás del navegador.
+        </div>
+
+        <!--
+            Un <form> sin JavaScript hace UNA sola cosa:
+            mandar los datos a la direccion del action y RECARGAR la pagina.
+            Con method="get" los datos viajan pegados en la URL.
+        -->
+        <form action="" method="get">
+            <label>Nombre
+                <input type="text" name="nombre">
+            </label>
+            <label>Contraseña
+                <input type="password" name="clave">
+            </label>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <p style="margin-top:16px">Los tres problemas, en orden de gravedad:</p>
+        <ol>
+            <li><b>La página se recarga.</b> Se pierde todo el estado: lo escrito, la posición del scroll, el carrito.</li>
+            <li><b>El error llega tarde.</b> Si el email estaba mal escrito, el usuario se enteró después de mandarlo, y tiene que escribir todo de nuevo.</li>
+            <li><b>No hay control.</b> Podemos mandar el campo vacío, una edad negativa o un email que no es un email.</li>
+        </ol>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- LA SOLUCION                                                       -->
+    <!-- ================================================================ -->
+    <div class="caja bueno">
+        <h3>Formulario 2 — con JavaScript (la solución)</h3>
+
+        <p>
+            Escuchamos el evento <code>submit</code> y le pedimos al navegador que
+            <b>no haga lo que iba a hacer</b>. Esa es la línea más importante de todo el bloque:
+        </p>
+
+        <pre>formulario.addEventListener("submit", (evento) =&gt; {
+    evento.preventDefault();   // &lt;-- no recargues la pagina, dejame manejarlo a mi
+    // desde aca los datos son nuestros
+});</pre>
+
+        <p>
+            El evento <code>submit</code> va <b>en el <code>&lt;form&gt;</code></b>, no en el botón.
+            Así se dispara tanto con el click como cuando el usuario aprieta Enter dentro de un campo.
+        </p>
+
+        <!-- Este formulario tiene TODOS los tipos de campo que van a usar -->
+        <form id="formulario-completo">
+
+            <label>Nombre y apellido
+                <input type="text" id="nombre" name="nombre" value="Ana Pérez">
+            </label>
+
+            <label>Email
+                <input type="email" id="email" name="email" value="ana@ejemplo.com">
+            </label>
+
+            <label>Edad
+                <input type="number" id="edad" name="edad" value="28">
+            </label>
+
+            <label>Fecha de nacimiento
+                <input type="date" id="fecha" name="fecha" value="1998-04-15">
+            </label>
+
+            <label>Provincia
+                <select id="provincia" name="provincia">
+                    <option value="">Elegí una...</option>
+                    <option value="caba">CABA</option>
+                    <option value="bsas" selected>Buenos Aires</option>
+                    <option value="cordoba">Córdoba</option>
+                    <option value="santafe">Santa Fe</option>
+                </select>
+            </label>
+
+            <label>Plan</label>
+            <div class="fila">
+                <label><input type="radio" name="plan" value="basico" checked> Básico</label>
+                <label><input type="radio" name="plan" value="full"> Full</label>
+                <label><input type="radio" name="plan" value="premium"> Premium</label>
+            </div>
+
+            <label>Comentario
+                <textarea id="comentario" name="comentario" rows="2">Hola!</textarea>
+            </label>
+
+            <div class="fila">
+                <label><input type="checkbox" id="newsletter" name="newsletter" checked> Quiero recibir novedades</label>
+            </div>
+
+            <button type="submit">Leer los datos sin recargar</button>
+        </form>
+
+        <div class="resumen oculto" id="resumen"></div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- FORMDATA                                                          -->
+    <!-- ================================================================ -->
+    <div class="caja">
+        <h3>El atajo: FormData</h3>
+        <p>
+            Leer campo por campo está bien para entender qué pasa. Pero cuando el formulario
+            tiene quince campos, el navegador nos da una herramienta que los lee todos de una:
+        </p>
+        <pre>const datos = new FormData(formulario);
+const objeto = Object.fromEntries(datos);
+// { nombre: "Ana Pérez", email: "ana@ejemplo.com", edad: "28", ... }</pre>
+        <p>
+            Usa el atributo <code>name</code> de cada campo, no el <code>id</code>. Por eso los
+            campos del formulario de arriba tienen los dos.
+        </p>
+        <button id="btn-formdata">Leer todo con FormData</button>
+        <div class="resumen oculto" id="resumen-formdata"></div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- HTML5 VS JAVASCRIPT                                               -->
+    <!-- ================================================================ -->
+    <div class="caja">
+        <h3>¿Y la validación que ya trae el HTML?</h3>
+        <p>
+            El HTML sabe validar solo: <code>required</code>, <code>type="email"</code>,
+            <code>minlength</code>, <code>min</code> y <code>max</code>. Es gratis y hay que usarla siempre.
+        </p>
+        <form id="formulario-html5">
+            <label>Email obligatorio
+                <input type="email" name="mail" required>
+            </label>
+            <label>Edad entre 18 y 99
+                <input type="number" name="edad" min="18" max="99" required>
+            </label>
+            <button type="submit">Probar validación del navegador</button>
+        </form>
+        <p style="margin-top:16px">
+            Pero <b>no alcanza</b>, por tres razones:
+        </p>
+        <ul>
+            <li>Los mensajes no se pueden redactar ni traducir bien, y cambian según el navegador.</li>
+            <li>No puede validar reglas nuestras: que dos contraseñas coincidan, que el usuario no exista ya, que el DNI tenga el formato correcto.</li>
+            <li>Se puede desactivar desde las herramientas del navegador en diez segundos, así que <b>el servidor siempre tiene que validar de nuevo</b>. La validación en el navegador es para el usuario, no para la seguridad.</li>
+        </ul>
+        <p>
+            La combinación correcta: <code>required</code> en el HTML para lo básico,
+            JavaScript para las reglas propias y los mensajes lindos, y el servidor
+            validando todo otra vez.
+        </p>
+    </div>
+
+    <script>
+        // =============================================================
+        // FORMULARIO 2 - leer los datos SIN recargar la pagina
+        // =============================================================
+        const formulario = document.querySelector("#formulario-completo");
+        const resumen = document.querySelector("#resumen");
+
+        formulario.addEventListener("submit", (evento) => {
+
+            // LA LINEA MAS IMPORTANTE DEL BLOQUE.
+            // Sin esto la pagina se recarga y perdemos el control.
+            evento.preventDefault();
+
+            // --- Campos de texto, email, number, date, select y textarea: .value ---
+            const nombre = document.querySelector("#nombre").value;
+            const email = document.querySelector("#email").value;
+            const fecha = document.querySelector("#fecha").value;
+            const provincia = document.querySelector("#provincia").value;
+            const comentario = document.querySelector("#comentario").value;
+
+            // OJO: .value SIEMPRE devuelve texto, incluso en un type="number".
+            // Si vamos a hacer cuentas hay que convertirlo.
+            const edad = Number(document.querySelector("#edad").value);
+
+            // --- Checkbox: no se lee con .value sino con .checked (true / false) ---
+            const newsletter = document.querySelector("#newsletter").checked;
+
+            // --- Radio: se busca el que esta :checked, dentro del grupo del name ---
+            const plan = document.querySelector('input[name="plan"]:checked').value;
+
+            // --- Mostramos todo en la pagina, sin recargar nada ---
+            resumen.classList.remove("oculto");
+            resumen.innerHTML = `
+                <b>La página no se recargó, y ya tenemos los datos:</b>
+                <dl>
+                    <dt>Nombre</dt><dd>${nombre}</dd>
+                    <dt>Email</dt><dd>${email}</dd>
+                    <dt>Edad</dt><dd>${edad} (en 10 años: ${edad + 10})</dd>
+                    <dt>Nacimiento</dt><dd>${fecha}</dd>
+                    <dt>Provincia</dt><dd>${provincia}</dd>
+                    <dt>Plan</dt><dd>${plan}</dd>
+                    <dt>Comentario</dt><dd>${comentario}</dd>
+                    <dt>Newsletter</dt><dd>${newsletter ? "Sí" : "No"}</dd>
+                </dl>
+            `;
+        });
+
+
+        // =============================================================
+        // FORMDATA - leer todos los campos de una sola vez
+        // =============================================================
+        const resumenFormData = document.querySelector("#resumen-formdata");
+
+        document.querySelector("#btn-formdata").addEventListener("click", () => {
+
+            // FormData usa el atributo name de cada campo
+            const datos = new FormData(formulario);
+
+            // Object.fromEntries lo convierte en un objeto comun
+            const objeto = Object.fromEntries(datos);
+
+            // Object.entries nos deja recorrerlo con forEach
+            const filas = Object.entries(objeto)
+                .map(([campo, valor]) => `<dt>${campo}</dt><dd>${valor}</dd>`)
+                .join("");
+
+            resumenFormData.classList.remove("oculto");
+            resumenFormData.innerHTML = `<b>Todos los campos de una sola vez:</b><dl>${filas}</dl>`;
+
+            // OJO: un checkbox desmarcado NO aparece en FormData.
+            // Si lo necesitas siempre, leelo con .checked
+        });
+
+
+        // =============================================================
+        // HTML5 - la validacion del navegador
+        // =============================================================
+        document.querySelector("#formulario-html5").addEventListener("submit", (evento) => {
+            evento.preventDefault();
+            alert("Pasó la validación del navegador. Fijate qué feo es este alert.");
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,424 @@
+/* ==========================================================
+   TECNOSTORE - HOJA DE ESTILOS
+   ==========================================================
+   IMPORTANTE: este archivo es EXACTAMENTE el mismo en las
+   dos versiones de la tienda, la que no tiene JavaScript y
+   la que si tiene.
+
+   El diseño no cambia. Lo unico que cambia es el JavaScript.
+   Compará los dos archivos: son identicos.
+   ========================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #1f2933;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ==========================================================
+   ENCABEZADO
+   ========================================================== */
+.barra {
+    background-color: #12232e;
+    color: white;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 19px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: #4fc3a1;
+}
+
+.buscador {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+}
+
+.buscador input {
+    width: 100%;
+    padding: 9px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.buscador input:focus {
+    outline: 2px solid #4fc3a1;
+}
+
+.carrito-boton {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #3a4d5c;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.carrito-boton:hover {
+    border-color: #4fc3a1;
+}
+
+/* La pelotita con el numero de productos */
+.globo {
+    background-color: #4fc3a1;
+    color: #12232e;
+    font-weight: bold;
+    font-size: 12px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    padding: 0 5px;
+}
+
+/* ==========================================================
+   ESTRUCTURA GENERAL
+   ========================================================== */
+.pagina {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 22px 60px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 26px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .pagina {
+        grid-template-columns: 1fr;
+    }
+}
+
+h1 {
+    font-size: 22px;
+    margin: 0 0 4px;
+}
+
+.subtitulo {
+    color: #7b8794;
+    font-size: 14px;
+    margin: 0 0 18px;
+}
+
+/* ==========================================================
+   FILTROS POR CATEGORIA
+   ========================================================== */
+.filtros {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.chip {
+    padding: 7px 15px;
+    border: 1px solid #cbd2d9;
+    border-radius: 20px;
+    background-color: white;
+    color: #3e4c59;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.chip:hover {
+    border-color: #12232e;
+}
+
+/* Esta clase marca el filtro elegido */
+.chip.activo {
+    background-color: #12232e;
+    border-color: #12232e;
+    color: white;
+}
+
+/* ==========================================================
+   GRILLA DE PRODUCTOS
+   ========================================================== */
+.grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 16px;
+}
+
+.producto {
+    background-color: white;
+    border: 1px solid #e4e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.producto:hover {
+    border-color: #4fc3a1;
+    box-shadow: 0 4px 14px rgba(18, 35, 46, .09);
+}
+
+.producto .imagen {
+    background-color: #f4f6f8;
+    border-radius: 6px;
+    height: 110px;
+    display: grid;
+    place-items: center;
+    font-size: 46px;
+}
+
+.producto .categoria {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #9aa5b1;
+}
+
+.producto h3 {
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.producto .precio {
+    font-size: 19px;
+    font-weight: bold;
+    color: #12232e;
+    margin-top: auto;
+}
+
+.producto .agotado {
+    font-size: 12px;
+    color: #cf3b3b;
+    font-weight: bold;
+}
+
+.boton {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #12232e;
+    color: white;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+}
+
+.boton:hover {
+    background-color: #1d3b4d;
+}
+
+.boton:disabled {
+    background-color: #cbd2d9;
+    cursor: not-allowed;
+}
+
+/* Producto sin stock: se ve apagado */
+.producto.sin-stock .imagen {
+    opacity: .35;
+}
+
+.producto.sin-stock h3 {
+    color: #9aa5b1;
+}
+
+/* ==========================================================
+   CARRITO
+   ========================================================== */
+.carrito {
+    background-color: white;
+    border: 1px solid #e4e7eb;
+    border-radius: 8px;
+    padding: 18px;
+    position: sticky;
+    top: 82px;
+}
+
+.carrito h2 {
+    font-size: 16px;
+    margin: 0 0 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e4e7eb;
+}
+
+.carrito-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.carrito-items li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f4f6f8;
+    font-size: 13px;
+}
+
+.carrito-items .nombre {
+    font-weight: bold;
+}
+
+.carrito-items .subtotal {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Controles de cantidad */
+.cantidad {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #7b8794;
+}
+
+.cantidad button {
+    width: 22px;
+    height: 22px;
+    border: 1px solid #cbd2d9;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    color: #3e4c59;
+}
+
+.cantidad button:hover {
+    border-color: #12232e;
+}
+
+.quitar {
+    background: none;
+    border: none;
+    color: #cbd2d9;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 0 2px;
+}
+
+.quitar:hover {
+    color: #cf3b3b;
+}
+
+/* Totales */
+.totales {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 2px solid #e4e7eb;
+    font-size: 14px;
+}
+
+.totales div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.totales .grande {
+    font-size: 19px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.boton-comprar {
+    background-color: #4fc3a1;
+    color: #12232e;
+    font-weight: bold;
+    margin-top: 14px;
+}
+
+.boton-comprar:hover {
+    background-color: #43ad8e;
+}
+
+/* Mensaje de carrito vacio */
+.vacio {
+    text-align: center;
+    color: #9aa5b1;
+    font-size: 13px;
+    padding: 22px 0;
+    line-height: 1.9;
+}
+
+.vacio .icono {
+    font-size: 32px;
+}
+
+/* ==========================================================
+   AVISOS DIDACTICOS
+   Solo para la clase. No son parte del diseño de la tienda.
+   ========================================================== */
+.nota {
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.nota h2 {
+    margin: 0 0 6px;
+    font-size: 15px;
+}
+
+.nota ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+}
+
+.nota li {
+    margin-bottom: 4px;
+}
+
+.nota-mala {
+    background-color: #fdecea;
+    border-left: 4px solid #cf3b3b;
+}
+
+.nota-mala h2 {
+    color: #a52a2a;
+}
+
+.nota-buena {
+    background-color: #e7f7f1;
+    border-left: 4px solid #2f8f6f;
+}
+
+.nota-buena h2 {
+    color: #216b52;
+}
+
+/* Clase de uso general para esconder cosas desde el JavaScript */
+.oculto {
+    display: none;
+}

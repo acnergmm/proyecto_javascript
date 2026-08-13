@@ -1,0 +1,161 @@
+/* ==========================================================
+   Estilos del proyecto. Ni una linea de esto vive en el HTML.
+   ========================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #eceff1;
+    margin: 0;
+    padding: 30px 16px;
+    color: #263238;
+}
+
+.contenedor {
+    background-color: white;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 26px;
+    border-radius: 10px;
+    box-shadow: 0 2px 14px rgba(38, 50, 56, .15);
+}
+
+/* ---------- Encabezado ---------- */
+.encabezado h1 {
+    margin: 0;
+    font-size: 26px;
+    color: #37474f;
+}
+
+.encabezado h1 i {
+    color: #1976d2;
+}
+
+.fecha {
+    margin: 4px 0 20px;
+    font-size: 13px;
+    color: #90a4ae;
+    text-transform: capitalize;
+}
+
+/* ---------- Alta de tarea ---------- */
+.alta {
+    display: flex;
+    gap: 8px;
+}
+
+.alta input {
+    flex: 1;
+    padding: 11px;
+    font-size: 15px;
+    border: 1px solid #b0bec5;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.alta input:focus {
+    outline: 2px solid #1976d2;
+    border-color: #1976d2;
+}
+
+.boton {
+    padding: 11px 15px;
+    font-size: 14px;
+    font-family: inherit;
+    border: none;
+    border-radius: 5px;
+    background-color: #1976d2;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.boton:hover {
+    background-color: #1565c0;
+}
+
+.boton-gris {
+    background-color: #90a4ae;
+}
+
+.boton-gris:hover {
+    background-color: #78909c;
+}
+
+/* ---------- Lista ---------- */
+.lista {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.lista li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 4px;
+    border-bottom: 1px solid #eceff1;
+}
+
+.lista li .texto {
+    flex: 1;
+    cursor: pointer;
+}
+
+.lista li .check {
+    color: #cfd8dc;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Esta clase es la que pone y saca el toggle del JavaScript */
+.lista li.completada .texto {
+    text-decoration: line-through;
+    color: #b0bec5;
+}
+
+.lista li.completada .check {
+    color: #43a047;
+}
+
+.btn-borrar {
+    background: none;
+    border: none;
+    color: #cfd8dc;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 6px;
+}
+
+.btn-borrar:hover {
+    color: #e53935;
+}
+
+/* ---------- Mensaje de lista vacia ---------- */
+.vacio {
+    text-align: center;
+    color: #b0bec5;
+    padding: 26px 0;
+    font-size: 14px;
+    line-height: 2;
+}
+
+/* El JS agrega esta clase para esconder el mensaje */
+.oculto {
+    display: none;
+}
+
+/* ---------- Pie ---------- */
+.pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 2px solid #eceff1;
+    font-size: 14px;
+    color: #546e7a;
+}

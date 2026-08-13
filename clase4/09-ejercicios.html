@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios - Clase 4</title>
+
+    <!-- Estas librerias las vas a necesitar en los ejercicios 3 y 4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 820px; line-height: 1.6; }
+        .ej { border-left: 4px solid #1976d2; padding: 14px 18px; margin-bottom: 26px; background: #f5f7f9; border-radius: 0 6px 6px 0; }
+        .ej h3 { margin-top: 0; }
+        .ej.desafio { border-left-color: #e53935; }
+        .ej.entrega { border-left-color: #43a047; }
+        .pista { color: #607d8b; font-size: 14px; font-style: italic; }
+        .zona { border: 1px dashed #b0bec5; padding: 14px; margin-top: 12px; background: white; border-radius: 4px; }
+        .grande { font-size: 26px; color: #1976d2; font-weight: bold; }
+        input { padding: 8px; border: 1px solid #b0bec5; border-radius: 4px; }
+        button { padding: 8px 14px; margin: 3px 3px 3px 0; cursor: pointer; border: none;
+                 border-radius: 4px; background: #1976d2; color: white; }
+        ul { padding-left: 20px; }
+        code { background: #eceff1; padding: 2px 5px; border-radius: 3px; font-size: 13px; }
+        #ej2_lista { list-style: none; padding: 0; }
+        #ej2_lista li { background: #eceff1; padding: 8px; margin-bottom: 4px; border-radius: 4px;
+                        display: flex; align-items: center; gap: 10px; }
+        #ej3_luz { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #37474f;
+                   margin-top: 12px; background: #cfd8dc; }
+    </style>
+</head>
+
+<body>
+    <h2>Ejercicios — Clase 4</h2>
+    <p>
+        <b>Regla general:</b> usa siempre <code>const</code> o <code>let</code>, arrow functions,
+        template literals y <code>addEventListener</code>. Nada de <code>var</code> ni de
+        <code>onclick</code> dentro del HTML.
+    </p>
+
+    <!-- ============ 1 ============ -->
+    <div class="ej">
+        <h3>1. Contador de clicks</h3>
+        <p>Cada click al boton sube el numero de a uno. El boton "Reiniciar" lo vuelve a cero.</p>
+        <ul>
+            <li>El numero se muestra con un template literal, no concatenando con <code>+</code>.</li>
+            <li>Cuando llega a 10, mostrar un mensaje con SweetAlert2.</li>
+        </ul>
+        <p class="pista">Pista: la variable del contador va con <code>let</code> y fuera de la funcion.</p>
+        <div class="zona">
+            <button id="ej1_boton">Sumar</button>
+            <button id="ej1_reset">Reiniciar</button>
+            <span class="grande" id="ej1_numero">0</span>
+        </div>
+    </div>
+
+    <!-- ============ 2 ============ -->
+    <div class="ej">
+        <h3>2. Lista de invitados</h3>
+        <p>Al escribir un nombre y apretar Agregar (o Enter), se suma un <code>&lt;li&gt;</code> a la lista.</p>
+        <ul>
+            <li>No se puede agregar vacio: avisar con SweetAlert2.</li>
+            <li>Cada invitado tiene un icono de persona de Font Awesome a la izquierda.</li>
+            <li>Mostrar siempre cuantos invitados hay.</li>
+            <li>Cada invitado tiene un boton de tacho que lo borra, pidiendo confirmacion.</li>
+        </ul>
+        <p class="pista">Pista: <code>createElement</code> + <code>append</code>. Para contar,
+            <code>querySelectorAll(...).length</code>.</p>
+        <div class="zona">
+            <input type="text" id="ej2_campo" placeholder="nombre del invitado">
+            <button id="ej2_boton">Agregar</button>
+            <ul id="ej2_lista"></ul>
+            <b id="ej2_total"></b>
+        </div>
+    </div>
+
+    <!-- ============ 3 ============ -->
+    <div class="ej">
+        <h3>3. Semaforo con classList</h3>
+        <p>Tres botones que pintan el circulo. <b>Obligatorio usar <code>classList</code>,
+            prohibido usar <code>.style</code>.</b></p>
+        <ul>
+            <li>Crear las clases <code>.rojo</code>, <code>.amarillo</code> y <code>.verde</code> en el CSS.</li>
+            <li>Antes de poner la clase nueva hay que sacar las otras dos.</li>
+            <li>Agregarle una animacion de Animate.css al cambiar.</li>
+        </ul>
+        <p class="pista">Pista: guarda los tres nombres en un array y usa <code>forEach</code> para
+            sacarlos todos de una.</p>
+        <div class="zona">
+            <button id="ej3_rojo">Rojo</button>
+            <button id="ej3_amarillo">Amarillo</button>
+            <button id="ej3_verde">Verde</button>
+            <div id="ej3_luz"></div>
+        </div>
+    </div>
+
+    <!-- ============ 4 ============ -->
+    <div class="ej entrega">
+        <h3>4. Catalogo de productos (el importante)</h3>
+        <p>
+            Te doy los datos ya escritos. Tenes que dibujar el catalogo en la pagina
+            usando <code>map</code>, template literals e <code>innerHTML</code>.
+        </p>
+        <div class="zona" style="font-family: Consolas, monospace; font-size: 13px;">
+            const productos = [<br>
+            &nbsp;&nbsp;{ nombre: "Notebook", precio: 850000, stock: true },<br>
+            &nbsp;&nbsp;{ nombre: "Tablet", precio: 320000, stock: false },<br>
+            &nbsp;&nbsp;{ nombre: "Auriculares", precio: 45000, stock: true },<br>
+            &nbsp;&nbsp;{ nombre: "Parlante", precio: 68000, stock: true }<br>
+            ];
+        </div>
+        <ul>
+            <li>Cada producto es una tarjeta con nombre, precio e icono.</li>
+            <li>Los que no tienen stock se ven grises (con una clase, no con style).</li>
+            <li>Abajo mostrar el total del catalogo, sumando con <code>forEach</code>.</li>
+            <li>Un boton "Ver solo disponibles" que filtre con <code>filter</code>.</li>
+        </ul>
+        <div class="zona">
+            <button id="ej4_dibujar">Dibujar catalogo</button>
+            <button id="ej4_filtrar">Ver solo disponibles</button>
+            <div id="ej4_catalogo"></div>
+            <b id="ej4_total"></b>
+        </div>
+    </div>
+
+    <!-- ============ DESAFIO ============ -->
+    <div class="ej desafio">
+        <h3>Desafio opcional — Separar en archivos</h3>
+        <p>
+            Este archivo tiene todo adentro: HTML, CSS y JS mezclados. Reorganizalo como vimos hoy:
+        </p>
+        <div class="zona" style="font-family: Consolas, monospace; font-size: 13px;">
+            ejercicios/<br>
+            ├── index.html<br>
+            ├── css/<br>
+            │&nbsp;&nbsp;&nbsp;└── estilos.css<br>
+            └── js/<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;└── app.js
+        </div>
+        <p>
+            El <code>index.html</code> no puede quedar con ni un <code>&lt;style&gt;</code>,
+            ni una linea de JavaScript, ni un <code>onclick</code>. Vinculalo todo con
+            <code>&lt;link&gt;</code> y <code>&lt;script src="..." defer&gt;</code>.
+        </p>
+    </div>
+
+    <div class="ej">
+        <h3>Como se entrega</h3>
+        <ul>
+            <li>Carpeta <code>clase4-tarea</code> con los archivos separados.</li>
+            <li>Que no haya ningun error rojo en la consola (<kbd>F12</kbd>).</li>
+            <li>Subirla al repositorio de la materia.</li>
+        </ul>
+    </div>
+
+    <script>
+        // =====================================================
+        // EJERCICIO 1 - Contador de clicks
+        // =====================================================
+
+
+        // =====================================================
+        // EJERCICIO 2 - Lista de invitados
+        // =====================================================
+
+
+        // =====================================================
+        // EJERCICIO 3 - Semaforo
+        // =====================================================
+
+
+        // =====================================================
+        // EJERCICIO 4 - Catalogo
+        // =====================================================
+        const productos = [
+            { nombre: "Notebook", precio: 850000, stock: true },
+            { nombre: "Tablet", precio: 320000, stock: false },
+            { nombre: "Auriculares", precio: 45000, stock: true },
+            { nombre: "Parlante", precio: 68000, stock: true }
+        ];
+
+    </script>
+</body>
+
+</html>

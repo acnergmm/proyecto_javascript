@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 - Separacion en archivos</title>
+
+    <!-- El CSS se trae con <link>, va en el <head> -->
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <!--
+        El JS se trae con <script src="">.
+        Con "defer" el navegador lo descarga mientras lee el HTML,
+        pero lo EJECUTA recien cuando el HTML termino de cargar.
+        Por eso con defer podemos dejarlo aca arriba sin miedo.
+    -->
+    <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+    <!--
+        ESTE ARCHIVO NO TIENE:
+          - ni un solo <style>
+          - ni una sola linea de JavaScript
+          - ni un solo onclick
+        El HTML solo describe QUE hay en la pagina.
+    -->
+
+    <div class="tarjeta">
+        <h1>Un archivo para cada cosa</h1>
+
+        <p class="lema">
+            El HTML dice <b>que hay</b>.
+            El CSS dice <b>como se ve</b>.
+            El JavaScript dice <b>que hace</b>.
+        </p>
+
+        <div class="estructura">
+            <span>01-separacion/</span>
+            <span>├── index.html</span>
+            <span>├── css/</span>
+            <span>│   └── estilos.css</span>
+            <span>└── js/</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;└── app.js</span>
+        </div>
+
+        <div class="acciones">
+            <button id="btn-saludar" class="boton">Saludar</button>
+            <button id="btn-tema" class="boton boton-secundario">Cambiar tema</button>
+            <button id="btn-limpiar" class="boton boton-secundario">Limpiar</button>
+        </div>
+
+        <p class="salida" id="salida"></p>
+    </div>
+
+</body>
+
+</html>

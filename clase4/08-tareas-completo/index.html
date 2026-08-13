@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto - Lista de Tareas</title>
+
+    <!-- ---------- Librerias externas (CDN) ---------- -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/locale/es.js"></script>
+
+    <!-- ---------- Nuestros propios archivos ---------- -->
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+    <main class="contenedor">
+
+        <header class="encabezado">
+            <h1><i class="fa-solid fa-list-check"></i> Mis Tareas</h1>
+            <p class="fecha" id="fecha"></p>
+        </header>
+
+        <div class="alta">
+            <input type="text" id="campo-tarea" placeholder="Que tengo que hacer?" autocomplete="off">
+            <button class="boton" id="btn-agregar">
+                <i class="fa-solid fa-plus"></i> Agregar
+            </button>
+        </div>
+
+        <ul class="lista" id="lista-tareas"></ul>
+
+        <p class="vacio" id="vacio">
+            <i class="fa-regular fa-face-smile fa-2x"></i><br>
+            No hay tareas todavia
+        </p>
+
+        <footer class="pie">
+            <span id="contador">0 pendientes</span>
+            <button class="boton boton-gris" id="btn-limpiar">
+                <i class="fa-solid fa-broom"></i> Borrar completadas
+            </button>
+        </footer>
+
+    </main>
+
+</body>
+
+</html>

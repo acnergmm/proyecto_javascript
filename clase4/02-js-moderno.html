@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>2 - JavaScript moderno</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 780px; }
+        .caja { border: 1px solid #cfd8dc; border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+        .caja h3 { margin-top: 0; color: #1976d2; }
+        .viejo, .nuevo { font-family: Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 4px; }
+        .viejo { background: #fbe9e7; border-left: 3px solid #d84315; }
+        .nuevo { background: #e8f5e9; border-left: 3px solid #2e7d32; margin-top: 6px; }
+        .producto { display: inline-block; border: 1px solid #ccc; padding: 8px 12px; margin: 4px; border-radius: 4px; }
+        .precio { font-weight: bold; color: #2e7d32; }
+        .destacado { background: #fff9c4; border-color: #fbc02d; }
+        button { padding: 8px 14px; margin: 4px 4px 4px 0; cursor: pointer; }
+        #salida { font-size: 18px; color: #1976d2; min-height: 26px; }
+    </style>
+</head>
+
+<body>
+    <h2>JavaScript moderno: lo mismo, escrito mejor</h2>
+    <p>Todo lo de abajo ya lo saben hacer. Lo que cambia es <b>como se escribe hoy</b>.</p>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>1. const y let (chau var)</h3>
+        <div class="viejo">var nombre = "Ana";&nbsp;&nbsp;// forma vieja, evitar</div>
+        <div class="nuevo">const nombre = "Ana";&nbsp;// nunca va a cambiar<br>let edad = 25;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// si va a cambiar</div>
+        <p>
+            Regla practica: <b>arranca siempre con const</b>. Si el editor o el navegador se queja
+            porque necesitas reasignarla, recien ahi la pasas a let. <code>var</code> no se usa mas.
+        </p>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>2. Template literals: se terminaron los +</h3>
+        <div class="viejo">"Hola " + nombre + ", tenes " + edad + " años"</div>
+        <div class="nuevo">`Hola ${nombre}, tenes ${edad} años`</div>
+        <p>
+            Se usan comillas invertidas (backtick, la tecla al lado del 1 o de la P segun el teclado)
+            y cada variable va dentro de <code>${...}</code>. Ademas permiten escribir en varias lineas.
+        </p>
+        <button id="btn-saludo">Probar template literal</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>3. Arrow functions</h3>
+        <div class="viejo">function sumar(a, b) {<br>&nbsp;&nbsp;&nbsp;&nbsp;return a + b;<br>}</div>
+        <div class="nuevo">const sumar = (a, b) => a + b;</div>
+        <p>
+            Si el cuerpo es una sola linea que devuelve algo, no hacen falta ni las llaves ni el
+            <code>return</code>. Se usan muchisimo dentro de <code>addEventListener</code>.
+        </p>
+        <button id="btn-sumar">3 + 4 con arrow function</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>4. forEach: recorrer sin for</h3>
+        <div class="viejo">for (let i = 0; i &lt; precios.length; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;console.log(precios[i]);<br>}</div>
+        <div class="nuevo">precios.forEach((precio) =&gt; console.log(precio));</div>
+
+        <p>Nuestros productos:</p>
+        <div>
+            <span class="producto">Teclado <span class="precio">15000</span></span>
+            <span class="producto">Mouse <span class="precio">8000</span></span>
+            <span class="producto">Monitor <span class="precio">120000</span></span>
+            <span class="producto">Webcam <span class="precio">32000</span></span>
+        </div>
+
+        <p>
+            <button id="btn-destacar">Destacar todos (forEach)</button>
+            <button id="btn-total">Sumar total (forEach)</button>
+            <button id="btn-caros">Solo los caros (filter)</button>
+        </p>
+    </div>
+
+    <p id="salida"></p>
+
+    <script>
+        // =========================================================
+        // 1 y 2 - const, let y template literals
+        // =========================================================
+        const salida = document.querySelector("#salida");
+
+        document.querySelector("#btn-saludo").addEventListener("click", () => {
+            const nombre = "Ana";
+            let edad = 25;
+
+            // Antes: "Hola " + nombre + ", tenes " + edad + " años"
+            salida.textContent = `Hola ${nombre}, tenes ${edad} años`;
+        });
+
+
+        // =========================================================
+        // 3 - Arrow functions
+        // =========================================================
+        const sumar = (a, b) => a + b;
+
+        document.querySelector("#btn-sumar").addEventListener("click", () => {
+            salida.textContent = `3 + 4 = ${sumar(3, 4)}`;
+        });
+
+
+        // =========================================================
+        // 4 - forEach sobre lo que devuelve querySelectorAll
+        // =========================================================
+        const productos = document.querySelectorAll(".producto");
+        const precios = document.querySelectorAll(".precio");
+
+        document.querySelector("#btn-destacar").addEventListener("click", () => {
+            // forEach recibe una funcion y la ejecuta una vez por elemento
+            productos.forEach((producto) => {
+                producto.classList.toggle("destacado");
+            });
+
+            salida.textContent = `Toque ${productos.length} productos`;
+        });
+
+        document.querySelector("#btn-total").addEventListener("click", () => {
+            let total = 0;
+
+            precios.forEach((precio) => {
+                // textContent siempre es texto -> Number lo convierte
+                total += Number(precio.textContent);
+            });
+
+            salida.textContent = `El total es $${total}`;
+        });
+
+        document.querySelector("#btn-caros").addEventListener("click", () => {
+            // filter arma una lista nueva SOLO con los que cumplen la condicion.
+            // Para usarlo hay que convertir el NodeList en array con [...]
+            const caros = [...precios].filter((precio) => Number(precio.textContent) > 20000);
+
+            // map transforma cada elemento, join los pega con un separador
+            const nombres = caros.map((precio) => precio.textContent).join(" - ");
+
+            salida.textContent = `Hay ${caros.length} productos de mas de $20.000: ${nombres}`;
+        });
+    </script>
+</body>
+
+</html>

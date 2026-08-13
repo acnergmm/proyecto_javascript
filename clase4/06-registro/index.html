@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+
+    <!-- ---------- Librerias externas (bloque 3) ---------- -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- ---------- Nuestros archivos (bloque 1) ---------- -->
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/validacion.js" defer></script>
+</head>
+
+<body>
+
+    <main class="tarjeta">
+
+        <header>
+            <h1><i class="fa-solid fa-user-plus"></i> Crear cuenta</h1>
+            <p class="sub">Todos los campos son obligatorios</p>
+        </header>
+
+        <!--
+            novalidate le dice al navegador: "no valides vos, valido yo".
+            Lo usamos para poder mostrar NUESTROS mensajes en lugar
+            de los del navegador. Los atributos type y required
+            igual se dejan escritos, porque documentan el campo.
+        -->
+        <form id="formulario" novalidate>
+
+            <!-- Cada campo tiene siempre la misma estructura:
+                 label + input + un <p> vacio para el error.
+                 El id del error es "error-" mas el id del campo. -->
+
+            <div class="campo">
+                <label for="nombre">Nombre y apellido</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ana Pérez" autocomplete="off">
+                <p class="error" id="error-nombre"></p>
+            </div>
+
+            <div class="campo">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="ana@ejemplo.com" autocomplete="off">
+                <p class="error" id="error-email"></p>
+            </div>
+
+            <div class="fila-doble">
+                <div class="campo">
+                    <label for="edad">Edad</label>
+                    <input type="number" id="edad" name="edad" placeholder="25">
+                    <p class="error" id="error-edad"></p>
+                </div>
+
+                <div class="campo">
+                    <label for="provincia">Provincia</label>
+                    <select id="provincia" name="provincia">
+                        <option value="">Elegí una...</option>
+                        <option value="caba">CABA</option>
+                        <option value="bsas">Buenos Aires</option>
+                        <option value="cordoba">Córdoba</option>
+                        <option value="santafe">Santa Fe</option>
+                        <option value="mendoza">Mendoza</option>
+                    </select>
+                    <p class="error" id="error-provincia"></p>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label for="clave">Contraseña</label>
+                <input type="password" id="clave" name="clave" placeholder="mínimo 6 caracteres">
+                <div class="medidor"><span id="barra-clave"></span></div>
+                <p class="error" id="error-clave"></p>
+            </div>
+
+            <div class="campo">
+                <label for="clave2">Repetir contraseña</label>
+                <input type="password" id="clave2" name="clave2">
+                <p class="error" id="error-clave2"></p>
+            </div>
+
+            <div class="campo campo-check">
+                <label class="check">
+                    <input type="checkbox" id="terminos" name="terminos">
+                    Acepto los términos y condiciones
+                </label>
+                <p class="error" id="error-terminos"></p>
+            </div>
+
+            <button type="submit" class="boton">
+                <i class="fa-solid fa-check"></i> Crear mi cuenta
+            </button>
+
+        </form>
+
+        <div class="resumen oculto" id="resumen"></div>
+
+    </main>
+
+</body>
+
+</html>

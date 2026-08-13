@@ -1,0 +1,884 @@
+<title>Separación en Archivos, JS Moderno y Librerías Externas</title>
+<style>
+  /* ---------- Tokens: tema claro (base, sin stamp) ---------- */
+  :root {
+    --ground: #f4f6f8;
+    --surface: #ffffff;
+    --surface-sunk: #eceff3;
+    --ink: #161a20;
+    --ink-soft: #3c4653;
+    --neutral: #63707f;
+    --neutral-faint: #97a3b0;
+    --rule: #d8dee5;
+    --rule-soft: #e6ebf0;
+    --accent: #0d6b70;
+    --accent-ink: #0a5257;
+    --accent-wash: #e2eff0;
+    --clay: #a3462a;
+    --clay-wash: #f7e9e3;
+    --code-bg: #eef1f4;
+    --shadow: 0 1px 2px rgba(22, 26, 32, .06), 0 8px 24px -12px rgba(22, 26, 32, .14);
+  }
+
+  /* ---------- Tokens: tema oscuro del sistema ---------- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101318;
+      --surface: #181c22;
+      --surface-sunk: #14181d;
+      --ink: #e7eaee;
+      --ink-soft: #c2c9d2;
+      --neutral: #97a3b0;
+      --neutral-faint: #6b7784;
+      --rule: #2b323a;
+      --rule-soft: #22282f;
+      --accent: #52bdc2;
+      --accent-ink: #7fd3d7;
+      --accent-wash: #16292b;
+      --clay: #e0906d;
+      --clay-wash: #2c1f1a;
+      --code-bg: #11151a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+    }
+  }
+
+  /* ---------- Tokens: tema oscuro elegido explícitamente ---------- */
+  :root[data-theme="dark"] {
+    --ground: #101318;
+    --surface: #181c22;
+    --surface-sunk: #14181d;
+    --ink: #e7eaee;
+    --ink-soft: #c2c9d2;
+    --neutral: #97a3b0;
+    --neutral-faint: #6b7784;
+    --rule: #2b323a;
+    --rule-soft: #22282f;
+    --accent: #52bdc2;
+    --accent-ink: #7fd3d7;
+    --accent-wash: #16292b;
+    --clay: #e0906d;
+    --clay-wash: #2c1f1a;
+    --code-bg: #11151a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hoja { max-width: 960px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  /* ---------- Encabezado ---------- */
+  .cabecera { border-bottom: 2px solid var(--ink); padding-bottom: 28px; }
+
+  .eyebrow {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+
+  h1 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.8vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0 0 18px;
+  }
+
+  .bajada { margin: 0; max-width: 64ch; font-size: 1.06rem; color: var(--ink-soft); }
+
+  /* ---------- Los tres ejes ---------- */
+  .ejes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 30px 0 14px;
+  }
+
+  .ejes article { background: var(--surface); padding: 18px 20px; }
+
+  .ejes .eje-num {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .ejes h3 { margin: 0 0 6px; font-size: 1.02rem; font-weight: 650; letter-spacing: -.01em; }
+
+  .ejes p { margin: 0; font-size: .9rem; color: var(--neutral); }
+
+  /* ---------- Ficha técnica ---------- */
+  .ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 0 0 56px;
+  }
+
+  .ficha div { background: var(--surface); padding: 14px 16px; }
+
+  .ficha dt {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--neutral);
+    margin-bottom: 5px;
+  }
+
+  .ficha dd { margin: 0; font-size: .95rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Secciones ---------- */
+  h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    letter-spacing: -.01em;
+    margin: 0 0 6px;
+  }
+
+  .seccion { margin-top: 60px; }
+
+  .seccion > .intro { color: var(--neutral); max-width: 64ch; margin: 0 0 28px; font-size: .96rem; }
+
+  /* ---------- Objetivos ---------- */
+  .objetivos { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+
+  .objetivos li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    font-size: .97rem;
+    color: var(--ink-soft);
+  }
+
+  .objetivos li::before { content: "→"; color: var(--accent); font-family: ui-monospace, Consolas, monospace; }
+
+  /* ---------- Cronograma ---------- */
+  .cronograma { display: grid; gap: 14px; }
+
+  .bloque {
+    display: grid;
+    grid-template-columns: 104px 1fr;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .reloj { background: var(--surface-sunk); border-right: 1px solid var(--rule); padding: 18px 14px; }
+
+  .reloj .desde {
+    display: block;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 1.12rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .reloj .hasta {
+    display: block;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .82rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--neutral-faint);
+  }
+
+  .reloj .dura {
+    display: inline-block;
+    margin-top: 9px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .06em;
+    color: var(--accent-ink);
+    background: var(--accent-wash);
+    border-radius: 2px;
+    padding: 2px 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cuerpo { padding: 18px 22px 22px; min-width: 0; }
+
+  .cuerpo h3 { font-size: 1.14rem; font-weight: 650; letter-spacing: -.01em; margin: 0 0 4px; }
+
+  .cuerpo .meta {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11.5px;
+    color: var(--neutral);
+    margin: 0 0 16px;
+  }
+
+  .cuerpo .meta code { color: var(--clay); }
+
+  .tarea-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+
+  .tarea-lista > li { display: grid; gap: 5px; }
+
+  .rol {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .tarea-lista p { margin: 0; font-size: .95rem; color: var(--ink-soft); }
+
+  .tarea-lista ul { margin: 3px 0 0; padding-left: 20px; }
+
+  .tarea-lista ul li { font-size: .93rem; color: var(--ink-soft); margin-bottom: 4px; }
+
+  code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .88em; }
+
+  .cuerpo code, .objetivos code, .avisos code, .cierre code, .ejes code, td code {
+    background: var(--code-bg);
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: 1px 5px;
+  }
+
+  kbd {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .8em;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+
+  /* Recreos: más livianos, sin tarjeta */
+  .bloque.recreo { background: none; border: 1px dashed var(--rule); box-shadow: none; }
+
+  .bloque.recreo .reloj { background: none; border-right: 1px dashed var(--rule); }
+
+  .bloque.recreo .cuerpo { display: flex; align-items: center; }
+
+  .bloque.recreo h3 { margin: 0; font-weight: 500; font-size: .98rem; color: var(--neutral); }
+
+  /* ---------- Antes / después ---------- */
+  .comparar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0 0; }
+
+  .comparar > div { border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+
+  .comparar h5 {
+    margin: 0;
+    padding: 6px 12px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    background: var(--surface-sunk);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .comparar .antes h5 { color: var(--clay); }
+
+  .comparar .despues h5 { color: var(--accent); }
+
+  .comparar pre {
+    margin: 0;
+    padding: 11px 12px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    overflow-x: auto;
+    color: var(--ink-soft);
+    background: var(--code-bg);
+  }
+
+  @media (max-width: 560px) {
+    .comparar { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Errores frecuentes ---------- */
+  .avisos { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+
+  .avisos > div {
+    background: var(--surface);
+    padding: 15px 18px;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 12px;
+  }
+
+  .avisos .num {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .82rem;
+    color: var(--clay);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+
+  .avisos h4 { margin: 0 0 4px; font-size: .96rem; font-weight: 650; }
+
+  .avisos p { margin: 0; font-size: .91rem; color: var(--ink-soft); }
+
+  /* ---------- Cierre ---------- */
+  .cierre {
+    background: var(--clay-wash);
+    border-left: 3px solid var(--clay);
+    padding: 20px 24px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .cierre h3 { margin: 0 0 8px; font-size: 1.02rem; }
+
+  .cierre p, .cierre li { font-size: .95rem; color: var(--ink-soft); }
+
+  .cierre p { margin: 0 0 10px; }
+
+  .cierre ul { margin: 0; padding-left: 20px; }
+
+  .cierre li { margin-bottom: 5px; }
+
+  /* ---------- Tablas ---------- */
+  .tabla-envoltorio { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; }
+
+  table { border-collapse: collapse; width: 100%; min-width: 520px; background: var(--surface); }
+
+  th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--rule-soft); font-size: .92rem; }
+
+  th {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--neutral);
+    background: var(--surface-sunk);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  td.ruta { font-family: ui-monospace, Consolas, monospace; color: var(--accent-ink); white-space: nowrap; }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11.5px;
+    letter-spacing: .05em;
+    color: var(--neutral-faint);
+  }
+
+  @media (max-width: 620px) {
+    .hoja { padding: 36px 18px 64px; }
+    .bloque { grid-template-columns: 1fr; }
+    .reloj { border-right: none; border-bottom: 1px solid var(--rule); display: flex; align-items: baseline; gap: 10px; padding: 12px 18px; }
+    .bloque.recreo .reloj { border-right: none; border-bottom: 1px dashed var(--rule); }
+    .reloj .dura { margin-top: 0; margin-left: auto; }
+    .cuerpo { padding: 16px 18px 20px; }
+  }
+</style>
+
+<div class="hoja">
+
+  <header class="cabecera">
+    <p class="eyebrow">Programación Web Fullstack · Clase 04</p>
+    <h1>Separación en Archivos, JS Moderno y Librerías Externas</h1>
+    <p class="bajada">
+      Las tres primeras clases el JavaScript vivió dentro del HTML. Funcionaba, pero así no se
+      trabaja en un proyecto real. Hoy sacamos el código a sus propios archivos, lo reescribimos
+      con la sintaxis que se usa hoy, y aprendemos a sumar código de otros con una línea.
+    </p>
+  </header>
+
+  <div class="ejes">
+    <article>
+      <span class="eje-num">EJE 01</span>
+      <h3>Separación en archivos</h3>
+      <p>El HTML dice qué hay, el CSS cómo se ve, el JS qué hace. Cada uno en su archivo, con rutas y <code>defer</code>.</p>
+    </article>
+    <article>
+      <span class="eje-num">EJE 02</span>
+      <h3>JavaScript moderno</h3>
+      <p><code>const</code>/<code>let</code>, arrow functions, template literals y <code>forEach</code> sobre lo que ya saben hacer.</p>
+    </article>
+    <article>
+      <span class="eje-num">EJE 03</span>
+      <h3>Librerías externas</h3>
+      <p>Qué es un CDN y cómo leer una documentación. SweetAlert2, Font Awesome, Animate.css y Day.js.</p>
+    </article>
+  </div>
+
+  <dl class="ficha">
+    <div>
+      <dt>Duración</dt>
+      <dd>3 horas · 180 min</dd>
+    </div>
+    <div>
+      <dt>Ya vimos</dt>
+      <dd>Variables, funciones, getElementById</dd>
+    </div>
+    <div>
+      <dt>Requisito</dt>
+      <dd>Internet para los CDN</dd>
+    </div>
+    <div>
+      <dt>Entregable</dt>
+      <dd>Lista de tareas funcionando</dd>
+    </div>
+  </dl>
+
+  <section class="seccion">
+    <h2>Al terminar la clase, el alumno puede…</h2>
+    <p class="intro">Seis capacidades concretas, todas verificables en el proyecto del bloque 4.</p>
+    <ul class="objetivos">
+      <li>Armar un proyecto con carpetas <code>css/</code> y <code>js/</code>, y vincularlas con rutas relativas correctas.</li>
+      <li>Explicar por qué un <code>&lt;script&gt;</code> mal ubicado rompe la página, y resolverlo con <code>defer</code>.</li>
+      <li>Escribir código sin <code>var</code> y sin eventos <code>onclick</code> dentro del HTML.</li>
+      <li>Reemplazar la concatenación con <code>+</code> por template literals, y las funciones largas por arrow functions.</li>
+      <li>Recorrer una lista de elementos con <code>forEach</code> y generar HTML con <code>map</code>.</li>
+      <li>Incorporar una librería por CDN leyendo su documentación oficial, sin que se la dicten.</li>
+    </ul>
+  </section>
+
+  <section class="seccion">
+    <h2>Cronograma</h2>
+    <p class="intro">
+      Cada bloque indica qué explicar, qué codear en vivo y qué hacen los alumnos.
+      Los tiempos son de referencia: si la teoría se estira, el recorte va sobre los ejercicios
+      intermedios, nunca sobre el proyecto del bloque 4.
+    </p>
+
+    <div class="cronograma">
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">00:00</span>
+          <span class="hasta">→ 00:15</span>
+          <span class="dura">15 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Apertura — el problema que vamos a resolver</h3>
+          <p class="meta">Abrir en el proyector <code>prueba.html</code> de la clase pasada</p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Repaso oral · 5 min</span>
+              <p>Que expliquen el promediador de <code>prueba3.html</code>: de dónde sale el número, por qué hace falta <code>parseInt</code>, qué hace <code>innerHTML</code>.</p>
+            </li>
+            <li>
+              <span class="rol">La incomodidad · 7 min</span>
+              <p>Abrir <code>prueba.html</code>, donde conviven <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code>, <code>onMouseOver</code>, <code>onkeyup</code> y <code>onfocus</code> en el mismo archivo. Tres preguntas al aire:</p>
+              <ul>
+                <li>Si esta página tuviera 50 botones, ¿escribimos 50 <code>onclick</code>?</li>
+                <li>Si el diseñador toca el HTML, ¿cómo evitamos que borre el JavaScript sin darse cuenta?</li>
+                <li>¿Y si otro proyecto necesita el mismo código? ¿Lo copiamos y pegamos?</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">Encuadre · 3 min</span>
+              <p>Escribir en el pizarrón los tres ejes del día y dejarlos ahí toda la clase: separar, modernizar, reutilizar.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">00:15</span>
+          <span class="hasta">→ 00:50</span>
+          <span class="dura">35 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 1 — Separación en archivos</h3>
+          <p class="meta">Carpeta <code>01-separacion/</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 14 min</span>
+              <ul>
+                <li>La estructura estándar de un proyecto: <code>index.html</code>, <code>css/estilos.css</code>, <code>js/app.js</code>.</li>
+                <li><code>&lt;link rel="stylesheet" href="css/estilos.css"&gt;</code> para el CSS, <code>&lt;script src="js/app.js"&gt;</code> para el JS.</li>
+                <li><strong>Rutas relativas</strong>, el tema que más los va a trabar: <code>archivo.css</code> es la carpeta actual, <code>css/archivo.css</code> entra a una carpeta, <code>../archivo.css</code> sube una. Dibujarlo en el pizarrón.</li>
+                <li>Por qué el script arriba sin <code>defer</code> rompe todo: el JS corre antes de que exista el HTML y <code>querySelector</code> devuelve <code>null</code>. Provocar el error a propósito para que lo vean en la consola.</li>
+                <li><code>defer</code> como solución: descarga en paralelo, ejecuta cuando el HTML terminó.</li>
+                <li><code>addEventListener</code> como consecuencia de todo esto: si el comportamiento vive en el <code>.js</code>, no puede quedar un <code>onclick</code> en el HTML.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">Codeo en vivo · 13 min</span>
+              <p>Construir <code>01-separacion/</code> desde cero, creando las carpetas en el explorador de VS Code. Mostrar la pestaña <strong>Network</strong> de las herramientas de desarrollo: se ven las tres peticiones, y si una ruta está mal se ve el 404.</p>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 8 min</span>
+              <p>Tomar su propio <code>prueba3.html</code> (el promediador) y desarmarlo en tres archivos con carpetas. El <code>index.html</code> tiene que quedar sin <code>&lt;style&gt;</code>, sin <code>&lt;script&gt;</code> con código adentro y sin <code>onclick</code>.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque recreo">
+        <div class="reloj">
+          <span class="desde">00:50</span>
+          <span class="hasta">→ 01:00</span>
+          <span class="dura">10 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Recreo</h3>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">01:00</span>
+          <span class="hasta">→ 01:40</span>
+          <span class="dura">40 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 2 — JavaScript moderno</h3>
+          <p class="meta">Archivos <code>02-js-moderno.html</code> y <code>03-dom-moderno.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Estrategia del bloque</span>
+              <p>Nada de esto es funcionalidad nueva: es lo mismo que ya saben, escrito como se escribe hoy. Presentar cada tema como un par <em>antes / después</em>, con el código viejo de sus propios archivos a la izquierda.</p>
+              <div class="comparar">
+                <div class="antes">
+                  <h5>Clases 1 a 3</h5>
+                  <pre>var nombre = "Ana";
+
+"Hola " + nombre + "!"
+
+function sumar(a, b) {
+  return a + b;
+}
+
+for (let i = 0; i &lt; xs.length; i++) {
+  console.log(xs[i]);
+}</pre>
+                </div>
+                <div class="despues">
+                  <h5>Desde hoy</h5>
+                  <pre>const nombre = "Ana";
+
+`Hola ${nombre}!`
+
+const sumar = (a, b) =&gt; a + b;
+
+
+xs.forEach((x) =&gt; console.log(x));</pre>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span class="rol">Teoría · 18 min</span>
+              <ul>
+                <li><code>const</code> y <code>let</code>: regla práctica — arrancar siempre con <code>const</code> y pasar a <code>let</code> solo cuando el navegador se queje. <code>var</code> no se usa más.</li>
+                <li><strong>Template literals</strong> con backticks y <code>${}</code>. Aclarar dónde está la tecla del backtick, porque se pierden ahí diez minutos si no se avisa.</li>
+                <li><strong>Arrow functions</strong>: de <code>function(){}</code> a <code>() =&gt; {}</code>, y el atajo de una sola línea sin <code>return</code>.</li>
+                <li><code>forEach</code> sobre <code>querySelectorAll</code>, y una pasada rápida por <code>map</code>, <code>filter</code> y <code>join</code>.</li>
+                <li>Generar HTML de dos maneras: <code>createElement</code> cuando el elemento necesita eventos propios, template literal con <code>innerHTML</code> cuando hay que dibujar un listado completo.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">Codeo en vivo · 14 min</span>
+              <p>Recorrer los precios con <code>forEach</code> para sacar el total, y después el catálogo de <code>03-dom-moderno.html</code> con <code>map</code> + <code>join</code>. Que vean el mismo resultado logrado de las dos formas.</p>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 8 min</span>
+              <p>Reescribir el <code>app.js</code> que armaron en el bloque 1: pasar todo a <code>const</code>, convertir las funciones en arrow y reemplazar cualquier concatenación por un template literal.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">01:40</span>
+          <span class="hasta">→ 02:05</span>
+          <span class="dura">25 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 3 — Librerías externas por CDN</h3>
+          <p class="meta">Archivo <code>04-librerias.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 8 min</span>
+              <ul>
+                <li>Qué es una librería: código que ya escribió otro y que podemos usar. Qué es un CDN: un servidor público que nos lo presta con una línea.</li>
+                <li>Librerías de CSS entran por <code>&lt;link&gt;</code>; librerías de JS entran por <code>&lt;script src&gt;</code>. Y siempre <strong>antes</strong> de nuestro propio archivo, porque el nuestro las necesita ya cargadas.</li>
+                <li>La contra: sin internet no funcionan. Mostrar el error <code>Swal is not defined</code> a propósito.</li>
+                <li>Las cuatro de hoy: <strong>Font Awesome</strong> (iconos), <strong>Animate.css</strong> (animaciones por clase), <strong>SweetAlert2</strong> (alertas), <strong>Day.js</strong> (fechas).</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">Codeo en vivo · 12 min</span>
+              <p>Recorrer las cuatro en orden de dificultad creciente. Animate.css es la que mejor cierra el bloque anterior: son clases puestas con <code>classList</code>, nada nuevo. SweetAlert2 introduce la idea de pasarle un <strong>objeto de opciones</strong> a una función, y el <code>.then()</code> para la respuesta del usuario.</p>
+            </li>
+            <li>
+              <span class="rol">Lo que de verdad hay que enseñar · 5 min</span>
+              <p>Nadie recuerda de memoria cómo se usa una librería. La habilidad real es leer documentación. Entrar en vivo a <strong>sweetalert2.github.io</strong> y hacer los cuatro pasos delante de ellos: buscar la página oficial, copiar la línea del CDN, copiar el ejemplo más simple, y solo después cambiarle las opciones.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque recreo">
+        <div class="reloj">
+          <span class="desde">02:05</span>
+          <span class="hasta">→ 02:15</span>
+          <span class="dura">10 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Recreo</h3>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">02:15</span>
+          <span class="hasta">→ 02:50</span>
+          <span class="dura">35 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 4 — Proyecto integrador: Lista de Tareas</h3>
+          <p class="meta">Carpeta <code>05-proyecto/</code> · tres archivos + cuatro librerías</p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Consigna · 3 min</span>
+              <p>Mostrar el resultado terminado y funcionando. Anotar en el pizarrón las cinco funcionalidades: agregar, tachar al hacer click, borrar con confirmación, contar pendientes, borrar todas las completadas.</p>
+            </li>
+            <li>
+              <span class="rol">Construcción guiada · 27 min</span>
+              <p>Se entrega el <code>index.html</code> y el <code>css/estilos.css</code> ya escritos —el tiempo de clase se invierte en el JavaScript— y se codea <code>js/app.js</code> junto con ellos, en el orden de los seis pasos comentados en el archivo. Regla firme: <strong>nadie copia y pega, todos escriben</strong>. Probar en el navegador después de cada paso, no al final.</p>
+              <ul>
+                <li>Paso 1 — buscar los elementos con <code>const</code>, una sola vez, arriba del archivo.</li>
+                <li>Paso 2 — la fecha de hoy en español con Day.js.</li>
+                <li>Paso 3 — <code>agregarTarea</code>: validar con SweetAlert2, crear el <code>li</code> con su icono y su botón, colgarlo, animar la entrada.</li>
+                <li>Paso 4 — <code>actualizarEstado</code>: el contador y el mensaje de lista vacía, con <code>li:not(.completada)</code>.</li>
+                <li>Paso 5 — <code>borrarCompletadas</code> con <code>forEach</code> y confirmación.</li>
+                <li>Paso 6 — conectar los eventos, incluido <code>Enter</code> con <code>evento.key</code>.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">Puesta en común · 5 min</span>
+              <p>Recorrer los bancos. Los que quedaron atrás copian del repositorio; los que terminaron arrancan el desafío de la tarea.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">02:50</span>
+          <span class="hasta">→ 03:00</span>
+          <span class="dura">10 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Cierre, tarea y adelanto</h3>
+          <p class="meta">Archivo <code>06-ejercicios.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Repaso relámpago</span>
+              <p>Preguntar de memoria, sin mirar la pantalla: ¿qué hace <code>defer</code>? ¿cuándo <code>const</code> y cuándo <code>let</code>? ¿cómo se escribe un template literal? ¿qué son los cuatro pasos para sumar una librería?</p>
+            </li>
+            <li>
+              <span class="rol">Tarea</span>
+              <p>Entregar <code>06-ejercicios.html</code> resuelto: contador de clicks, lista de invitados con iconos y confirmación, semáforo con <code>classList</code>, y catálogo generado con <code>map</code>. El desafío es separar ese mismo archivo en la estructura de carpetas de hoy.</p>
+            </li>
+            <li>
+              <span class="rol">Adelanto clase 5</span>
+              <p>Hoy las tareas viven solo en la pantalla: si se refresca la página, se pierden. La próxima clase, arrays y objetos en serio, y <code>localStorage</code> para que la lista sobreviva.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>Los ocho errores que van a cometer</h2>
+    <p class="intro">Anticiparlos ahorra la mitad del tiempo de asistencia individual. Conviene dejarlos escritos en un costado del pizarrón durante toda la clase.</p>
+    <div class="avisos">
+      <div>
+        <span class="num">01</span>
+        <div>
+          <h4>La ruta del CSS o del JS está mal</h4>
+          <p>El síntoma es una página sin estilos, o un JavaScript que no hace nada. La pestaña <strong>Network</strong> lo muestra como 404. Es de lejos el error número uno de este bloque.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">02</span>
+        <div>
+          <h4><code>&lt;script&gt;</code> en el <code>&lt;head&gt;</code> sin <code>defer</code></h4>
+          <p>Error <code>Cannot read properties of null</code>. El JS corrió antes de que existiera el HTML. Se arregla con <code>defer</code>, o poniendo el script al final del <code>body</code>.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">03</span>
+        <div>
+          <h4>Dejaron el <code>onclick</code> en el HTML</h4>
+          <p>Ahora hay dos lugares donde buscar el mismo comportamiento, y cuando algo falla nadie sabe cuál se está ejecutando. El HTML tiene que quedar limpio.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">04</span>
+        <div>
+          <h4>Comillas normales en vez de backtick</h4>
+          <p><code>"Hola ${nombre}"</code> imprime literalmente <code>${nombre}</code>. El template literal solo funciona con backticks. Mostrar dónde está la tecla al empezar el bloque 2.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">05</span>
+        <div>
+          <h4><code>addEventListener("click", saludar())</code></h4>
+          <p>Con paréntesis la función se ejecuta una sola vez al cargar y después el botón no responde. Va <strong>sin</strong> paréntesis: se pasa la función, no su resultado.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">06</span>
+        <div>
+          <h4>Reasignar una <code>const</code></h4>
+          <p><code>Assignment to constant variable</code>. No es un misterio: esa variable necesitaba ser <code>let</code>. Es un error sano, avisa de un cambio que no estaba previsto.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">07</span>
+        <div>
+          <h4>La librería va después de nuestro archivo</h4>
+          <p><code>Swal is not defined</code> o <code>dayjs is not defined</code>. Los CDN tienen que estar cargados antes de que nuestro código los use. También aparece si no hay internet.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">08</span>
+        <div>
+          <h4>Programar con la consola cerrada</h4>
+          <p>El error está escrito, con número de línea incluido, y nadie lo está leyendo. Exigir <kbd>F12</kbd> abierto durante toda la clase.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>Librerías de la clase</h2>
+    <p class="intro">Las cuatro se eligieron por lo mismo: resultado visible en dos líneas y documentación clara para que después exploren solos.</p>
+    <div class="tabla-envoltorio">
+      <table>
+        <thead>
+          <tr>
+            <th>Librería</th>
+            <th>Para qué</th>
+            <th>Cómo se usa</th>
+            <th>Se ata a</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ruta">Font Awesome</td>
+            <td>Iconos</td>
+            <td><code>&lt;i class="fa-solid fa-trash"&gt;&lt;/i&gt;</code></td>
+            <td>Clases de CSS</td>
+          </tr>
+          <tr>
+            <td class="ruta">Animate.css</td>
+            <td>Animaciones</td>
+            <td><code>classList.add("animate__bounce")</code></td>
+            <td><code>classList</code></td>
+          </tr>
+          <tr>
+            <td class="ruta">SweetAlert2</td>
+            <td>Alertas y confirmaciones</td>
+            <td><code>Swal.fire({ ... }).then(...)</code></td>
+            <td>Objetos y funciones</td>
+          </tr>
+          <tr>
+            <td class="ruta">Day.js</td>
+            <td>Fechas</td>
+            <td><code>dayjs().format("DD/MM/YYYY")</code></td>
+            <td>Template literals</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>Archivos de la clase</h2>
+    <p class="intro">Todos en la carpeta <code>clase4/</code> del repositorio. Se abren con doble click en el navegador, sin necesidad de servidor.</p>
+    <div class="tabla-envoltorio">
+      <table>
+        <thead>
+          <tr>
+            <th>Ruta</th>
+            <th>Contenido</th>
+            <th>Momento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ruta">01-separacion/</td>
+            <td>index.html + css/estilos.css + js/app.js. El HTML sin una línea de estilo ni de script</td>
+            <td>Bloque 1</td>
+          </tr>
+          <tr>
+            <td class="ruta">02-js-moderno.html</td>
+            <td>const/let, template literals, arrow functions, forEach, filter y map en pares antes/después</td>
+            <td>Bloque 2</td>
+          </tr>
+          <tr>
+            <td class="ruta">03-dom-moderno.html</td>
+            <td>createElement contra template literal + innerHTML, y cuándo usar cada uno</td>
+            <td>Bloque 2</td>
+          </tr>
+          <tr>
+            <td class="ruta">04-librerias.html</td>
+            <td>Las cuatro librerías por CDN, con los cuatro pasos para leer una documentación</td>
+            <td>Bloque 3</td>
+          </tr>
+          <tr>
+            <td class="ruta">05-proyecto/</td>
+            <td>Lista de tareas: tres archivos propios más cuatro librerías externas</td>
+            <td>Bloque 4</td>
+          </tr>
+          <tr>
+            <td class="ruta">06-ejercicios.html</td>
+            <td>Cuatro ejercicios con pistas, más el desafío de separarlo en archivos</td>
+            <td>Tarea</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="cierre">
+      <h3>Si el tiempo se acorta</h3>
+      <p>El proyecto es el objetivo de la clase, no un extra. Cuando la teoría se estira, el orden de recorte es este:</p>
+      <ul>
+        <li>Primero se sacan los ejercicios de alumnos de los bloques 2 y 3, y pasan a ser tarea.</li>
+        <li>Del bloque 2 se puede posponer <code>filter</code> y <code>map</code>: alcanza con <code>forEach</code>, y el catálogo queda para la clase 5, donde se ven arrays en serio.</li>
+        <li>Del bloque 3, con Font Awesome y SweetAlert2 el objetivo ya está cumplido. Animate.css y Day.js se pueden dejar como exploración libre.</li>
+        <li>Nunca se recorta el bloque 4. Si hace falta, se entregan también los pasos 1 y 2 del <code>app.js</code> ya escritos y se codea desde <code>agregarTarea</code>.</li>
+      </ul>
+      <p style="margin-top:14px;margin-bottom:0"><b>Sin internet en el aula:</b> el bloque 3 se cae. Plan B — descargar las cuatro librerías antes de la clase a una carpeta <code>lib/</code> y enseñar el mismo tema con archivos locales, que además refuerza el eje de rutas relativas del bloque 1.</p>
+    </div>
+  </section>
+
+  <footer>Clase 04 · Programación Web Fullstack · 13 de agosto de 2026</footer>
+
+</div>

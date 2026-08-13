@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoStore - version CON JavaScript</title>
+
+    <!-- Libreria externa (bloque 3) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- El MISMO css que la version sin JavaScript. Sin una sola linea de diferencia. -->
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <!-- Todo el comportamiento, en un archivo aparte -->
+    <script src="js/app.js" defer></script>
+
+    <!--
+        ==========================================================
+        TECNOSTORE - VERSION 2: HTML + CSS + JAVASCRIPT
+        ==========================================================
+        Comparalo con la version sin JavaScript:
+
+          - El CSS es EXACTAMENTE el mismo archivo.
+          - El HTML paso de 250 lineas a 60.
+          - Los 8 productos ya no estan escritos aca:
+            estan en un array en app.js, y el JavaScript
+            dibuja las tarjetas.
+          - Los filtros, el buscador, el carrito y los totales
+            funcionan de verdad.
+
+        Esa es la diferencia entre una maqueta y una tienda.
+        ==========================================================
+    -->
+</head>
+
+<body>
+
+    <!-- ============================================================
+         ENCABEZADO
+         Fijate que los textos que antes estaban escritos a mano
+         ahora son elementos VACIOS con un id.
+         El JavaScript los llena.
+         ============================================================ -->
+    <header class="barra">
+        <div class="logo">Tecno<span>Store</span></div>
+
+        <div class="buscador">
+            <input type="text" id="buscador" placeholder="Buscar productos..." autocomplete="off">
+        </div>
+
+        <button class="carrito-boton" id="btn-carrito">
+            Carrito <span class="globo" id="globo">0</span>
+        </button>
+    </header>
+
+
+    <div class="pagina">
+
+        <!-- ========================================================
+             COLUMNA PRINCIPAL
+             ======================================================== -->
+        <main>
+
+            <div class="nota nota-buena">
+                <h2>Versión 2 — con JavaScript</h2>
+                <p style="margin:0">
+                    Mismo diseño, mismo CSS. Ahora probá lo mismo que no funcionaba antes:
+                    filtrá por categoría, escribí en el buscador, agregá productos,
+                    cambiá las cantidades. Y mirá qué pasa con los totales.
+                </p>
+            </div>
+
+            <h1>Catálogo</h1>
+
+            <!-- Antes decia "8 productos disponibles" escrito a mano.
+                 Ahora el JavaScript cuenta y ademas avisa cuantos se estan viendo. -->
+            <p class="subtitulo" id="subtitulo"></p>
+
+            <!-- Los filtros ya no son <a href="#"> muertos: son botones
+                 con un data-categoria que el JavaScript lee. -->
+            <nav class="filtros" id="filtros">
+                <button class="chip activo" data-categoria="todos">Todos</button>
+                <button class="chip" data-categoria="computacion">Computación</button>
+                <button class="chip" data-categoria="accesorios">Accesorios</button>
+                <button class="chip" data-categoria="audio">Audio</button>
+            </nav>
+
+            <!-- LA GRILLA ESTA VACIA.
+                 Las 8 tarjetas las dibuja el JavaScript.
+                 Agregar un producto nuevo ahora es agregar UNA linea al array. -->
+            <div class="grilla" id="grilla"></div>
+
+            <p class="vacio oculto" id="sin-resultados">
+                <span class="icono">🔍</span><br>
+                No encontramos productos con esa búsqueda
+            </p>
+        </main>
+
+
+        <!-- ========================================================
+             CARRITO - tambien vacio
+             ======================================================== -->
+        <aside class="carrito">
+            <h2>Tu carrito</h2>
+
+            <ul class="carrito-items" id="carrito-items"></ul>
+
+            <p class="vacio" id="carrito-vacio">
+                <span class="icono">🛒</span><br>
+                Todavía no agregaste nada
+            </p>
+
+            <!-- Los tres totales ahora son elementos vacios.
+                 Se calculan solos cada vez que el carrito cambia. -->
+            <div class="totales oculto" id="totales">
+                <div>
+                    <span>Subtotal</span>
+                    <span id="subtotal"></span>
+                </div>
+                <div>
+                    <span>Envío</span>
+                    <span id="envio"></span>
+                </div>
+                <div class="grande">
+                    <span>Total</span>
+                    <span id="total"></span>
+                </div>
+            </div>
+
+            <button class="boton boton-comprar" id="btn-comprar" disabled>Finalizar compra</button>
+        </aside>
+
+    </div>
+
+</body>
+
+</html>

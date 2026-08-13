@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoStore - version SIN JavaScript</title>
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <!--
+        ==========================================================
+        TECNOSTORE - VERSION 1: SOLO HTML Y CSS
+        ==========================================================
+        Esta tienda esta hecha con HTML y CSS unicamente.
+        Ni una linea de JavaScript.
+
+        Se ve perfecta. El diseño esta terminado.
+        Y no sirve para nada: NADA de lo que hay se puede tocar.
+
+        Cada producto de la grilla lo escribimos a mano, uno por uno.
+        Cada numero del carrito lo calculamos con la calculadora.
+
+        Al lado de cada parte hay un comentario que dice
+        cuanto trabajo a mano cuesta mantenerla.
+        ==========================================================
+    -->
+</head>
+
+<body>
+
+    <!-- ============================================================
+         ENCABEZADO
+         ============================================================ -->
+    <header class="barra">
+        <div class="logo">Tecno<span>Store</span></div>
+
+        <!--
+            PROBLEMA 1: EL BUSCADOR
+            Este input se puede escribir, pero no busca nada.
+            Para que buscara de verdad haria falta:
+              - un servidor que reciba el texto, o
+              - JavaScript que filtre la grilla.
+            Sin ninguno de los dos, es un adorno.
+        -->
+        <div class="buscador">
+            <input type="text" placeholder="Buscar productos... (no funciona)">
+        </div>
+
+        <!--
+            PROBLEMA 2: EL CONTADOR DEL CARRITO
+            El "2" esta escrito a mano en el HTML.
+            Si agrego un producto, tengo que venir a cambiarlo yo.
+        -->
+        <button class="carrito-boton">
+            Carrito <span class="globo">2</span>
+        </button>
+    </header>
+
+
+    <div class="pagina">
+
+        <!-- ========================================================
+             COLUMNA PRINCIPAL
+             ======================================================== -->
+        <main>
+
+            <div class="nota nota-mala">
+                <h2>Version 1 — solo HTML y CSS</h2>
+                <p style="margin:0">
+                    Todo lo que ves esta escrito a mano en el HTML.
+                    Probá tocar cualquier cosa: los filtros, el buscador,
+                    los botones de Agregar, los + y − del carrito.
+                    <b>Ninguno hace nada.</b>
+                </p>
+            </div>
+
+            <h1>Catálogo</h1>
+            <p class="subtitulo">8 productos disponibles</p>
+
+            <!--
+                PROBLEMA 3: LOS FILTROS
+                Son <a> que no llevan a ninguna parte.
+                Para que filtraran de verdad sin JavaScript, habria que
+                crear UN ARCHIVO HTML POR CATEGORIA:
+                    index.html, computacion.html, accesorios.html, audio.html
+                Y cada producto nuevo habria que agregarlo en DOS archivos:
+                el general y el de su categoria.
+            -->
+            <nav class="filtros">
+                <a href="#" class="chip activo">Todos</a>
+                <a href="#" class="chip">Computación</a>
+                <a href="#" class="chip">Accesorios</a>
+                <a href="#" class="chip">Audio</a>
+            </nav>
+
+            <!--
+                PROBLEMA 4: LA GRILLA
+                Cada tarjeta son 8 lineas de HTML escritas a mano.
+                8 productos = 64 lineas casi identicas.
+
+                Si el jefe pide "agregá el precio con descuento a todos",
+                hay que abrir las 8 tarjetas y editarlas de a una.
+                Si son 200 productos, son 200 tarjetas.
+
+                Y si me equivoco en una sola, queda distinta de las demas
+                y nadie se da cuenta hasta que la ve un cliente.
+            -->
+            <div class="grilla">
+
+                <!-- ---------- PRODUCTO 1 ---------- -->
+                <article class="producto">
+                    <div class="imagen">💻</div>
+                    <span class="categoria">Computación</span>
+                    <h3>Notebook Pro 14"</h3>
+                    <span class="precio">$850.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 2 ---------- -->
+                <!-- Copiado del producto 1. Cambie 4 datos a mano:
+                     el emoji, la categoria, el nombre y el precio. -->
+                <article class="producto">
+                    <div class="imagen">🖱️</div>
+                    <span class="categoria">Accesorios</span>
+                    <h3>Mouse inalámbrico</h3>
+                    <span class="precio">$8.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 3 ---------- -->
+                <article class="producto">
+                    <div class="imagen">⌨️</div>
+                    <span class="categoria">Accesorios</span>
+                    <h3>Teclado mecánico</h3>
+                    <span class="precio">$15.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 4 ---------- -->
+                <article class="producto">
+                    <div class="imagen">🖥️</div>
+                    <span class="categoria">Computación</span>
+                    <h3>Monitor 27" 4K</h3>
+                    <span class="precio">$120.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 5 ---------- -->
+                <article class="producto">
+                    <div class="imagen">🎧</div>
+                    <span class="categoria">Audio</span>
+                    <h3>Auriculares Bluetooth</h3>
+                    <span class="precio">$45.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 6 ---------- -->
+                <article class="producto">
+                    <div class="imagen">🔊</div>
+                    <span class="categoria">Audio</span>
+                    <h3>Parlante portátil</h3>
+                    <span class="precio">$68.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 7 ---------- -->
+                <!-- Este esta sin stock. Fijate que para lograrlo tuve que
+                     acordarme de agregar la clase "sin-stock" a mano,
+                     cambiar el texto del boton, ponerle disabled Y agregar
+                     el cartelito. Cuatro cambios manuales. -->
+                <article class="producto sin-stock">
+                    <div class="imagen">📷</div>
+                    <span class="categoria">Accesorios</span>
+                    <h3>Webcam Full HD</h3>
+                    <span class="agotado">Sin stock</span>
+                    <span class="precio">$32.000</span>
+                    <button class="boton" disabled>No disponible</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 8 ---------- -->
+                <article class="producto">
+                    <div class="imagen">📱</div>
+                    <span class="categoria">Computación</span>
+                    <h3>Tablet 11"</h3>
+                    <span class="precio">$320.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ==================================================
+                     ACA VAS A IR AGREGANDO VOS LOS PRODUCTOS NUEVOS.
+                     Copiá el bloque de 7 lineas de arriba y cambiá
+                     el emoji, la categoria, el nombre y el precio.
+
+                     Cada producto nuevo:
+                       - 7 lineas de HTML a mano
+                       - actualizar el "8 productos disponibles" del titulo
+                       - si lo agregas al carrito, recalcular los 3 totales
+                     ================================================== -->
+
+            </div>
+        </main>
+
+
+        <!-- ========================================================
+             CARRITO
+             ======================================================== -->
+        <aside class="carrito">
+            <h2>Tu carrito</h2>
+
+            <!--
+                PROBLEMA 5: EL CARRITO
+                Estos dos productos estan escritos a mano.
+                Los + y − son botones que no suman ni restan nada.
+                La X no borra nada.
+            -->
+            <ul class="carrito-items">
+
+                <li>
+                    <span class="nombre">Mouse inalámbrico</span>
+                    <span class="subtotal">$16.000</span>
+                    <div class="cantidad">
+                        <button>−</button>
+                        <span>2</span>
+                        <button>+</button>
+                        <!-- El 2 esta escrito a mano.
+                             El subtotal de arriba, 8.000 x 2 = 16.000,
+                             lo calcule yo con la calculadora. -->
+                    </div>
+                    <button class="quitar">✕</button>
+                </li>
+
+                <li>
+                    <span class="nombre">Teclado mecánico</span>
+                    <span class="subtotal">$15.000</span>
+                    <div class="cantidad">
+                        <button>−</button>
+                        <span>1</span>
+                        <button>+</button>
+                    </div>
+                    <button class="quitar">✕</button>
+                </li>
+
+            </ul>
+
+            <!--
+                PROBLEMA 6: LOS TOTALES  <- EL PEOR DE TODOS
+                Los tres numeros los calcule a mano:
+                    Subtotal: 16.000 + 15.000 = 31.000
+                    Envio:    fijo 4.500
+                    TOTAL:    31.000 + 4.500 = 35.500
+
+                Si el cliente cambia una sola cantidad, los tres
+                numeros quedan MAL y no hay forma de que se arreglen solos.
+
+                Una tienda que muestra un total equivocado no es
+                un problema de diseño. Es un problema legal.
+            -->
+            <div class="totales">
+                <div>
+                    <span>Subtotal</span>
+                    <span>$31.000</span>
+                </div>
+                <div>
+                    <span>Envío</span>
+                    <span>$4.500</span>
+                </div>
+                <div class="grande">
+                    <span>Total</span>
+                    <span>$35.500</span>
+                </div>
+            </div>
+
+            <!-- Y este boton, obviamente, tampoco hace nada -->
+            <button class="boton boton-comprar">Finalizar compra</button>
+        </aside>
+
+    </div>
+
+</body>
+
+</html>

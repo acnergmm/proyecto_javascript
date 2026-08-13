@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4 - Librerias externas por CDN</title>
+
+    <!-- ===================================================== -->
+    <!-- LIBRERIAS DE CSS: se traen con <link>                 -->
+    <!-- ===================================================== -->
+
+    <!-- Font Awesome: miles de iconos listos para usar -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Animate.css: animaciones que se aplican con una clase -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- ===================================================== -->
+    <!-- LIBRERIAS DE JS: se traen con <script src="">         -->
+    <!-- ===================================================== -->
+
+    <!-- SweetAlert2: alertas y confirmaciones lindas -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Day.js: manejo de fechas. Y su traduccion al español -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/locale/es.js"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 780px; }
+        .caja { border: 1px solid #cfd8dc; border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+        .caja h3 { margin-top: 0; color: #1976d2; }
+        .aviso { background: #fff8e1; border-left: 4px solid #f9a825; padding: 12px 16px; margin-bottom: 20px; }
+        button { padding: 9px 15px; margin: 4px 4px 4px 0; cursor: pointer; border: none;
+                 border-radius: 4px; background: #1976d2; color: white; font-size: 14px; }
+        button:hover { background: #1565c0; }
+        code { background: #f5f5f5; padding: 2px 5px; border-radius: 3px; font-size: 13px; }
+        .iconos { font-size: 34px; color: #1976d2; display: flex; gap: 18px; margin: 12px 0; }
+        #cubo { width: 90px; height: 90px; background: #1976d2; border-radius: 8px;
+                display: grid; place-items: center; color: white; margin: 14px 0; }
+        .reloj { font-size: 20px; color: #2e7d32; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+    <h2>Librerias externas: no reinventar la rueda</h2>
+
+    <div class="aviso">
+        <b>Ojo:</b> estas librerias se descargan de internet. Si no hay conexion, la pagina
+        funciona pero sin ellas. Verificar siempre en la consola (<kbd>F12</kbd>) que no diga
+        <code>Swal is not defined</code> o <code>dayjs is not defined</code>.
+    </div>
+
+    <p>
+        Una <b>libreria</b> es codigo que ya escribio otra persona y podemos usar.
+        Un <b>CDN</b> es un servidor publico que nos la presta con una sola linea de HTML.
+        Mira el <code>&lt;head&gt;</code> de este archivo: son 5 lineas y ya tenemos
+        iconos, animaciones, alertas y fechas.
+    </p>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3><i class="fa-solid fa-icons"></i> Font Awesome — iconos</h3>
+        <p>Se usa poniendo un <code>&lt;i&gt;</code> vacio con las clases que indica la doc:</p>
+        <code>&lt;i class="fa-solid fa-trash"&gt;&lt;/i&gt;</code>
+        <div class="iconos">
+            <i class="fa-solid fa-trash"></i>
+            <i class="fa-solid fa-cart-shopping"></i>
+            <i class="fa-solid fa-user"></i>
+            <i class="fa-brands fa-whatsapp"></i>
+            <i class="fa-solid fa-heart"></i>
+        </div>
+        <p>Los nombres se buscan en <b>fontawesome.com/icons</b>.</p>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Animate.css — animaciones con classList</h3>
+        <p>
+            Ya sabemos poner y sacar clases. Animate.css nos regala clases que animan:
+            siempre <code>animate__animated</code> mas el nombre del efecto.
+        </p>
+        <div id="cubo"><i class="fa-solid fa-cube fa-2x"></i></div>
+        <button id="btn-rebotar">animate__bounce</button>
+        <button id="btn-temblar">animate__shakeX</button>
+        <button id="btn-girar">animate__flip</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3><i class="fa-solid fa-bell"></i> SweetAlert2 — reemplazo de alert()</h3>
+        <p>
+            El <code>alert()</code> del navegador es feo y no se puede tocar.
+            SweetAlert2 nos da <code>Swal.fire({ ... })</code>, que recibe un objeto
+            con opciones.
+        </p>
+        <button id="btn-alerta">Alerta simple</button>
+        <button id="btn-exito">Mensaje de exito</button>
+        <button id="btn-confirmar">Pedir confirmacion</button>
+        <button id="btn-preguntar">Pedir un dato</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3><i class="fa-solid fa-clock"></i> Day.js — fechas sin sufrir</h3>
+        <p>
+            Trabajar con fechas en JavaScript puro es incomodo.
+            <code>dayjs()</code> es la fecha de ahora, y <code>.format()</code> la muestra como queramos.
+        </p>
+        <p class="reloj" id="reloj"></p>
+        <button id="btn-fecha">Mostrar fechas</button>
+        <div id="fechas"></div>
+    </div>
+
+    <script>
+        // =========================================================
+        // ANIMATE.CSS - es puro classList, nada nuevo
+        // =========================================================
+        const cubo = document.querySelector("#cubo");
+
+        // Una funcion propia que reutilizamos para los tres botones
+        const animar = (efecto) => {
+            // Sacamos la animacion anterior para poder repetirla
+            cubo.className = "";
+            // Un pequeño truco: forzamos al navegador a "ver" el cambio
+            void cubo.offsetWidth;
+            cubo.classList.add("animate__animated", efecto);
+        };
+
+        document.querySelector("#btn-rebotar").addEventListener("click", () => animar("animate__bounce"));
+        document.querySelector("#btn-temblar").addEventListener("click", () => animar("animate__shakeX"));
+        document.querySelector("#btn-girar").addEventListener("click", () => animar("animate__flip"));
+
+
+        // =========================================================
+        // SWEETALERT2 - Swal.fire recibe un OBJETO de opciones
+        // =========================================================
+        document.querySelector("#btn-alerta").addEventListener("click", () => {
+            Swal.fire("Hola!", "Esta es una alerta de SweetAlert2", "info");
+        });
+
+        document.querySelector("#btn-exito").addEventListener("click", () => {
+            Swal.fire({
+                icon: "success",
+                title: "Guardado",
+                text: "Los datos se guardaron correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        });
+
+        // Confirmacion: la respuesta llega DESPUES, con .then()
+        document.querySelector("#btn-confirmar").addEventListener("click", () => {
+            Swal.fire({
+                icon: "warning",
+                title: "Seguro que querés borrar?",
+                text: "Esta accion no se puede deshacer",
+                showCancelButton: true,
+                confirmButtonText: "Si, borrar",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "#d33"
+            }).then((resultado) => {
+                // resultado.isConfirmed es true solo si apreto "Si, borrar"
+                if (resultado.isConfirmed) {
+                    Swal.fire("Borrado", "El elemento ya no existe", "success");
+                }
+            });
+        });
+
+        document.querySelector("#btn-preguntar").addEventListener("click", () => {
+            Swal.fire({
+                title: "Como te llamas?",
+                input: "text",
+                inputPlaceholder: "Tu nombre",
+                showCancelButton: true
+            }).then((resultado) => {
+                if (resultado.isConfirmed && resultado.value) {
+                    Swal.fire(`Mucho gusto, ${resultado.value}!`);
+                }
+            });
+        });
+
+
+        // =========================================================
+        // DAY.JS
+        // =========================================================
+        dayjs.locale("es");   // para que los meses salgan en español
+
+        const reloj = document.querySelector("#reloj");
+
+        // Reloj en vivo, reusando el setInterval de la clase 2
+        const actualizarReloj = () => {
+            reloj.textContent = dayjs().format("dddd D [de] MMMM [de] YYYY, HH:mm:ss");
+        };
+
+        actualizarReloj();
+        setInterval(actualizarReloj, 1000);
+
+        document.querySelector("#btn-fecha").addEventListener("click", () => {
+            document.querySelector("#fechas").innerHTML = `
+                <p>Formato corto: <b>${dayjs().format("DD/MM/YYYY")}</b></p>
+                <p>Solo la hora: <b>${dayjs().format("HH:mm")}</b></p>
+                <p>En 7 dias: <b>${dayjs().add(7, "day").format("DD/MM/YYYY")}</b></p>
+                <p>Hace un mes: <b>${dayjs().subtract(1, "month").format("DD/MM/YYYY")}</b></p>
+            `;
+        });
+
+
+        // =========================================================
+        // LO MAS IMPORTANTE DEL BLOQUE:
+        // Nadie se acuerda de memoria como se usa una libreria.
+        // La habilidad real es leer la documentacion.
+        //
+        // Los cuatro pasos, siempre iguales:
+        //   1. Buscar la libreria y entrar a su pagina oficial
+        //   2. Copiar la linea del CDN al <head>
+        //   3. Copiar el ejemplo mas simple que muestren
+        //   4. Recien despues cambiarle las opciones
+        // =========================================================
+    </script>
+</body>
+
+</html>
