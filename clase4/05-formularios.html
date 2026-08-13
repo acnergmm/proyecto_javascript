@@ -125,13 +125,13 @@
                 <input type="date" id="fecha" name="fecha" value="1998-04-15">
             </label>
 
-            <label>Provincia
-                <select id="provincia" name="provincia">
-                    <option value="">Elegí una...</option>
-                    <option value="caba">CABA</option>
-                    <option value="bsas" selected>Buenos Aires</option>
-                    <option value="cordoba">Córdoba</option>
-                    <option value="santafe">Santa Fe</option>
+            <label>Departamento
+                <select id="departamento" name="departamento">
+                    <option value="">Elegí uno...</option>
+                    <option value="asuncion">Asunción</option>
+                    <option value="central" selected>Central</option>
+                    <option value="altoparana">Alto Paraná</option>
+                    <option value="itapua">Itapúa</option>
                 </select>
             </label>
 
@@ -226,7 +226,7 @@ const objeto = Object.fromEntries(datos);
             const nombre = document.querySelector("#nombre").value;
             const email = document.querySelector("#email").value;
             const fecha = document.querySelector("#fecha").value;
-            const provincia = document.querySelector("#provincia").value;
+            const departamento = document.querySelector("#departamento").value;
             const comentario = document.querySelector("#comentario").value;
 
             // OJO: .value SIEMPRE devuelve texto, incluso en un type="number".
@@ -248,7 +248,7 @@ const objeto = Object.fromEntries(datos);
                     <dt>Email</dt><dd>${email}</dd>
                     <dt>Edad</dt><dd>${edad} (en 10 años: ${edad + 10})</dd>
                     <dt>Nacimiento</dt><dd>${fecha}</dd>
-                    <dt>Provincia</dt><dd>${provincia}</dd>
+                    <dt>Departamento</dt><dd>${departamento}</dd>
                     <dt>Plan</dt><dd>${plan}</dd>
                     <dt>Comentario</dt><dd>${comentario}</dd>
                     <dt>Newsletter</dt><dd>${newsletter ? "Sí" : "No"}</dd>

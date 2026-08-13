@@ -19,7 +19,7 @@ const formulario = document.querySelector("#formulario");
 const nombre = document.querySelector("#nombre");
 const email = document.querySelector("#email");
 const edad = document.querySelector("#edad");
-const provincia = document.querySelector("#provincia");
+const departamento = document.querySelector("#departamento");
 const clave = document.querySelector("#clave");
 const clave2 = document.querySelector("#clave2");
 const terminos = document.querySelector("#terminos");
@@ -75,10 +75,10 @@ const validarEdad = () => {
     return "";
 };
 
-const validarProvincia = () => {
+const validarDepartamento = () => {
     // En un <select> el .value es el value de la opcion elegida.
     // La primera opcion tiene value="" justamente para poder detectarla.
-    if (provincia.value === "") return "Elegí una provincia";
+    if (departamento.value === "") return "Elegí un departamento";
 
     return "";
 };
@@ -148,7 +148,7 @@ const campos = [
     { elemento: nombre, validar: validarNombre },
     { elemento: email, validar: validarEmail },
     { elemento: edad, validar: validarEdad },
-    { elemento: provincia, validar: validarProvincia },
+    { elemento: departamento, validar: validarDepartamento },
     { elemento: clave, validar: validarClave },
     { elemento: clave2, validar: validarClave2 },
     { elemento: terminos, validar: validarTerminos }
@@ -269,7 +269,7 @@ formulario.addEventListener("submit", (evento) => {
             <dt>Nombre</dt><dd>${datos.nombre}</dd>
             <dt>Email</dt><dd>${datos.email}</dd>
             <dt>Edad</dt><dd>${datos.edad} años</dd>
-            <dt>Provincia</dt><dd>${datos.provincia}</dd>
+            <dt>Departamento</dt><dd>${datos.departamento}</dd>
             <dt>Contraseña</dt><dd>${"•".repeat(datos.clave.length)}</dd>
         </dl>
     `;

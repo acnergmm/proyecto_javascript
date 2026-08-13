@@ -107,7 +107,7 @@
     gap: 1px;
     background: var(--rule);
     border: 1px solid var(--rule);
-    margin: 30px 0 14px;
+    margin: 30px 0 0;
   }
 
   .ejes article { background: var(--surface); padding: 18px 20px; }
@@ -125,6 +125,13 @@
 
   .ejes p { margin: 0; font-size: .9rem; color: var(--neutral); }
 
+  /* El eje donde todo converge, marcado distinto */
+  .ejes article.converge { background: var(--accent-wash); }
+
+  .ejes article.converge .eje-num { color: var(--accent-ink); }
+
+  .ejes article.converge p { color: var(--ink-soft); }
+
   /* ---------- Ficha técnica ---------- */
   .ficha {
     display: grid;
@@ -132,6 +139,7 @@
     gap: 1px;
     background: var(--rule);
     border: 1px solid var(--rule);
+    border-top: none;
     margin: 0 0 56px;
   }
 
@@ -253,7 +261,7 @@
 
   code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .88em; }
 
-  .cuerpo code, .objetivos code, .avisos code, .cierre code, .ejes code, td code {
+  .cuerpo code, .objetivos code, .avisos code, .cierre code, .ejes code, td code, .intro code {
     background: var(--code-bg);
     border: 1px solid var(--rule-soft);
     border-radius: 2px;
@@ -278,6 +286,9 @@
   .bloque.recreo .cuerpo { display: flex; align-items: center; }
 
   .bloque.recreo h3 { margin: 0; font-weight: 500; font-size: .98rem; color: var(--neutral); }
+
+  /* Bloques destacados: la apertura y el integrador */
+  .bloque.clave { border-left: 3px solid var(--accent); }
 
   /* ---------- Antes / después ---------- */
   .comparar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0 0; }
@@ -376,6 +387,8 @@
 
   td.ruta { font-family: ui-monospace, Consolas, monospace; color: var(--accent-ink); white-space: nowrap; }
 
+  td.numero { font-variant-numeric: tabular-nums; }
+
   footer {
     margin-top: 64px;
     padding-top: 20px;
@@ -405,6 +418,7 @@
       Las tres primeras clases el JavaScript vivió dentro del HTML. Funcionaba, pero así no se
       trabaja en un proyecto real. Hoy sacamos el código a sus propios archivos, lo reescribimos
       con la sintaxis que se usa hoy, y aprendemos a sumar código de otros con una línea.
+      La clase abre y cierra con la misma pregunta: <em>¿qué cambia cuando aparece el JavaScript?</em>
     </p>
   </header>
 
@@ -424,6 +438,11 @@
       <h3>Librerías externas</h3>
       <p>Qué es un CDN y cómo leer una documentación. SweetAlert2, Font Awesome, Animate.css y Day.js.</p>
     </article>
+    <article class="converge">
+      <span class="eje-num">DONDE CONVERGE</span>
+      <h3>Formularios</h3>
+      <p>Un formulario usa los tres ejes a la vez, y es donde el alumno ve para qué sirve todo esto.</p>
+    </article>
   </div>
 
   <dl class="ficha">
@@ -441,13 +460,13 @@
     </div>
     <div>
       <dt>Entregable</dt>
-      <dd>Lista de tareas funcionando</dd>
+      <dd>Formulario de registro validado</dd>
     </div>
   </dl>
 
   <section class="seccion">
     <h2>Al terminar la clase, el alumno puede…</h2>
-    <p class="intro">Seis capacidades concretas, todas verificables en el proyecto del bloque 4.</p>
+    <p class="intro">Ocho capacidades concretas. Las seis primeras se verifican en el formulario de registro del bloque 5.</p>
     <ul class="objetivos">
       <li>Armar un proyecto con carpetas <code>css/</code> y <code>js/</code>, y vincularlas con rutas relativas correctas.</li>
       <li>Explicar por qué un <code>&lt;script&gt;</code> mal ubicado rompe la página, y resolverlo con <code>defer</code>.</li>
@@ -455,6 +474,8 @@
       <li>Reemplazar la concatenación con <code>+</code> por template literals, y las funciones largas por arrow functions.</li>
       <li>Recorrer una lista de elementos con <code>forEach</code> y generar HTML con <code>map</code>.</li>
       <li>Incorporar una librería por CDN leyendo su documentación oficial, sin que se la dicten.</li>
+      <li>Interceptar el envío de un formulario con <code>submit</code> y <code>preventDefault</code>, y leer cualquier tipo de campo.</li>
+      <li>Validar campo por campo con mensajes propios, avisando al usuario mientras completa y no después.</li>
     </ul>
   </section>
 
@@ -462,38 +483,62 @@
     <h2>Cronograma</h2>
     <p class="intro">
       Cada bloque indica qué explicar, qué codear en vivo y qué hacen los alumnos.
-      Los tiempos son de referencia: si la teoría se estira, el recorte va sobre los ejercicios
-      intermedios, nunca sobre el proyecto del bloque 4.
+      La clase está armada como un arco: abre mostrando una tienda que no funciona
+      y cierra con un formulario que sí. Si la teoría se estira, el recorte va sobre
+      los ejercicios intermedios, nunca sobre el bloque 5.
     </p>
 
     <div class="cronograma">
 
-      <article class="bloque">
+      <article class="bloque clave">
         <div class="reloj">
           <span class="desde">00:00</span>
           <span class="hasta">→ 00:15</span>
           <span class="dura">15 min</span>
         </div>
         <div class="cuerpo">
-          <h3>Apertura — el problema que vamos a resolver</h3>
-          <p class="meta">Abrir en el proyector <code>prueba.html</code> de la clase pasada</p>
+          <h3>Apertura — la misma tienda, dos veces</h3>
+          <p class="meta">Carpetas <code>10-ecommerce-sin-js/</code> y <code>11-ecommerce-con-js/</code>, una en cada pestaña</p>
           <ul class="tarea-lista">
             <li>
-              <span class="rol">Repaso oral · 5 min</span>
-              <p>Que expliquen el promediador de <code>prueba3.html</code>: de dónde sale el número, por qué hace falta <code>parseInt</code>, qué hace <code>innerHTML</code>.</p>
+              <span class="rol">La tienda que no funciona · 6 min</span>
+              <p>Abrir <code>10-ecommerce-sin-js/</code> en el proyector. El diseño está terminado y se ve bien. Pedirles que digan qué probar, e ir probando: los filtros por categoría, el buscador, los botones de Agregar, los <code>+</code> y <code>−</code> del carrito. <strong>Nada hace nada.</strong> Cerrar con el peor caso: el total dice ₲475.000 porque lo calculé con la calculadora, y si el cliente cambia una cantidad, ese número queda mal para siempre.</p>
             </li>
             <li>
-              <span class="rol">La incomodidad · 7 min</span>
-              <p>Abrir <code>prueba.html</code>, donde conviven <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code>, <code>onMouseOver</code>, <code>onkeyup</code> y <code>onfocus</code> en el mismo archivo. Tres preguntas al aire:</p>
-              <ul>
-                <li>Si esta página tuviera 50 botones, ¿escribimos 50 <code>onclick</code>?</li>
-                <li>Si el diseñador toca el HTML, ¿cómo evitamos que borre el JavaScript sin darse cuenta?</li>
-                <li>¿Y si otro proyecto necesita el mismo código? ¿Lo copiamos y pegamos?</li>
-              </ul>
+              <span class="rol">La misma tienda, funcionando · 5 min</span>
+              <p>Abrir <code>11-ecommerce-con-js/</code>. Filtrar, buscar mientras se escribe, agregar productos, cambiar cantidades y mostrar cómo los tres totales se recalculan solos, con el envío que se vuelve gratis al pasar el millón de guaraníes.</p>
             </li>
             <li>
-              <span class="rol">Encuadre · 3 min</span>
-              <p>Escribir en el pizarrón los tres ejes del día y dejarlos ahí toda la clase: separar, modernizar, reutilizar.</p>
+              <span class="rol">El golpe de efecto · 4 min</span>
+              <p>Correr <code>diff</code> entre los dos <code>css/estilos.css</code> delante de ellos: <strong>son idénticos, byte por byte</strong>. El diseño no cambió en nada. Y el HTML pasó de 140 líneas a 70. Escribir en el pizarrón los tres ejes del día y dejarlos ahí toda la clase: hoy aprendemos a construir la segunda tienda.</p>
+              <div class="comparar">
+                <div class="antes">
+                  <h5>Sin JavaScript</h5>
+                  <pre>8 productos = 8 tarjetas
+escritas a mano
+
+Filtrar por categoria:
+  4 archivos HTML
+
+Buscar: imposible
+
+Total: lo calcule con
+la calculadora</pre>
+                </div>
+                <div class="despues">
+                  <h5>Con JavaScript</h5>
+                  <pre>8 productos = 8 lineas
+en un array
+
+Filtrar por categoria:
+  ya funciona
+
+Buscar: ya funciona
+
+Total: siempre
+correcto</pre>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
@@ -502,17 +547,17 @@
       <article class="bloque">
         <div class="reloj">
           <span class="desde">00:15</span>
-          <span class="hasta">→ 00:50</span>
-          <span class="dura">35 min</span>
+          <span class="hasta">→ 00:48</span>
+          <span class="dura">33 min</span>
         </div>
         <div class="cuerpo">
           <h3>Bloque 1 — Separación en archivos</h3>
           <p class="meta">Carpeta <code>01-separacion/</code></p>
           <ul class="tarea-lista">
             <li>
-              <span class="rol">Teoría · 14 min</span>
+              <span class="rol">Teoría · 13 min</span>
               <ul>
-                <li>La estructura estándar de un proyecto: <code>index.html</code>, <code>css/estilos.css</code>, <code>js/app.js</code>.</li>
+                <li>La estructura estándar de un proyecto: <code>index.html</code>, <code>css/estilos.css</code>, <code>js/app.js</code>. Es la misma que acaban de ver en las dos tiendas.</li>
                 <li><code>&lt;link rel="stylesheet" href="css/estilos.css"&gt;</code> para el CSS, <code>&lt;script src="js/app.js"&gt;</code> para el JS.</li>
                 <li><strong>Rutas relativas</strong>, el tema que más los va a trabar: <code>archivo.css</code> es la carpeta actual, <code>css/archivo.css</code> entra a una carpeta, <code>../archivo.css</code> sube una. Dibujarlo en el pizarrón.</li>
                 <li>Por qué el script arriba sin <code>defer</code> rompe todo: el JS corre antes de que exista el HTML y <code>querySelector</code> devuelve <code>null</code>. Provocar el error a propósito para que lo vean en la consola.</li>
@@ -521,12 +566,12 @@
               </ul>
             </li>
             <li>
-              <span class="rol">Codeo en vivo · 13 min</span>
+              <span class="rol">Codeo en vivo · 12 min</span>
               <p>Construir <code>01-separacion/</code> desde cero, creando las carpetas en el explorador de VS Code. Mostrar la pestaña <strong>Network</strong> de las herramientas de desarrollo: se ven las tres peticiones, y si una ruta está mal se ve el 404.</p>
             </li>
             <li>
               <span class="rol">Alumnos · 8 min</span>
-              <p>Tomar su propio <code>prueba3.html</code> (el promediador) y desarmarlo en tres archivos con carpetas. El <code>index.html</code> tiene que quedar sin <code>&lt;style&gt;</code>, sin <code>&lt;script&gt;</code> con código adentro y sin <code>onclick</code>.</p>
+              <p>Tomar su propio <code>prueba3.html</code> (el promediador, ahora en <code>otraspruebas/</code>) y desarmarlo en tres archivos con carpetas. El <code>index.html</code> tiene que quedar sin <code>&lt;style&gt;</code>, sin código dentro del <code>&lt;script&gt;</code> y sin <code>onclick</code>.</p>
             </li>
           </ul>
         </div>
@@ -534,8 +579,8 @@
 
       <article class="bloque recreo">
         <div class="reloj">
-          <span class="desde">00:50</span>
-          <span class="hasta">→ 01:00</span>
+          <span class="desde">00:48</span>
+          <span class="hasta">→ 00:58</span>
           <span class="dura">10 min</span>
         </div>
         <div class="cuerpo">
@@ -545,9 +590,9 @@
 
       <article class="bloque">
         <div class="reloj">
-          <span class="desde">01:00</span>
-          <span class="hasta">→ 01:40</span>
-          <span class="dura">40 min</span>
+          <span class="desde">00:58</span>
+          <span class="hasta">→ 01:30</span>
+          <span class="dura">32 min</span>
         </div>
         <div class="cuerpo">
           <h3>Bloque 2 — JavaScript moderno</h3>
@@ -585,21 +630,21 @@ xs.forEach((x) =&gt; console.log(x));</pre>
               </div>
             </li>
             <li>
-              <span class="rol">Teoría · 18 min</span>
+              <span class="rol">Teoría · 16 min</span>
               <ul>
                 <li><code>const</code> y <code>let</code>: regla práctica — arrancar siempre con <code>const</code> y pasar a <code>let</code> solo cuando el navegador se queje. <code>var</code> no se usa más.</li>
                 <li><strong>Template literals</strong> con backticks y <code>${}</code>. Aclarar dónde está la tecla del backtick, porque se pierden ahí diez minutos si no se avisa.</li>
                 <li><strong>Arrow functions</strong>: de <code>function(){}</code> a <code>() =&gt; {}</code>, y el atajo de una sola línea sin <code>return</code>.</li>
                 <li><code>forEach</code> sobre <code>querySelectorAll</code>, y una pasada rápida por <code>map</code>, <code>filter</code> y <code>join</code>.</li>
-                <li>Generar HTML de dos maneras: <code>createElement</code> cuando el elemento necesita eventos propios, template literal con <code>innerHTML</code> cuando hay que dibujar un listado completo.</li>
+                <li>Generar HTML de dos maneras: <code>createElement</code> cuando el elemento necesita eventos propios, template literal con <code>innerHTML</code> cuando hay que dibujar un listado completo. Volver un segundo a la tienda: así se dibujan las 8 tarjetas.</li>
               </ul>
             </li>
             <li>
-              <span class="rol">Codeo en vivo · 14 min</span>
+              <span class="rol">Codeo en vivo · 11 min</span>
               <p>Recorrer los precios con <code>forEach</code> para sacar el total, y después el catálogo de <code>03-dom-moderno.html</code> con <code>map</code> + <code>join</code>. Que vean el mismo resultado logrado de las dos formas.</p>
             </li>
             <li>
-              <span class="rol">Alumnos · 8 min</span>
+              <span class="rol">Alumnos · 5 min</span>
               <p>Reescribir el <code>app.js</code> que armaron en el bloque 1: pasar todo a <code>const</code>, convertir las funciones en arrow y reemplazar cualquier concatenación por un template literal.</p>
             </li>
           </ul>
@@ -608,16 +653,16 @@ xs.forEach((x) =&gt; console.log(x));</pre>
 
       <article class="bloque">
         <div class="reloj">
-          <span class="desde">01:40</span>
-          <span class="hasta">→ 02:05</span>
-          <span class="dura">25 min</span>
+          <span class="desde">01:30</span>
+          <span class="hasta">→ 01:52</span>
+          <span class="dura">22 min</span>
         </div>
         <div class="cuerpo">
           <h3>Bloque 3 — Librerías externas por CDN</h3>
           <p class="meta">Archivo <code>04-librerias.html</code></p>
           <ul class="tarea-lista">
             <li>
-              <span class="rol">Teoría · 8 min</span>
+              <span class="rol">Teoría · 7 min</span>
               <ul>
                 <li>Qué es una librería: código que ya escribió otro y que podemos usar. Qué es un CDN: un servidor público que nos lo presta con una línea.</li>
                 <li>Librerías de CSS entran por <code>&lt;link&gt;</code>; librerías de JS entran por <code>&lt;script src&gt;</code>. Y siempre <strong>antes</strong> de nuestro propio archivo, porque el nuestro las necesita ya cargadas.</li>
@@ -626,8 +671,8 @@ xs.forEach((x) =&gt; console.log(x));</pre>
               </ul>
             </li>
             <li>
-              <span class="rol">Codeo en vivo · 12 min</span>
-              <p>Recorrer las cuatro en orden de dificultad creciente. Animate.css es la que mejor cierra el bloque anterior: son clases puestas con <code>classList</code>, nada nuevo. SweetAlert2 introduce la idea de pasarle un <strong>objeto de opciones</strong> a una función, y el <code>.then()</code> para la respuesta del usuario.</p>
+              <span class="rol">Codeo en vivo · 10 min</span>
+              <p>Recorrer las cuatro en orden de dificultad creciente. Animate.css es la que mejor cierra el bloque anterior: son clases puestas con <code>classList</code>, nada nuevo. SweetAlert2 introduce la idea de pasarle un <strong>objeto de opciones</strong> a una función, y el <code>.then()</code> para la respuesta del usuario — las dos cosas se usan en el formulario del bloque 5.</p>
             </li>
             <li>
               <span class="rol">Lo que de verdad hay que enseñar · 5 min</span>
@@ -639,8 +684,8 @@ xs.forEach((x) =&gt; console.log(x));</pre>
 
       <article class="bloque recreo">
         <div class="reloj">
-          <span class="desde">02:05</span>
-          <span class="hasta">→ 02:15</span>
+          <span class="desde">01:52</span>
+          <span class="hasta">→ 02:02</span>
           <span class="dura">10 min</span>
         </div>
         <div class="cuerpo">
@@ -650,33 +695,70 @@ xs.forEach((x) =&gt; console.log(x));</pre>
 
       <article class="bloque">
         <div class="reloj">
-          <span class="desde">02:15</span>
-          <span class="hasta">→ 02:50</span>
-          <span class="dura">35 min</span>
+          <span class="desde">02:02</span>
+          <span class="hasta">→ 02:25</span>
+          <span class="dura">23 min</span>
         </div>
         <div class="cuerpo">
-          <h3>Bloque 4 — Proyecto integrador: Lista de Tareas</h3>
-          <p class="meta">Carpeta <code>05-proyecto/</code> · tres archivos + cuatro librerías</p>
+          <h3>Bloque 4 — Formularios: el evento submit</h3>
+          <p class="meta">Archivo <code>05-formularios.html</code></p>
           <ul class="tarea-lista">
             <li>
-              <span class="rol">Consigna · 3 min</span>
-              <p>Mostrar el resultado terminado y funcionando. Anotar en el pizarrón las cinco funcionalidades: agregar, tachar al hacer click, borrar con confirmación, contar pendientes, borrar todas las completadas.</p>
+              <span class="rol">El problema, en vivo · 6 min</span>
+              <p>Empezar por el formulario 1 del archivo, que se manda de verdad. Completarlo delante de ellos y apretar Enviar: <strong>la página se recarga, se pierde todo lo escrito, y la contraseña aparece en la barra de direcciones</strong>. Los tres problemas en orden: se pierde el estado, el error llega tarde, y no hay ningún control sobre lo que se manda.</p>
             </li>
             <li>
-              <span class="rol">Construcción guiada · 27 min</span>
-              <p>Se entrega el <code>index.html</code> y el <code>css/estilos.css</code> ya escritos —el tiempo de clase se invierte en el JavaScript— y se codea <code>js/app.js</code> junto con ellos, en el orden de los seis pasos comentados en el archivo. Regla firme: <strong>nadie copia y pega, todos escriben</strong>. Probar en el navegador después de cada paso, no al final.</p>
+              <span class="rol">La línea más importante del día · 7 min</span>
+              <p>El evento <code>submit</code> va <strong>en el <code>&lt;form&gt;</code>, no en el botón</strong>: así se dispara también cuando el usuario aprieta Enter dentro de un campo. Y adentro, <code>evento.preventDefault()</code>, que le dice al navegador "no recargues, dejame manejarlo a mí". Desde esa línea los datos son nuestros.</p>
+            </li>
+            <li>
+              <span class="rol">Leer los campos · 7 min</span>
               <ul>
-                <li>Paso 1 — buscar los elementos con <code>const</code>, una sola vez, arriba del archivo.</li>
-                <li>Paso 2 — la fecha de hoy en español con Day.js.</li>
-                <li>Paso 3 — <code>agregarTarea</code>: validar con SweetAlert2, crear el <code>li</code> con su icono y su botón, colgarlo, animar la entrada.</li>
-                <li>Paso 4 — <code>actualizarEstado</code>: el contador y el mensaje de lista vacía, con <code>li:not(.completada)</code>.</li>
-                <li>Paso 5 — <code>borrarCompletadas</code> con <code>forEach</code> y confirmación.</li>
-                <li>Paso 6 — conectar los eventos, incluido <code>Enter</code> con <code>evento.key</code>.</li>
+                <li>Texto, email, number, date, select y textarea: todos con <code>.value</code>.</li>
+                <li><strong>Trampa clásica:</strong> <code>.value</code> devuelve texto incluso en un <code>type="number"</code>. Si hay que hacer cuentas, <code>Number()</code>.</li>
+                <li>Checkbox: no se lee con <code>.value</code> sino con <code>.checked</code> (true/false).</li>
+                <li>Radio: se busca el marcado del grupo con <code>querySelector('input[name="plan"]:checked')</code>.</li>
+                <li>El atajo para formularios largos: <code>new FormData(formulario)</code> más <code>Object.fromEntries</code>. Usa el atributo <code>name</code>, no el <code>id</code>.</li>
               </ul>
             </li>
             <li>
-              <span class="rol">Puesta en común · 5 min</span>
-              <p>Recorrer los bancos. Los que quedaron atrás copian del repositorio; los que terminaron arrancan el desafío de la tarea.</p>
+              <span class="rol">Cierre del bloque · 3 min</span>
+              <p>La validación que ya trae el HTML (<code>required</code>, <code>type="email"</code>, <code>minlength</code>) es gratis y hay que usarla siempre, pero no alcanza: los mensajes no se pueden redactar, no puede comparar dos campos entre sí, y <strong>se desactiva desde el navegador en diez segundos</strong>. De ahí la regla que se repite todo el cuatrimestre: la validación del navegador es para el usuario, la del servidor es para la seguridad.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque clave">
+        <div class="reloj">
+          <span class="desde">02:25</span>
+          <span class="hasta">→ 02:52</span>
+          <span class="dura">27 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 5 — Integrador: formulario de registro validado</h3>
+          <p class="meta">Carpeta <code>06-registro/</code> · tres archivos + dos librerías</p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Consigna · 2 min</span>
+              <p>Mostrar el formulario terminado y equivocarse a propósito en cada campo, para que vean el aviso apareciendo <strong>al salir del campo</strong> y desapareciendo en cuanto se corrige. Ese detalle es toda la diferencia entre un formulario que se usa y uno que se abandona.</p>
+            </li>
+            <li>
+              <span class="rol">Construcción guiada · 20 min</span>
+              <p>Se entrega el <code>index.html</code> y el <code>css/estilos.css</code> ya escritos —el tiempo de clase se invierte en el JavaScript— y se codea <code>js/validacion.js</code> junto con ellos, en el orden de los siete pasos comentados en el archivo. Regla firme: <strong>nadie copia y pega, todos escriben</strong>. Probar en el navegador después de cada paso.</p>
+              <ul>
+                <li>Paso 1 — los elementos con <code>const</code>, una sola vez, arriba del archivo.</li>
+                <li>Paso 2 — <strong>una función por campo</strong>, que devuelve <code>""</code> si está bien o el mensaje si está mal. La idea central: separar <em>decidir</em> de <em>mostrar</em>.</li>
+                <li>Paso 3 — <strong>una sola función que muestra</strong>, con <code>classList</code> y el cartel de error. El selector del cartel se arma con un template literal: <code>#error-${campo.id}</code>.</li>
+                <li>Paso 4 — el array de campos con su validador, para poder recorrer todo con <code>forEach</code> en lugar de repetir el código siete veces.</li>
+                <li>Paso 5 — validación <strong>en vivo</strong>: <code>blur</code> para avisar del error, <code>change</code> para el select y el checkbox, e <code>input</code> solo para <em>borrar</em> el error, nunca para crearlo.</li>
+                <li>Paso 6 — el medidor de fuerza de la contraseña: el JS pone una clase, el CSS decide el color y el ancho.</li>
+                <li>Paso 7 — el <code>submit</code>: validar <strong>todos</strong> los campos de una (no cortar en el primer error), avisar con SweetAlert2 cuántos faltan, y mandar el cursor al primer campo en rojo.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">Cierre del arco · 5 min</span>
+              <p>Volver a las dos tiendas de la apertura, ahora con todo el vocabulario del día encima. Preguntar qué tendría que pasar para convertir la primera en la segunda, y que lo respondan ellos: los datos a un array, el HTML con <code>map</code>, los eventos con <code>addEventListener</code>, los totales calculados. La respuesta completa está en <code>11-ecommerce-con-js/js/app.js</code>, comentada paso por paso, para que la lean en casa.</p>
             </li>
           </ul>
         </div>
@@ -684,25 +766,29 @@ xs.forEach((x) =&gt; console.log(x));</pre>
 
       <article class="bloque">
         <div class="reloj">
-          <span class="desde">02:50</span>
+          <span class="desde">02:52</span>
           <span class="hasta">→ 03:00</span>
-          <span class="dura">10 min</span>
+          <span class="dura">8 min</span>
         </div>
         <div class="cuerpo">
           <h3>Cierre, tarea y adelanto</h3>
-          <p class="meta">Archivo <code>06-ejercicios.html</code></p>
+          <p class="meta">Archivo <code>09-ejercicios.html</code></p>
           <ul class="tarea-lista">
             <li>
               <span class="rol">Repaso relámpago</span>
-              <p>Preguntar de memoria, sin mirar la pantalla: ¿qué hace <code>defer</code>? ¿cuándo <code>const</code> y cuándo <code>let</code>? ¿cómo se escribe un template literal? ¿qué son los cuatro pasos para sumar una librería?</p>
+              <p>Preguntar de memoria, sin mirar la pantalla: ¿qué hace <code>defer</code>? ¿cuándo <code>const</code> y cuándo <code>let</code>? ¿en qué elemento va el evento <code>submit</code>? ¿qué pasa si me olvido el <code>preventDefault</code>?</p>
             </li>
             <li>
               <span class="rol">Tarea</span>
-              <p>Entregar <code>06-ejercicios.html</code> resuelto: contador de clicks, lista de invitados con iconos y confirmación, semáforo con <code>classList</code>, y catálogo generado con <code>map</code>. El desafío es separar ese mismo archivo en la estructura de carpetas de hoy.</p>
+              <p>Entregar <code>09-ejercicios.html</code> resuelto: contador de clicks, lista de invitados con iconos y confirmación, semáforo con <code>classList</code>, y catálogo generado con <code>map</code>. El desafío es separar ese mismo archivo en la estructura de carpetas de hoy.</p>
+            </li>
+            <li>
+              <span class="rol">Material para leer en casa</span>
+              <p>Las dos versiones de la lista de tareas (<code>07-tareas-basico/</code> y <code>08-tareas-completo/</code>) y el <code>app.js</code> de la tienda. Los tres están comentados paso por paso: sirven para el que quiere practicar más y para el que se quedó atrás.</p>
             </li>
             <li>
               <span class="rol">Adelanto clase 5</span>
-              <p>Hoy las tareas viven solo en la pantalla: si se refresca la página, se pierden. La próxima clase, arrays y objetos en serio, y <code>localStorage</code> para que la lista sobreviva.</p>
+              <p>El formulario de hoy valida perfecto y después no manda nada a ninguna parte. Y la tienda pierde el carrito al refrescar. La próxima: arrays y objetos en serio, <code>localStorage</code>, y empezar a hablar con un servidor.</p>
             </li>
           </ul>
         </div>
@@ -712,14 +798,14 @@ xs.forEach((x) =&gt; console.log(x));</pre>
   </section>
 
   <section class="seccion">
-    <h2>Los ocho errores que van a cometer</h2>
+    <h2>Los diez errores que van a cometer</h2>
     <p class="intro">Anticiparlos ahorra la mitad del tiempo de asistencia individual. Conviene dejarlos escritos en un costado del pizarrón durante toda la clase.</p>
     <div class="avisos">
       <div>
         <span class="num">01</span>
         <div>
           <h4>La ruta del CSS o del JS está mal</h4>
-          <p>El síntoma es una página sin estilos, o un JavaScript que no hace nada. La pestaña <strong>Network</strong> lo muestra como 404. Es de lejos el error número uno de este bloque.</p>
+          <p>El síntoma es una página sin estilos, o un JavaScript que no hace nada. La pestaña <strong>Network</strong> lo muestra como 404. Es de lejos el error número uno de la clase.</p>
         </div>
       </div>
       <div>
@@ -766,6 +852,20 @@ xs.forEach((x) =&gt; console.log(x));</pre>
       </div>
       <div>
         <span class="num">08</span>
+        <div>
+          <h4>Se olvidaron el <code>preventDefault</code></h4>
+          <p>La página se recarga sola y "el código no funciona". En realidad funcionó: se ejecutó y la recarga borró todo. Es el error estrella del bloque 4.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">09</span>
+        <div>
+          <h4>El <code>submit</code> puesto en el botón</h4>
+          <p>Anda con el click pero no cuando el usuario aprieta Enter dentro de un campo, que es como se completan los formularios en la vida real. El evento va en el <code>&lt;form&gt;</code>.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">10</span>
         <div>
           <h4>Programar con la consola cerrada</h4>
           <p>El error está escrito, con número de línea incluido, y nadie lo está leyendo. Exigir <kbd>F12</kbd> abierto durante toda la clase.</p>
@@ -819,7 +919,7 @@ xs.forEach((x) =&gt; console.log(x));</pre>
 
   <section class="seccion">
     <h2>Archivos de la clase</h2>
-    <p class="intro">Todos en la carpeta <code>clase4/</code> del repositorio. Se abren con doble click en el navegador, sin necesidad de servidor.</p>
+    <p class="intro">Todos en la carpeta <code>clase4/</code> del repositorio. Se abren con doble click en el navegador, sin necesidad de servidor. El índice está en <code>curso1.html</code>, en la raíz.</p>
     <div class="tabla-envoltorio">
       <table>
         <thead>
@@ -851,12 +951,37 @@ xs.forEach((x) =&gt; console.log(x));</pre>
             <td>Bloque 3</td>
           </tr>
           <tr>
-            <td class="ruta">05-proyecto/</td>
-            <td>Lista de tareas: tres archivos propios más cuatro librerías externas</td>
+            <td class="ruta">05-formularios.html</td>
+            <td>El formulario que se recarga, submit + preventDefault, todos los tipos de campo y FormData</td>
             <td>Bloque 4</td>
           </tr>
           <tr>
-            <td class="ruta">06-ejercicios.html</td>
+            <td class="ruta">06-registro/</td>
+            <td>Formulario de registro con validación en vivo campo por campo. El integrador</td>
+            <td>Bloque 5</td>
+          </tr>
+          <tr>
+            <td class="ruta">10-ecommerce-sin-js/</td>
+            <td>Tienda de HTML y CSS donde nada funciona. Cada parte muerta comentada</td>
+            <td>Apertura</td>
+          </tr>
+          <tr>
+            <td class="ruta">11-ecommerce-con-js/</td>
+            <td>La misma tienda funcionando, con el CSS idéntico. Filtros, buscador, carrito y totales</td>
+            <td>Apertura y cierre</td>
+          </tr>
+          <tr>
+            <td class="ruta">07-tareas-basico/</td>
+            <td>Lista de tareas en dos archivos, sin librerías. Material extra</td>
+            <td>Casa</td>
+          </tr>
+          <tr>
+            <td class="ruta">08-tareas-completo/</td>
+            <td>La misma lista con el CSS separado y las cuatro librerías. Material extra</td>
+            <td>Casa</td>
+          </tr>
+          <tr>
+            <td class="ruta">09-ejercicios.html</td>
             <td>Cuatro ejercicios con pistas, más el desafío de separarlo en archivos</td>
             <td>Tarea</td>
           </tr>
@@ -868,14 +993,16 @@ xs.forEach((x) =&gt; console.log(x));</pre>
   <section class="seccion">
     <div class="cierre">
       <h3>Si el tiempo se acorta</h3>
-      <p>El proyecto es el objetivo de la clase, no un extra. Cuando la teoría se estira, el orden de recorte es este:</p>
+      <p>El formulario del bloque 5 es el objetivo de la clase, no un extra. Cuando la teoría se estira, el orden de recorte es este:</p>
       <ul>
         <li>Primero se sacan los ejercicios de alumnos de los bloques 2 y 3, y pasan a ser tarea.</li>
         <li>Del bloque 2 se puede posponer <code>filter</code> y <code>map</code>: alcanza con <code>forEach</code>, y el catálogo queda para la clase 5, donde se ven arrays en serio.</li>
         <li>Del bloque 3, con Font Awesome y SweetAlert2 el objetivo ya está cumplido. Animate.css y Day.js se pueden dejar como exploración libre.</li>
-        <li>Nunca se recorta el bloque 4. Si hace falta, se entregan también los pasos 1 y 2 del <code>app.js</code> ya escritos y se codea desde <code>agregarTarea</code>.</li>
+        <li>Del bloque 4 se puede saltear <code>FormData</code> y la parte de validación nativa de HTML5: lo imprescindible es <code>submit</code>, <code>preventDefault</code> y leer los campos.</li>
+        <li>Del bloque 5, si el reloj aprieta, se entregan también los pasos 1 y 2 escritos y se codea desde el paso 3. El medidor de contraseña del paso 6 es lo primero que se cae.</li>
+        <li>Nunca se recorta la apertura. Son 15 minutos que le dan sentido a las otras tres horas.</li>
       </ul>
-      <p style="margin-top:14px;margin-bottom:0"><b>Sin internet en el aula:</b> el bloque 3 se cae. Plan B — descargar las cuatro librerías antes de la clase a una carpeta <code>lib/</code> y enseñar el mismo tema con archivos locales, que además refuerza el eje de rutas relativas del bloque 1.</p>
+      <p style="margin-top:14px;margin-bottom:0"><b>Sin internet en el aula:</b> se cae el bloque 3, y el formulario de registro pierde los avisos de SweetAlert2 y los iconos, aunque la validación sigue funcionando. Plan B — descargar las cuatro librerías antes de la clase a una carpeta <code>lib/</code> y enseñar el mismo tema con archivos locales, que además refuerza el eje de rutas relativas del bloque 1.</p>
     </div>
   </section>
 

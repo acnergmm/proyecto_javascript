@@ -89,10 +89,10 @@
         // Un array de objetos: la forma normal de tener datos en JS.
         // Lo vamos a ver en profundidad la clase que viene.
         const catalogo = [
-            { nombre: "Teclado", precio: 15000, stock: true },
-            { nombre: "Mouse", precio: 8000, stock: true },
-            { nombre: "Monitor", precio: 120000, stock: false },
-            { nombre: "Webcam", precio: 32000, stock: true }
+            { nombre: "Teclado", precio: 290000, stock: true },
+            { nombre: "Mouse", precio: 75000, stock: true },
+            { nombre: "Monitor", precio: 2200000, stock: false },
+            { nombre: "Webcam", precio: 440000, stock: true }
         ];
 
         document.querySelector("#btn-catalogo").addEventListener("click", () => {
@@ -103,7 +103,7 @@
             contenedor.innerHTML = catalogo.map((producto) => `
                 <div class="ficha ${producto.stock ? "" : "sin-stock"}">
                     <h4>${producto.nombre}</h4>
-                    <span class="precio">$${producto.precio}</span>
+                    <span class="precio">₲${producto.precio.toLocaleString("es-PY")}</span>
                     <p>${producto.stock ? "Disponible" : "Sin stock"}</p>
                 </div>
             `).join("");

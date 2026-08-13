@@ -2,7 +2,7 @@
 // TECNOSTORE - TODO EL COMPORTAMIENTO DE LA TIENDA
 // ==========================================================
 // Compará este archivo con el index.html de la version sin
-// JavaScript. Ahi habia 250 lineas de HTML escritas a mano.
+// JavaScript. Ahi habia 140 lineas de HTML escritas a mano.
 // Aca hay un array de 8 lineas y el resto se dibuja solo.
 // ==========================================================
 
@@ -15,21 +15,21 @@
 // es escribir un renglon mas en este array.
 
 const productos = [
-    { id: 1, nombre: 'Notebook Pro 14"', precio: 850000, categoria: "computacion", emoji: "💻", stock: true },
-    { id: 2, nombre: "Mouse inalámbrico", precio: 8000, categoria: "accesorios", emoji: "🖱️", stock: true },
-    { id: 3, nombre: "Teclado mecánico", precio: 15000, categoria: "accesorios", emoji: "⌨️", stock: true },
-    { id: 4, nombre: 'Monitor 27" 4K', precio: 120000, categoria: "computacion", emoji: "🖥️", stock: true },
-    { id: 5, nombre: "Auriculares Bluetooth", precio: 45000, categoria: "audio", emoji: "🎧", stock: true },
-    { id: 6, nombre: "Parlante portátil", precio: 68000, categoria: "audio", emoji: "🔊", stock: true },
-    { id: 7, nombre: "Webcam Full HD", precio: 32000, categoria: "accesorios", emoji: "📷", stock: false },
-    { id: 8, nombre: 'Tablet 11"', precio: 320000, categoria: "computacion", emoji: "📱", stock: true }
+    { id: 1, nombre: 'Notebook Pro 14"', precio: 7300000, categoria: "computacion", emoji: "💻", stock: true },
+    { id: 2, nombre: "Mouse inalámbrico", precio: 75000, categoria: "accesorios", emoji: "🖱️", stock: true },
+    { id: 3, nombre: "Teclado mecánico", precio: 290000, categoria: "accesorios", emoji: "⌨️", stock: true },
+    { id: 4, nombre: 'Monitor 27" 4K', precio: 2200000, categoria: "computacion", emoji: "🖥️", stock: true },
+    { id: 5, nombre: "Auriculares Bluetooth", precio: 550000, categoria: "audio", emoji: "🎧", stock: true },
+    { id: 6, nombre: "Parlante portátil", precio: 730000, categoria: "audio", emoji: "🔊", stock: true },
+    { id: 7, nombre: "Webcam Full HD", precio: 440000, categoria: "accesorios", emoji: "📷", stock: false },
+    { id: 8, nombre: 'Tablet 11"', precio: 2900000, categoria: "computacion", emoji: "📱", stock: true }
 ];
 
 // Reglas del negocio, escritas UNA vez y en UN solo lugar.
 // En la version sin JavaScript el envio estaba escrito a mano
 // en el HTML: para cambiarlo habia que editar el HTML.
-const COSTO_ENVIO = 4500;
-const ENVIO_GRATIS_DESDE = 100000;
+const COSTO_ENVIO = 35000;
+const ENVIO_GRATIS_DESDE = 1000000;
 
 
 // ==========================================================
@@ -63,10 +63,10 @@ const botonComprar = document.querySelector("#btn-comprar");
 // PARTE 4 - UNA AYUDITA PARA LOS PRECIOS
 // ==========================================================
 // toLocaleString pone los puntos de miles como se escriben
-// en Argentina. En la version sin JS los puntos los
+// en Paraguay, y el simbolo del guarani adelante. En la version sin JS los puntos los
 // escribiamos a mano y a veces quedaban mal.
 
-const conPuntos = (numero) => `$${numero.toLocaleString("es-AR")}`;
+const conPuntos = (numero) => `₲${numero.toLocaleString("es-PY")}`;
 
 
 // ==========================================================
@@ -301,7 +301,9 @@ dibujarCarrito();
 //
 //   Version sin JavaScript      Version con JavaScript
 //   ---------------------------------------------------
-//   HTML: ~250 lineas           HTML: ~60 lineas
+//   HTML: 140 lineas            HTML: 70 lineas
+//   Con 200 productos:          Con 200 productos:
+//     ~1400 lineas                sigue en 70
 //   Agregar un producto:        Agregar un producto:
 //     7 lineas de HTML            1 linea en el array
 //     + editar el titulo

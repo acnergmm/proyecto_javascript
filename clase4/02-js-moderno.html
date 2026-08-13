@@ -66,10 +66,10 @@
 
         <p>Nuestros productos:</p>
         <div>
-            <span class="producto">Teclado <span class="precio">15000</span></span>
-            <span class="producto">Mouse <span class="precio">8000</span></span>
-            <span class="producto">Monitor <span class="precio">120000</span></span>
-            <span class="producto">Webcam <span class="precio">32000</span></span>
+            <span class="producto">Teclado <span class="precio">290000</span></span>
+            <span class="producto">Mouse <span class="precio">75000</span></span>
+            <span class="producto">Monitor <span class="precio">2200000</span></span>
+            <span class="producto">Webcam <span class="precio">440000</span></span>
         </div>
 
         <p>
@@ -129,18 +129,18 @@
                 total += Number(precio.textContent);
             });
 
-            salida.textContent = `El total es $${total}`;
+            salida.textContent = `El total es ₲${total.toLocaleString("es-PY")}`;
         });
 
         document.querySelector("#btn-caros").addEventListener("click", () => {
             // filter arma una lista nueva SOLO con los que cumplen la condicion.
             // Para usarlo hay que convertir el NodeList en array con [...]
-            const caros = [...precios].filter((precio) => Number(precio.textContent) > 20000);
+            const caros = [...precios].filter((precio) => Number(precio.textContent) > 400000);
 
             // map transforma cada elemento, join los pega con un separador
             const nombres = caros.map((precio) => precio.textContent).join(" - ");
 
-            salida.textContent = `Hay ${caros.length} productos de mas de $20.000: ${nombres}`;
+            salida.textContent = `Hay ${caros.length} productos de mas de ₲400.000: ${nombres}`;
         });
     </script>
 </body>
