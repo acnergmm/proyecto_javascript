@@ -1,16 +1,3 @@
-// ==========================================================
-// FORMULARIO DE REGISTRO - VALIDACION COMPLETA
-//
-// Este archivo es el corazon de la clase. Junta los tres ejes:
-//   1. Separacion   -> el HTML no tiene ni un onclick ni un style
-//   2. JS moderno   -> const, arrow functions, template literals, forEach
-//   3. Librerias    -> SweetAlert2 y Font Awesome
-//
-// La idea central: el usuario se entera del error MIENTRAS escribe,
-// no despues de mandar el formulario.
-// ==========================================================
-
-
 // ----------------------------------------------------------
 // PASO 1 - Los elementos
 // ----------------------------------------------------------
@@ -36,19 +23,25 @@ const resumen = document.querySelector("#resumen");
 // Separar "decidir" de "mostrar" es lo que hace que este codigo
 // se pueda leer y arreglar.
 
-const validarNombre = () => {
+
+
+
+
+
+
+
+
+function validarNombre() {
     const valor = nombre.value.trim();
-
-    if (valor === "") return "El nombre no puede quedar vacío";
+    if (valor == "") return "El nombre no puede quedar vacío";
     if (valor.length < 3) return "Tiene que tener al menos 3 letras";
-
-    // Una expresion regular: el molde de lo que aceptamos.
-    // Letras (con acentos y ñ) y espacios, nada mas.
-    const soloLetras = /^[a-záéíóúüñ\s]+$/i;
-    if (!soloLetras.test(valor)) return "Solo letras y espacios, sin números";
-
     return "";
 };
+
+
+
+
+
 
 const validarEmail = () => {
     const valor = email.value.trim();
@@ -76,36 +69,26 @@ const validarEdad = () => {
 };
 
 const validarDepartamento = () => {
-    // En un <select> el .value es el value de la opcion elegida.
-    // La primera opcion tiene value="" justamente para poder detectarla.
     if (departamento.value === "") return "Elegí un departamento";
-
     return "";
 };
 
 const validarClave = () => {
     const valor = clave.value;
-
     if (valor === "") return "La contraseña no puede quedar vacía";
     if (valor.length < 6) return "Mínimo 6 caracteres";
-    if (!/[0-9]/.test(valor)) return "Tiene que incluir al menos un número";
-
     return "";
 };
 
 const validarClave2 = () => {
     if (clave2.value === "") return "Repetí la contraseña";
-
-    // La regla que el HTML solo NO puede validar:
-    // comparar un campo con otro.
     if (clave2.value !== clave.value) return "Las contraseñas no coinciden";
-
     return "";
 };
 
 const validarTerminos = () => {
     // Un checkbox no se lee con .value sino con .checked
-    if (!terminos.checked) return "Tenés que aceptar los términos";
+    if (terminos.checked == false) return "Tenés que aceptar los términos";
 
     return "";
 };
