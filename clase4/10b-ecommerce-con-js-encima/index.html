@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoStore - JavaScript encima del HTML que ya existe</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/app.js" defer></script>
+
+    <!--
+        ==========================================================
+        TECNOSTORE - VERSION 2 DE 3
+        ==========================================================
+        Esta es la version del medio, y es la mas parecida a lo
+        que te vas a encontrar en un trabajo real:
+
+            "Aca tenes el HTML que ya hizo el diseñador.
+             Hacelo funcionar. Y no me lo rompas."
+
+        Las 8 tarjetas SIGUEN ESCRITAS A MANO, igual que en la
+        version 1. No borramos nada. El JavaScript no fabrica
+        productos: BUSCA los que ya estan y los hace funcionar.
+
+        Lo unico que le agregamos al HTML son los data-
+        (data-id, data-nombre, data-precio, data-categoria).
+        Fijate al final del archivo por que eso, que parece un
+        detalle, es el motivo por el que existe la version 3.
+        ==========================================================
+    -->
+</head>
+
+<body>
+
+    <!-- ============================================================
+         ENCABEZADO
+         ============================================================ -->
+    <header class="barra">
+        <div class="logo">Tecno<span>Store</span></div>
+
+        <!-- Antes era un adorno. Ahora el JavaScript lo escucha. -->
+        <div class="buscador">
+            <input type="text" id="buscador" placeholder="Buscar productos..." autocomplete="off">
+        </div>
+
+        <!-- El numero ya no esta escrito a mano: arranca en 0 y lo maneja el JS -->
+        <button class="carrito-boton" id="btn-carrito">
+            Carrito <span class="globo" id="globo">0</span>
+        </button>
+    </header>
+
+
+    <div class="pagina">
+
+        <main>
+
+            <div class="nota nota-buena">
+                <h2>Versión 2 — el mismo HTML, ahora vivo</h2>
+                <p style="margin:0">
+                    Las tarjetas son <b>exactamente las mismas</b> que en la versión sin JavaScript,
+                    escritas a mano una por una. No se borró ni se reescribió ninguna.
+                    Lo único que cambió es que ahora hay un <code>app.js</code> que las busca y las maneja.
+                </p>
+            </div>
+
+            <h1>Catálogo</h1>
+
+            <!-- El JavaScript escribe acá cuántos se están viendo -->
+            <p class="subtitulo" id="subtitulo"></p>
+
+            <!--
+                LOS FILTROS
+                Siguen siendo <a href="#">, igual que antes.
+                Un <a> quiere navegar, así que el JavaScript lo frena
+                con evento.preventDefault() — lo mismo que hicimos
+                con el submit de los formularios.
+            -->
+            <nav class="filtros" id="filtros">
+                <a href="#" class="chip activo" data-categoria="todos">Todos</a>
+                <a href="#" class="chip" data-categoria="computacion">Computación</a>
+                <a href="#" class="chip" data-categoria="accesorios">Accesorios</a>
+                <a href="#" class="chip" data-categoria="audio">Audio</a>
+            </nav>
+
+            <!--
+                LA GRILLA
+                Las mismas 8 tarjetas de la version 1.
+                Lo unico nuevo son los atributos data- del <article>:
+                son los datos que el JavaScript necesita leer.
+
+                data-id         para saber cual es cual
+                data-nombre     para buscarlo y ponerlo en el carrito
+                data-precio     el numero limpio, sin puntos ni simbolo
+                data-categoria  para filtrar
+            -->
+            <div class="grilla" id="grilla">
+
+                <!-- ---------- PRODUCTO 1 ---------- -->
+                <article class="producto"
+                         data-id="1"
+                         data-nombre="Notebook Pro 14&quot;"
+                         data-precio="7300000"
+                         data-categoria="computacion">
+                    <div class="imagen">💻</div>
+                    <span class="categoria">Computación</span>
+                    <h3>Notebook Pro 14"</h3>
+                    <span class="precio">₲7.300.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 2 ---------- -->
+                <article class="producto"
+                         data-id="2"
+                         data-nombre="Mouse inalámbrico"
+                         data-precio="75000"
+                         data-categoria="accesorios">
+                    <div class="imagen">🖱️</div>
+                    <span class="categoria">Accesorios</span>
+                    <h3>Mouse inalámbrico</h3>
+                    <span class="precio">₲75.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 3 ---------- -->
+                <article class="producto"
+                         data-id="3"
+                         data-nombre="Teclado mecánico"
+                         data-precio="290000"
+                         data-categoria="accesorios">
+                    <div class="imagen">⌨️</div>
+                    <span class="categoria">Accesorios</span>
+                    <h3>Teclado mecánico</h3>
+                    <span class="precio">₲290.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 4 ---------- -->
+                <article class="producto"
+                         data-id="4"
+                         data-nombre="Monitor 27&quot; 4K"
+                         data-precio="2200000"
+                         data-categoria="computacion">
+                    <div class="imagen">🖥️</div>
+                    <span class="categoria">Computación</span>
+                    <h3>Monitor 27" 4K</h3>
+                    <span class="precio">₲2.200.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 5 ---------- -->
+                <article class="producto"
+                         data-id="5"
+                         data-nombre="Auriculares Bluetooth"
+                         data-precio="550000"
+                         data-categoria="audio">
+                    <div class="imagen">🎧</div>
+                    <span class="categoria">Audio</span>
+                    <h3>Auriculares Bluetooth</h3>
+                    <span class="precio">₲550.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 6 ---------- -->
+                <article class="producto"
+                         data-id="6"
+                         data-nombre="Parlante portátil"
+                         data-precio="730000"
+                         data-categoria="audio">
+                    <div class="imagen">🔊</div>
+                    <span class="categoria">Audio</span>
+                    <h3>Parlante portátil</h3>
+                    <span class="precio">₲730.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 7 (sin stock) ---------- -->
+                <!-- Este sigue teniendo los 4 cambios manuales de siempre:
+                     la clase sin-stock, el cartelito, el disabled y el texto.
+                     El JavaScript no tiene que hacer nada: el boton disabled
+                     no dispara click, asi que ya no se puede agregar. -->
+                <article class="producto sin-stock"
+                         data-id="7"
+                         data-nombre="Webcam Full HD"
+                         data-precio="440000"
+                         data-categoria="accesorios">
+                    <div class="imagen">📷</div>
+                    <span class="categoria">Accesorios</span>
+                    <h3>Webcam Full HD</h3>
+                    <span class="agotado">Sin stock</span>
+                    <span class="precio">₲440.000</span>
+                    <button class="boton" disabled>No disponible</button>
+                </article>
+
+                <!-- ---------- PRODUCTO 8 ---------- -->
+                <article class="producto"
+                         data-id="8"
+                         data-nombre="Tablet 11&quot;"
+                         data-precio="2900000"
+                         data-categoria="computacion">
+                    <div class="imagen">📱</div>
+                    <span class="categoria">Computación</span>
+                    <h3>Tablet 11"</h3>
+                    <span class="precio">₲2.900.000</span>
+                    <button class="boton">Agregar al carrito</button>
+                </article>
+
+                <!-- ==================================================
+                     ACA SEGUIS AGREGANDO PRODUCTOS A MANO.
+                     Mejoro mucho: ya no hay que recalcular totales
+                     ni actualizar el contador del titulo.
+
+                     Pero fijate lo que todavia cuesta cada producto:
+                       - 12 lineas de HTML
+                       - y el nombre y el precio escritos DOS VECES:
+                         una en el data- y otra en el texto visible.
+
+                     Si te equivocas en una de las dos, la pagina
+                     muestra un precio y cobra otro.
+                     Ese problema lo resuelve la version 3.
+                     ================================================== -->
+
+            </div>
+
+            <p class="vacio oculto" id="sin-resultados">
+                <span class="icono">🔍</span><br>
+                No encontramos productos con esa búsqueda
+            </p>
+        </main>
+
+
+        <!-- ========================================================
+             CARRITO
+             Este SI arranca vacio: los productos del carrito no
+             existen hasta que el usuario los elige, asi que estos
+             hay que fabricarlos con JavaScript.
+             ======================================================== -->
+        <aside class="carrito">
+            <h2>Tu carrito</h2>
+
+            <ul class="carrito-items" id="carrito-items"></ul>
+
+            <p class="vacio" id="carrito-vacio">
+                <span class="icono">🛒</span><br>
+                Todavía no agregaste nada
+            </p>
+
+            <div class="totales oculto" id="totales">
+                <div>
+                    <span>Subtotal</span>
+                    <span id="subtotal"></span>
+                </div>
+                <div>
+                    <span>Envío</span>
+                    <span id="envio"></span>
+                </div>
+                <div class="grande">
+                    <span>Total</span>
+                    <span id="total"></span>
+                </div>
+            </div>
+
+            <button class="boton boton-comprar" id="btn-comprar" disabled>Finalizar compra</button>
+        </aside>
+
+    </div>
+
+</body>
+
+</html>

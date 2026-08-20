@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 5 - Chat con Ollama</title>
+
+    <!-- Tailwind por CDN (para practicar; en produccion se compila) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Lo unico que Tailwind no cubre: la barra de scroll */
+        .scroll-fino::-webkit-scrollbar { width: 8px; }
+        .scroll-fino::-webkit-scrollbar-thumb { background: #4b4b4b; border-radius: 8px; }
+        .scroll-fino::-webkit-scrollbar-track { background: transparent; }
+    </style>
+</head>
+
+<body class="bg-[#212121] text-neutral-100 antialiased">
+
+    <div class="flex h-screen flex-col">
+
+        <!-- ============ BARRA SUPERIOR ============ -->
+        <header class="flex shrink-0 items-center gap-3 border-b border-white/5 px-4 py-3">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold">IA</span>
+            <div class="mr-auto">
+                <h1 class="text-sm font-semibold leading-tight">Chat con Ollama</h1>
+                <p class="text-xs text-neutral-400">Clase 5 &middot; fetch + async/await</p>
+            </div>
+
+            <!-- Se llena desde JavaScript con los modelos que tengas instalados -->
+            <select id="modelo"
+                class="max-w-[180px] rounded-lg border border-white/10 bg-[#2f2f2f] px-3 py-1.5 text-xs text-neutral-200 outline-none hover:bg-[#3a3a3a] focus:border-emerald-500">
+                <option value="">Buscando modelos...</option>
+            </select>
+
+            <button id="btn-config" type="button"
+                class="rounded-lg border border-white/10 bg-[#2f2f2f] px-3 py-1.5 text-xs text-neutral-200 hover:bg-[#3a3a3a]">
+                Servidor
+            </button>
+
+            <button id="btn-nuevo" type="button"
+                class="rounded-lg border border-white/10 bg-[#2f2f2f] px-3 py-1.5 text-xs text-neutral-200 hover:bg-[#3a3a3a]">
+                Nuevo chat
+            </button>
+        </header>
+
+        <!-- ============ PANEL DE CONFIGURACION (arranca oculto) ============ -->
+        <section id="panel-config" class="hidden shrink-0 border-b border-white/5 bg-[#1b1b1b] px-4 py-4">
+            <div class="mx-auto flex max-w-3xl flex-col gap-3">
+                <label class="text-xs font-medium text-neutral-300" for="servidor">
+                    Direccion de Ollama (se guarda en tu navegador, en localStorage)
+                </label>
+                <div class="flex gap-2">
+                    <input id="servidor" type="text" placeholder="http://localhost:11434" autocomplete="off"
+                        class="flex-1 rounded-lg border border-white/10 bg-[#2f2f2f] px-3 py-2 text-sm outline-none placeholder:text-neutral-500 focus:border-emerald-500">
+                    <button id="btn-guardar" type="button"
+                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium hover:bg-emerald-500">
+                        Guardar y reconectar
+                    </button>
+                    <button id="btn-reset" type="button"
+                        class="rounded-lg border border-white/10 px-4 py-2 text-sm text-neutral-300 hover:bg-white/5">
+                        Por defecto
+                    </button>
+                </div>
+                <p id="aviso-config" class="text-xs leading-relaxed text-neutral-400">
+                    Ollama corre en tu maquina, no necesita clave ni internet. Levantalo con
+                    <code class="rounded bg-white/10 px-1 py-0.5">ollama serve</code> y descarga un modelo con
+                    <code class="rounded bg-white/10 px-1 py-0.5">ollama pull llama3.2</code>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============ MENSAJES ============ -->
+        <main id="mensajes" class="scroll-fino flex-1 overflow-y-auto px-4">
+            <div id="lista" class="mx-auto flex max-w-3xl flex-col gap-6 py-8">
+
+                <!-- Pantalla de bienvenida: se borra con el primer mensaje -->
+                <div id="bienvenida" class="flex flex-col items-center gap-6 pt-16 text-center">
+                    <h2 class="text-3xl font-semibold">En que puedo ayudarte?</h2>
+                    <p class="max-w-md text-sm text-neutral-400">
+                        Escribi tu prompt abajo y presiona Enter. Responde el modelo que tengas
+                        corriendo en Ollama, en tu propia maquina.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button type="button" data-sugerencia="Explicame que es async/await en JavaScript con un ejemplo corto"
+                            class="rounded-full border border-white/10 bg-[#2f2f2f] px-4 py-2 text-xs text-neutral-200 hover:bg-[#3a3a3a]">
+                            Explicame async/await
+                        </button>
+                        <button type="button" data-sugerencia="Dame 5 ideas de proyectos para practicar JavaScript con fetch"
+                            class="rounded-full border border-white/10 bg-[#2f2f2f] px-4 py-2 text-xs text-neutral-200 hover:bg-[#3a3a3a]">
+                            Ideas de proyectos
+                        </button>
+                        <button type="button" data-sugerencia="Corregi este codigo: const suma = (a, b) => { a + b }"
+                            class="rounded-full border border-white/10 bg-[#2f2f2f] px-4 py-2 text-xs text-neutral-200 hover:bg-[#3a3a3a]">
+                            Corregi mi codigo
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ============ CAJA DE TEXTO ============ -->
+        <footer class="shrink-0 px-4 pb-4">
+            <form id="formulario" class="mx-auto max-w-3xl">
+                <div class="rounded-3xl border border-white/10 bg-[#2f2f2f] p-3 shadow-lg focus-within:border-white/20">
+                    <textarea id="entrada" rows="3" placeholder="Escribi tu prompt..."
+                        class="scroll-fino max-h-64 min-h-[104px] w-full resize-none bg-transparent px-2 py-1 text-[15px] leading-relaxed outline-none placeholder:text-neutral-500"></textarea>
+
+                    <div class="mt-2 flex items-center justify-between px-2">
+                        <span id="estado" class="text-xs text-neutral-500">Conectando con Ollama...</span>
+                        <button id="btn-enviar" type="submit"
+                            class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:bg-neutral-600 disabled:text-neutral-400">
+                            <!-- flecha hacia arriba -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="h-4 w-4">
+                                <line x1="12" y1="19" x2="12" y2="5"></line>
+                                <polyline points="5 12 12 5 19 12"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <p class="mt-2 text-center text-xs text-neutral-500">
+                    <strong>Enter</strong> envia &middot; <strong>Shift + Enter</strong> hace un salto de linea
+                </p>
+            </form>
+        </footer>
+
+    </div>
+
+    <script src="js/app.js" defer></script>
+</body>
+
+</html>

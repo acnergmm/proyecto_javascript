@@ -1,11 +1,3 @@
-// ==========================================================
-// TECNOSTORE - TODO EL COMPORTAMIENTO DE LA TIENDA
-// ==========================================================
-// Compará este archivo con el index.html de la version sin
-// JavaScript. Ahi habia 140 lineas de HTML escritas a mano.
-// Aca hay un array de 8 lineas y el resto se dibuja solo.
-// ==========================================================
-
 
 // ==========================================================
 // PARTE 1 - LOS DATOS
@@ -15,15 +7,129 @@
 // es escribir un renglon mas en este array.
 
 const productos = [
-    { id: 1, nombre: 'Notebook Pro 14"', precio: 7300000, categoria: "computacion", emoji: "💻", stock: true },
-    { id: 2, nombre: "Mouse inalámbrico", precio: 75000, categoria: "accesorios", emoji: "🖱️", stock: true },
-    { id: 3, nombre: "Teclado mecánico", precio: 290000, categoria: "accesorios", emoji: "⌨️", stock: true },
-    { id: 4, nombre: 'Monitor 27" 4K', precio: 2200000, categoria: "computacion", emoji: "🖥️", stock: true },
-    { id: 5, nombre: "Auriculares Bluetooth", precio: 550000, categoria: "audio", emoji: "🎧", stock: true },
-    { id: 6, nombre: "Parlante portátil", precio: 730000, categoria: "audio", emoji: "🔊", stock: true },
-    { id: 7, nombre: "Webcam Full HD", precio: 440000, categoria: "accesorios", emoji: "📷", stock: false },
-    { id: 8, nombre: 'Tablet 11"', precio: 2900000, categoria: "computacion", emoji: "📱", stock: true }
+    {
+         id: 1,
+         nombre: 'Notebook Pro 14"', 
+         precio: 7300000,
+        categoria: "computacion", 
+          emoji: "💻",
+           stock: true
+    },
+    {
+         id: 2,
+         nombre: "Mouse inalámbrico",
+         precio: 75000,
+         categoria: "accesorios",
+         emoji: "🖱️",
+         stock: true
+    },
+    {
+         id: 3,
+         nombre: "Teclado mecánico",
+         precio: 290000,
+         categoria: "accesorios",
+         emoji: "⌨️",
+         stock: false
+    },
+    {
+         id: 4,
+         nombre: 'Monitor 27" 4K',
+         precio: 2200000,
+         categoria: "computacion",
+         emoji: "🖥️",
+         stock: true
+    },
+    {
+         id: 5,
+         nombre: "Auriculares Bluetooth",
+         precio: 550000,
+         categoria: "audio",
+         emoji: "🎧",
+         stock: true
+    },
+    {
+         id: 6,
+         nombre: "Parlante portátil",
+         precio: 730000,
+         categoria: "audio",
+         emoji: "🔊",
+         stock: true
+    },
+    {
+         id: 7,
+         nombre: "Webcam Full HD",
+         precio: 440000,
+         categoria: "accesorios",
+         emoji: "📷",
+         stock: false
+    },
+    {
+         id: 8,
+         nombre: 'Tablet 11"',
+         precio: 2900000,
+         categoria: "computacion",
+         emoji: "📱",
+         stock: true
+    },
+    {
+         id: 9,
+         nombre: 'guampa de acero',
+         precio: 30000,
+         categoria: "accesorios",
+         emoji: "🥛",
+         stock: true
+    },
+     {
+         id: 10,
+         nombre: 'escoba',
+         precio: 20000,
+         categoria: "accesorios",
+         emoji: "🧹",
+         stock: true
+    }
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Reglas del negocio, escritas UNA vez y en UN solo lugar.
 // En la version sin JavaScript el envio estaba escrito a mano
@@ -43,10 +149,16 @@ let categoriaActiva = "todos"; // el filtro elegido
 let busqueda = "";             // lo que escribio en el buscador
 
 
+
+
+
+
+
 // ==========================================================
 // PARTE 3 - LOS ELEMENTOS
 // ==========================================================
 const grilla = document.querySelector("#grilla");
+
 const filtros = document.querySelector("#filtros");
 const buscador = document.querySelector("#buscador");
 const subtitulo = document.querySelector("#subtitulo");
