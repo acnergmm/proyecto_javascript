@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan de clase 3 - JavaScript Basico</title>
+<style>
+  /* ---------- Tokens: tema claro (base, sin stamp) ---------- */
+  :root {
+    --ground: #f4f6f8;
+    --surface: #ffffff;
+    --surface-sunk: #eceff3;
+    --ink: #161a20;
+    --ink-soft: #3c4653;
+    --neutral: #63707f;
+    --neutral-faint: #97a3b0;
+    --rule: #d8dee5;
+    --rule-soft: #e6ebf0;
+    --accent: #0d6b70;
+    --accent-ink: #0a5257;
+    --accent-wash: #e2eff0;
+    --clay: #a3462a;
+    --clay-wash: #f7e9e3;
+    --code-bg: #eef1f4;
+    --shadow: 0 1px 2px rgba(22, 26, 32, .06), 0 8px 24px -12px rgba(22, 26, 32, .14);
+  }
+
+  /* ---------- Tokens: tema oscuro del sistema ---------- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101318;
+      --surface: #181c22;
+      --surface-sunk: #14181d;
+      --ink: #e7eaee;
+      --ink-soft: #c2c9d2;
+      --neutral: #97a3b0;
+      --neutral-faint: #6b7784;
+      --rule: #2b323a;
+      --rule-soft: #22282f;
+      --accent: #52bdc2;
+      --accent-ink: #7fd3d7;
+      --accent-wash: #16292b;
+      --clay: #e0906d;
+      --clay-wash: #2c1f1a;
+      --code-bg: #11151a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+    }
+  }
+
+  /* ---------- Tokens: tema oscuro elegido explícitamente ---------- */
+  :root[data-theme="dark"] {
+    --ground: #101318;
+    --surface: #181c22;
+    --surface-sunk: #14181d;
+    --ink: #e7eaee;
+    --ink-soft: #c2c9d2;
+    --neutral: #97a3b0;
+    --neutral-faint: #6b7784;
+    --rule: #2b323a;
+    --rule-soft: #22282f;
+    --accent: #52bdc2;
+    --accent-ink: #7fd3d7;
+    --accent-wash: #16292b;
+    --clay: #e0906d;
+    --clay-wash: #2c1f1a;
+    --code-bg: #11151a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hoja { max-width: 960px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  /* ---------- Encabezado ---------- */
+  .cabecera { border-bottom: 2px solid var(--ink); padding-bottom: 28px; }
+
+  .eyebrow {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+
+  h1 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.8vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0 0 18px;
+  }
+
+  .bajada { margin: 0; max-width: 64ch; font-size: 1.06rem; color: var(--ink-soft); }
+
+  /* ---------- Los tres ejes ---------- */
+  .ejes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 30px 0 0;
+  }
+
+  .ejes article { background: var(--surface); padding: 18px 20px; }
+
+  .ejes .eje-num {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .ejes h3 { margin: 0 0 6px; font-size: 1.02rem; font-weight: 650; letter-spacing: -.01em; }
+
+  .ejes p { margin: 0; font-size: .9rem; color: var(--neutral); }
+
+  /* El eje donde todo converge, marcado distinto */
+  .ejes article.converge { background: var(--accent-wash); }
+
+  .ejes article.converge .eje-num { color: var(--accent-ink); }
+
+  .ejes article.converge p { color: var(--ink-soft); }
+
+  /* ---------- Ficha técnica ---------- */
+  .ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-top: none;
+    margin: 0 0 56px;
+  }
+
+  .ficha div { background: var(--surface); padding: 14px 16px; }
+
+  .ficha dt {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--neutral);
+    margin-bottom: 5px;
+  }
+
+  .ficha dd { margin: 0; font-size: .95rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Secciones ---------- */
+  h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    letter-spacing: -.01em;
+    margin: 0 0 6px;
+  }
+
+  .seccion { margin-top: 60px; }
+
+  .seccion > .intro { color: var(--neutral); max-width: 64ch; margin: 0 0 28px; font-size: .96rem; }
+
+  /* ---------- Objetivos ---------- */
+  .objetivos { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+
+  .objetivos li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    font-size: .97rem;
+    color: var(--ink-soft);
+  }
+
+  .objetivos li::before { content: "→"; color: var(--accent); font-family: ui-monospace, Consolas, monospace; }
+
+  /* ---------- Cronograma ---------- */
+  .cronograma { display: grid; gap: 14px; }
+
+  .bloque {
+    display: grid;
+    grid-template-columns: 104px 1fr;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .reloj { background: var(--surface-sunk); border-right: 1px solid var(--rule); padding: 18px 14px; }
+
+  .reloj .desde {
+    display: block;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 1.12rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .reloj .hasta {
+    display: block;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .82rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--neutral-faint);
+  }
+
+  .reloj .dura {
+    display: inline-block;
+    margin-top: 9px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .06em;
+    color: var(--accent-ink);
+    background: var(--accent-wash);
+    border-radius: 2px;
+    padding: 2px 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cuerpo { padding: 18px 22px 22px; min-width: 0; }
+
+  .cuerpo h3 { font-size: 1.14rem; font-weight: 650; letter-spacing: -.01em; margin: 0 0 4px; }
+
+  .cuerpo .meta {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11.5px;
+    color: var(--neutral);
+    margin: 0 0 16px;
+  }
+
+  .cuerpo .meta code { color: var(--clay); }
+
+  .tarea-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+
+  .tarea-lista > li { display: grid; gap: 5px; }
+
+  .rol {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .tarea-lista p { margin: 0; font-size: .95rem; color: var(--ink-soft); }
+
+  .tarea-lista ul { margin: 3px 0 0; padding-left: 20px; }
+
+  .tarea-lista ul li { font-size: .93rem; color: var(--ink-soft); margin-bottom: 4px; }
+
+  code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .88em; }
+
+  .cuerpo code, .objetivos code, .avisos code, .cierre code, .ejes code, td code, .intro code {
+    background: var(--code-bg);
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: 1px 5px;
+  }
+
+  kbd {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .8em;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+
+  /* Recreos: más livianos, sin tarjeta */
+  .bloque.recreo { background: none; border: 1px dashed var(--rule); box-shadow: none; }
+
+  .bloque.recreo .reloj { background: none; border-right: 1px dashed var(--rule); }
+
+  .bloque.recreo .cuerpo { display: flex; align-items: center; }
+
+  .bloque.recreo h3 { margin: 0; font-weight: 500; font-size: .98rem; color: var(--neutral); }
+
+  /* Bloques destacados: la apertura y el integrador */
+  .bloque.clave { border-left: 3px solid var(--accent); }
+
+  /* ---------- Antes / después ---------- */
+  .comparar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0 0; }
+
+  .comparar > div { border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+
+  .comparar h5 {
+    margin: 0;
+    padding: 6px 12px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    background: var(--surface-sunk);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .comparar .antes h5 { color: var(--clay); }
+
+  .comparar .despues h5 { color: var(--accent); }
+
+  .comparar pre {
+    margin: 0;
+    padding: 11px 12px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    overflow-x: auto;
+    color: var(--ink-soft);
+    background: var(--code-bg);
+  }
+
+  @media (max-width: 560px) {
+    .comparar { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Errores frecuentes ---------- */
+  .avisos { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+
+  .avisos > div {
+    background: var(--surface);
+    padding: 15px 18px;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 12px;
+  }
+
+  .avisos .num {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .82rem;
+    color: var(--clay);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+
+  .avisos h4 { margin: 0 0 4px; font-size: .96rem; font-weight: 650; }
+
+  .avisos p { margin: 0; font-size: .91rem; color: var(--ink-soft); }
+
+  /* ---------- Cierre ---------- */
+  .cierre {
+    background: var(--clay-wash);
+    border-left: 3px solid var(--clay);
+    padding: 20px 24px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .cierre h3 { margin: 0 0 8px; font-size: 1.02rem; }
+
+  .cierre p, .cierre li { font-size: .95rem; color: var(--ink-soft); }
+
+  .cierre p { margin: 0 0 10px; }
+
+  .cierre ul { margin: 0; padding-left: 20px; }
+
+  .cierre li { margin-bottom: 5px; }
+
+  /* ---------- Tablas ---------- */
+  .tabla-envoltorio { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; }
+
+  table { border-collapse: collapse; width: 100%; min-width: 520px; background: var(--surface); }
+
+  th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--rule-soft); font-size: .92rem; }
+
+  th {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--neutral);
+    background: var(--surface-sunk);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  td.ruta { font-family: ui-monospace, Consolas, monospace; color: var(--accent-ink); white-space: nowrap; }
+
+  td.numero { font-variant-numeric: tabular-nums; }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11.5px;
+    letter-spacing: .05em;
+    color: var(--neutral-faint);
+  }
+
+  @media (max-width: 620px) {
+    .hoja { padding: 36px 18px 64px; }
+    .bloque { grid-template-columns: 1fr; }
+    .reloj { border-right: none; border-bottom: 1px solid var(--rule); display: flex; align-items: baseline; gap: 10px; padding: 12px 18px; }
+    .bloque.recreo .reloj { border-right: none; border-bottom: 1px dashed var(--rule); }
+    .reloj .dura { margin-top: 0; margin-left: auto; }
+    .cuerpo { padding: 16px 18px 20px; }
+  }
+</style>
+</head>
+
+<body>
+<div class="hoja">
+
+  <header class="cabecera">
+    <p class="eyebrow">Programación Web Fullstack · Clase 03</p>
+    <h1>JavaScript Básico: Variables, Decisiones, Repeticiones y el DOM</h1>
+    <p class="bajada">
+      Hasta hoy las páginas del curso son carteles: se ven bien y no saben nada de quien las mira.
+      Hoy aparece el primer lenguaje que <em>decide</em>. La clase entera contesta una sola pregunta,
+      y la contesta seis veces con seis herramientas distintas:
+      <em>¿cómo hago que la página reaccione a lo que el usuario hace?</em>
+      El JavaScript vive todavía dentro del HTML — sacarlo a su propio archivo es el tema de la clase 4.
+    </p>
+  </header>
+
+  <div class="ejes">
+    <article>
+      <span class="eje-num">EJE 01</span>
+      <h3>Guardar datos</h3>
+      <p>Variables con <code>let</code> y <code>const</code>, los tres tipos que importan y por qué <code>"5" + 3</code> da <code>"53"</code>.</p>
+    </article>
+    <article>
+      <span class="eje-num">EJE 02</span>
+      <h3>Decidir y repetir</h3>
+      <p><code>if</code>/<code>else</code> para elegir un camino, <code>for</code> para hacer cien veces lo mismo sin escribirlo cien veces.</p>
+    </article>
+    <article>
+      <span class="eje-num">EJE 03</span>
+      <h3>Organizar</h3>
+      <p>Funciones que reciben, devuelven y se reusan. Arrays para guardar muchas cosas con un solo nombre.</p>
+    </article>
+    <article class="converge">
+      <span class="eje-num">DONDE CONVERGE</span>
+      <h3>El DOM</h3>
+      <p>Leer un campo, cambiar un texto, reaccionar a un click. Recién acá el alumno ve para qué servía todo lo anterior.</p>
+    </article>
+  </div>
+
+  <dl class="ficha">
+    <div>
+      <dt>Duración</dt>
+      <dd>3 horas · 180 min</dd>
+    </div>
+    <div>
+      <dt>Ya vimos</dt>
+      <dd>HTML y CSS, formularios sin lógica</dd>
+    </div>
+    <div>
+      <dt>Requisito</dt>
+      <dd>Ninguno · funciona sin internet</dd>
+    </div>
+    <div>
+      <dt>Entregable</dt>
+      <dd>Calculadora de presupuesto que responde</dd>
+    </div>
+  </dl>
+
+  <section class="seccion">
+    <h2>Al terminar la clase, el alumno puede…</h2>
+    <p class="intro">Ocho capacidades concretas. Las seis primeras se verifican en la calculadora del bloque 6, que se codea en vivo con ellos.</p>
+    <ul class="objetivos">
+      <li>Escribir y ejecutar JavaScript en una página, y leer un error en la consola del navegador en vez de adivinar.</li>
+      <li>Declarar variables con <code>let</code> y <code>const</code>, y explicar cuál usar en cada caso.</li>
+      <li>Distinguir texto de número, y convertir con <code>Number()</code> lo que viene de un campo del formulario.</li>
+      <li>Escribir un <code>if</code>/<code>else if</code>/<code>else</code> con comparaciones y con <code>&amp;&amp;</code> / <code>||</code>.</li>
+      <li>Repetir una tarea con <code>for</code>, sabiendo dónde arranca, dónde termina y cómo avanza.</li>
+      <li>Escribir una función con parámetros y <code>return</code>, y usarla dos veces con datos distintos.</li>
+      <li>Guardar una lista en un array, recorrerla y sacar un total o un máximo.</li>
+      <li>Leer el valor de un <code>input</code> y escribir un resultado en la página con <code>getElementById</code> y un evento de click.</li>
+    </ul>
+  </section>
+
+  <section class="seccion">
+    <h2>Cronograma</h2>
+    <p class="intro">
+      Cada bloque indica qué explicar, qué codear en vivo y qué hacen los alumnos.
+      El arco de la clase es acumulativo: la calculadora del bloque 6 usa las cinco herramientas
+      anteriores, así que ningún bloque es opcional. Cuando la teoría se estira, el recorte va
+      sobre los ejercicios de alumnos, nunca sobre el bloque 6.
+    </p>
+
+    <div class="cronograma">
+
+      <article class="bloque clave">
+        <div class="reloj">
+          <span class="desde">00:00</span>
+          <span class="hasta">→ 00:12</span>
+          <span class="dura">12 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Apertura — la página que no sabe nada de vos</h3>
+          <p class="meta">Archivo <code>06-dom-eventos/index.html</code> terminado, en el proyector</p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">El cartel · 4 min</span>
+              <p>Abrir cualquier página de la clase 2 y pedirles que la usen. Se ve bien, se puede escribir en los campos, y nada pasa. Escribir en el pizarrón: <strong>HTML dice qué hay, CSS dice cómo se ve. Falta quién decide.</strong></p>
+            </li>
+            <li>
+              <span class="rol">La misma página, decidiendo · 5 min</span>
+              <p>Abrir la calculadora del bloque 6 ya terminada. Cargar un monto y una cantidad de cuotas: el total se calcula, el descuento aparece solo cuando corresponde, y el aviso cambia de color si el campo está vacío. No prometer que es fácil: prometer que en tres horas la escriben ellos.</p>
+            </li>
+            <li>
+              <span class="rol">El mapa del día · 3 min</span>
+              <p>Dejar en el pizarrón las seis palabras de la clase y no borrarlas: <strong>variable, if, for, función, array, evento</strong>. Cada bloque tacha una. La calculadora final usa las seis a la vez.</p>
+              <div class="comparar">
+                <div class="antes">
+                  <h5>Sin JavaScript</h5>
+                  <pre>El precio esta escrito
+en el HTML
+
+Cambia el monto:
+  hay que editar
+  el archivo
+
+Descuento: lo calcula
+el vendedor a mano</pre>
+                </div>
+                <div class="despues">
+                  <h5>Con JavaScript</h5>
+                  <pre>El precio se calcula
+al apretar el boton
+
+Cambia el monto:
+  el total se
+  actualiza solo
+
+Descuento: la pagina
+decide sola</pre>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">00:12</span>
+          <span class="hasta">→ 00:40</span>
+          <span class="dura">28 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 1 — Variables y tipos</h3>
+          <p class="meta">Archivo <code>01-variables.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 12 min</span>
+              <ul>
+                <li>Dónde vive el JavaScript: la etiqueta <code>&lt;script&gt;</code> al final del <code>&lt;body&gt;</code>. Por qué al final y no arriba — es el error 01 de la lista y conviene quemarlo ya.</li>
+                <li><code>console.log()</code> y la consola del navegador (F12). Insistir: <strong>la consola no es opcional</strong>, es donde el navegador explica qué salió mal. Abrirla en el proyector y dejarla abierta el resto de la clase.</li>
+                <li>Una variable es una caja con nombre. <code>let</code> cuando el valor va a cambiar, <code>const</code> cuando no. Regla práctica: arrancar siempre con <code>const</code> y pasar a <code>let</code> solo si hace falta reasignar.</li>
+                <li>Los tres tipos que importan hoy: texto (<code>string</code>, entre comillas), número (<code>number</code>, sin comillas) y booleano (<code>true</code> / <code>false</code>). Mostrar <code>typeof</code>.</li>
+                <li>El tema del bloque: <code>"5" + 3</code> da <code>"53"</code> y <code>"5" * 3</code> da <code>15</code>. Todo lo que sale de un <code>input</code> es texto, siempre, aunque el campo diga <code>type="number"</code>. Se arregla con <code>Number()</code>.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">En vivo · 10 min</span>
+              <p>Recorrer las cajas de <code>01-variables.html</code> apretando cada botón antes de leer el código. Primero se ve el efecto, después se explica la línea. En la caja 5 provocar el error a propósito: sumar dos campos sin <code>Number()</code>, ver el <code>"1050"</code>, y arreglarlo delante de ellos.</p>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 6 min</span>
+              <p>En el mismo archivo: agregar una variable con el nombre propio y mostrar un saludo con la edad. Después cambiar <code>const</code> por una reasignación y leer el error <code>Assignment to constant variable</code> en la consola. Ese error tiene que dolerles una vez hoy y nunca más.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">00:40</span>
+          <span class="hasta">→ 01:05</span>
+          <span class="dura">25 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 2 — Decisiones: if / else</h3>
+          <p class="meta">Archivo <code>02-condicionales.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 10 min</span>
+              <ul>
+                <li><code>if (condición) { ... } else { ... }</code>. Leerlo en voz alta como se lee en castellano: <em>si pasa esto, hacé esto; si no, esto otro</em>.</li>
+                <li>Los comparadores: <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>===</code>, <code>!==</code>. Aclarar de una vez: <code>=</code> guarda, <code>===</code> compara. Es el error 02 de la lista.</li>
+                <li>Cadena de <code>else if</code> para más de dos caminos, y por qué el orden importa: la primera condición que se cumple gana y las demás no se evalúan.</li>
+                <li><code>&amp;&amp;</code> (las dos), <code>||</code> (alguna), <code>!</code> (lo contrario). Un ejemplo de cada uno, sin teoría de lógica booleana.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">En vivo · 9 min</span>
+              <p>Codear con ellos el descuento por monto: menos de ₲500.000 no tiene descuento, de ₲500.000 a ₲2.000.000 tiene 5%, de ahí para arriba 10%. Escribir primero la versión con las condiciones al revés, ver que todos los montos caen en el primer <code>if</code>, y arreglar el orden. El bug es el contenido del bloque.</p>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 6 min</span>
+              <p>Agregar un cuarto tramo al descuento, y un <code>if</code> que avise si el monto es negativo. Quien termina antes: que el aviso diga además cuánto falta para el siguiente tramo.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque recreo">
+        <div class="reloj">
+          <span class="desde">01:05</span>
+          <span class="hasta">→ 01:15</span>
+          <span class="dura">10 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Recreo</h3>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">01:15</span>
+          <span class="hasta">→ 01:36</span>
+          <span class="dura">21 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 3 — Repetir: ciclos</h3>
+          <p class="meta">Archivo <code>03-ciclos.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 9 min</span>
+              <ul>
+                <li>El <code>for</code> tiene tres partes y hay que nombrarlas siempre igual: <strong>dónde arranca</strong> (<code>let i = 1</code>), <strong>hasta cuándo</strong> (<code>i &lt;= 10</code>) y <strong>cómo avanza</strong> (<code>i++</code>).</li>
+                <li>Escribir la tabla del 7 a mano en el pizarrón, contar las líneas, y mostrar el <code>for</code> de tres líneas que hace lo mismo. Ese contraste es el bloque entero.</li>
+                <li><code>while</code> en una línea: el mismo ciclo cuando no se sabe cuántas veces va a repetir. Mostrar un ciclo infinito a propósito (sin <code>i++</code>), que la pestaña se cuelgue, y cerrarla. Es el error 09.</li>
+                <li><code>for...of</code> para recorrer texto o listas sin llevar la cuenta a mano. Se usa fuerte en el bloque 5.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">En vivo · 7 min</span>
+              <p>Las cuotas de la calculadora: dado un monto y una cantidad de cuotas, imprimir cuota por cuota con su número y su valor. Sale del bloque y entra directo al integrador.</p>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 5 min</span>
+              <p>Imprimir los números del 1 al 20 pero solo los pares, de dos maneras: con un <code>if</code> adentro del ciclo, y cambiando el <code>i++</code> por <code>i += 2</code>. Preguntar cuál prefieren y por qué.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">01:36</span>
+          <span class="hasta">→ 01:58</span>
+          <span class="dura">22 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 4 — Funciones</h3>
+          <p class="meta">Archivo <code>04-funciones.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 9 min</span>
+              <ul>
+                <li>Una función es una receta con nombre: se escribe una vez y se usa muchas. Declarar con <code>function nombre(parametros) { ... }</code> y llamar con <code>nombre(valores)</code>.</li>
+                <li>Parámetros vs. argumentos, sin pelearse con las palabras: el paréntesis de arriba es el molde, el de abajo son los datos reales.</li>
+                <li><code>return</code> devuelve un valor y <strong>corta</strong> la función ahí mismo. Una función sin <code>return</code> devuelve <code>undefined</code>, que es el error 07.</li>
+                <li>Llamarla sin paréntesis (<code>calcularIva</code> en vez de <code>calcularIva()</code>) no la ejecuta: muestra la función. Mostrarlo en la consola, porque lo van a hacer.</li>
+                <li>Alcance en una frase: lo que se declara adentro de la función existe solo adentro.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">En vivo · 8 min</span>
+              <p>Tomar el cálculo del descuento del bloque 2, que quedó suelto, y meterlo dentro de <code>calcularDescuento(monto)</code>. Llamarlo tres veces con montos distintos. La idea que tiene que quedar: <strong>el código repetido se convierte en una función</strong>.</p>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 5 min</span>
+              <p>Escribir <code>calcularIva(monto)</code> con el 10% paraguayo y <code>convertirADolares(guaranies, cotizacion)</code>. Que las usen combinadas: IVA primero, conversión después.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque recreo">
+        <div class="reloj">
+          <span class="desde">01:58</span>
+          <span class="hasta">→ 02:08</span>
+          <span class="dura">10 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Recreo</h3>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">02:08</span>
+          <span class="hasta">→ 02:26</span>
+          <span class="dura">18 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 5 — Arrays</h3>
+          <p class="meta">Archivo <code>05-arrays.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 7 min</span>
+              <ul>
+                <li>Un array es una caja con muchos compartimentos numerados. <code>const precios = [290000, 75000, 2200000]</code>.</li>
+                <li>Se cuenta desde <strong>cero</strong>: el primero es <code>precios[0]</code> y el último es <code>precios[precios.length - 1]</code>. Escribir <code>precios[3]</code> en un array de 3 y ver <code>undefined</code> — es el error 08.</li>
+                <li><code>push</code> agrega al final, <code>pop</code> saca el último, <code>length</code> dice cuántos hay. <code>includes</code> responde si algo está.</li>
+                <li>Array + ciclo es la combinación más usada de la clase: recorrer y acumular un total, o recorrer y quedarse con el máximo.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">En vivo · 7 min</span>
+              <p>Un array con los precios de cuatro productos: sumar el total con un <code>for</code>, y después buscar el más caro guardando el máximo en una variable. Dibujar en el pizarrón cómo cambia la variable en cada vuelta, valor por valor.</p>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 4 min</span>
+              <p>Sacar el promedio, y contar cuántos productos pasan de ₲400.000. Los dos con el mismo esqueleto: variable afuera, ciclo, actualizar adentro.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque clave">
+        <div class="reloj">
+          <span class="desde">02:26</span>
+          <span class="hasta">→ 02:52</span>
+          <span class="dura">26 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Bloque 6 — Integrador: la página responde</h3>
+          <p class="meta">Carpeta <code>06-dom-eventos/</code> · se codea en vivo desde el HTML vacío</p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Teoría · 8 min</span>
+              <ul>
+                <li>El DOM en una frase: el navegador convierte el HTML en objetos que el JavaScript puede tocar.</li>
+                <li>Tres verbos y nada más: <strong>buscar</strong> (<code>document.getElementById</code>), <strong>leer o escribir</strong> (<code>.value</code> para campos, <code>.textContent</code> para texto) y <strong>escuchar</strong> (<code>addEventListener("click", ...)</code>).</li>
+                <li><code>value</code> contra <code>textContent</code>: los campos tienen <code>value</code>, todo lo demás tiene <code>textContent</code>. Confundirlos es el error 05.</li>
+                <li>Acá aparece el primer archivo <code>js/app.js</code> separado del HTML, con <code>defer</code>. No se explica todavía: es el gancho de la clase 4.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">En vivo, con ellos · 14 min</span>
+              <p>Construir la calculadora de presupuesto en cinco pasos, cada uno probado en el navegador antes de seguir:</p>
+              <ul>
+                <li><strong>Paso 1</strong> — buscar los tres elementos con <code>getElementById</code> y mostrarlos en la consola.</li>
+                <li><strong>Paso 2</strong> — escuchar el click y mostrar un texto fijo. Todavía no calcula nada, pero <em>la página ya responde</em>.</li>
+                <li><strong>Paso 3</strong> — leer el monto con <code>.value</code>, convertirlo con <code>Number()</code> y multiplicarlo. Bloque 1 en acción.</li>
+                <li><strong>Paso 4</strong> — el descuento con la función del bloque 4, y el detalle de cuotas con el <code>for</code> del bloque 3.</li>
+                <li><strong>Paso 5</strong> — validar: si el campo está vacío o el monto es cero, avisar en rojo y no calcular. Bloque 2 en acción.</li>
+              </ul>
+            </li>
+            <li>
+              <span class="rol">Alumnos · 4 min</span>
+              <p>Agregar un botón de <em>Limpiar</em> que vacíe los campos y el resultado. Tres líneas, y cierra el círculo: buscar, escribir, escuchar.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="bloque">
+        <div class="reloj">
+          <span class="desde">02:52</span>
+          <span class="hasta">→ 03:00</span>
+          <span class="dura">8 min</span>
+        </div>
+        <div class="cuerpo">
+          <h3>Cierre, tarea y adelanto</h3>
+          <p class="meta">Archivo <code>07-ejercicios.html</code></p>
+          <ul class="tarea-lista">
+            <li>
+              <span class="rol">Cierre · 3 min</span>
+              <p>Volver al pizarrón y tachar las seis palabras juntas, mostrando dónde vive cada una en la calculadora terminada. Repetir la frase del día: <strong>el HTML muestra, el JavaScript decide</strong>.</p>
+            </li>
+            <li>
+              <span class="rol">Tarea · 3 min</span>
+              <p>Los cinco ejercicios de <code>07-ejercicios.html</code>, cada uno con su pista. El quinto es el desafío: la lista de compras con array, ciclo y DOM juntos.</p>
+            </li>
+            <li>
+              <span class="rol">Adelanto · 2 min</span>
+              <p>Mostrar el <code>js/app.js</code> del bloque 6 y contar que la clase que viene todo el JavaScript se muda ahí, se reescribe con la sintaxis que se usa hoy, y se suman librerías de otros con una línea.</p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>Los diez errores que van a cometer</h2>
+    <p class="intro">Anticiparlos ahorra la mitad del tiempo de asistencia individual. Conviene dejarlos escritos en un costado del pizarrón durante toda la clase, y señalar el número cuando aparezcan.</p>
+    <div class="avisos">
+      <div>
+        <span class="num">01</span>
+        <div>
+          <h4>El <code>&lt;script&gt;</code> antes del HTML</h4>
+          <p>Error <code>Cannot read properties of null</code>. El JavaScript buscó un elemento que todavía no existía. Hoy la regla es simple: el <code>&lt;script&gt;</code> va al final del <code>&lt;body&gt;</code>.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">02</span>
+        <div>
+          <h4><code>=</code> en vez de <code>===</code> dentro del <code>if</code></h4>
+          <p><code>if (edad = 18)</code> no compara: asigna 18 y da siempre verdadero. Se detecta porque <em>todos</em> los casos entran por la misma rama.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">03</span>
+        <div>
+          <h4>Sumar dos campos y obtener <code>"1050"</code></h4>
+          <p>Todo lo que sale de un <code>input</code> es texto, incluso con <code>type="number"</code>. <code>"10" + "50"</code> pega los textos. Siempre <code>Number(campo.value)</code>.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">04</span>
+        <div>
+          <h4>Llamar a la función sin paréntesis</h4>
+          <p><code>calcularTotal</code> no ejecuta nada, muestra la función. Hace falta <code>calcularTotal()</code>. En la consola se ve clarísimo, por eso la consola está abierta.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">05</span>
+        <div>
+          <h4>Confundir <code>value</code> con <code>textContent</code></h4>
+          <p>Los <code>input</code> tienen <code>value</code>; los <code>p</code>, <code>span</code> y <code>div</code> tienen <code>textContent</code>. Cruzarlos devuelve <code>undefined</code> y no tira error, que es lo peor.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">06</span>
+        <div>
+          <h4>La variable declarada dentro del <code>if</code></h4>
+          <p>Si se declara con <code>let</code> adentro de las llaves, afuera no existe. Se declara antes del <code>if</code> y se le asigna adentro.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">07</span>
+        <div>
+          <h4>La función que se olvidó del <code>return</code></h4>
+          <p>Calcula bien, hace el <code>console.log</code>, y el resultado sale <code>undefined</code>. Diferenciar mostrar de devolver: solo <code>return</code> entrega el valor a quien la llamó.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">08</span>
+        <div>
+          <h4>Contar los arrays desde uno</h4>
+          <p>En un array de tres elementos, el último es <code>[2]</code>, no <code>[3]</code>. <code>precios[precios.length]</code> es siempre <code>undefined</code>: va con <code>- 1</code>.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">09</span>
+        <div>
+          <h4>Ciclo infinito y pestaña colgada</h4>
+          <p>Falta el <code>i++</code> o la condición nunca se vuelve falsa. La pestaña se congela y hay que cerrarla. Mostrarlo a propósito una vez, en el bloque 3, y explicar cómo salir.</p>
+        </div>
+      </div>
+      <div>
+        <span class="num">10</span>
+        <div>
+          <h4>No abrir la consola</h4>
+          <p>El alumno dice "no funciona" mirando una página en blanco, con el error escrito en rojo a un F12 de distancia. Primera pregunta de cada asistencia individual: <strong>¿qué dice la consola?</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>Archivos de la clase</h2>
+    <p class="intro">Todos en la carpeta <code>clase3/</code> del repositorio. Se abren con doble click en el navegador, sin servidor y sin internet: no usan ninguna librería externa.</p>
+    <div class="tabla-envoltorio">
+      <table>
+        <thead>
+          <tr>
+            <th>Ruta</th>
+            <th>Contenido</th>
+            <th>Momento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ruta">plan-de-clase.html</td>
+            <td>Este documento: cronograma, objetivos, errores frecuentes y plan de recorte</td>
+            <td>Preparación</td>
+          </tr>
+          <tr>
+            <td class="ruta">01-variables.html</td>
+            <td>console.log, let y const, los tres tipos, typeof y el problema de texto contra número</td>
+            <td>Bloque 1</td>
+          </tr>
+          <tr>
+            <td class="ruta">02-condicionales.html</td>
+            <td>if / else if / else, comparadores, &amp;&amp; y ||, y el descuento por tramos de monto</td>
+            <td>Bloque 2</td>
+          </tr>
+          <tr>
+            <td class="ruta">03-ciclos.html</td>
+            <td>for con sus tres partes, while, for...of, la tabla de multiplicar y el plan de cuotas</td>
+            <td>Bloque 3</td>
+          </tr>
+          <tr>
+            <td class="ruta">04-funciones.html</td>
+            <td>Declarar, parámetros, return, alcance, y las funciones de IVA y conversión a dólares</td>
+            <td>Bloque 4</td>
+          </tr>
+          <tr>
+            <td class="ruta">05-arrays.html</td>
+            <td>Índices desde cero, push y pop, length, y array + ciclo para total, máximo y promedio</td>
+            <td>Bloque 5</td>
+          </tr>
+          <tr>
+            <td class="ruta">06-dom-eventos/</td>
+            <td>La calculadora de presupuesto en cinco pasos comentados. El integrador de la clase</td>
+            <td>Bloque 6</td>
+          </tr>
+          <tr>
+            <td class="ruta">07-ejercicios.html</td>
+            <td>Cinco ejercicios con pistas y solución escondida, más el desafío de la lista de compras</td>
+            <td>Tarea</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="cierre">
+      <h3>Si el tiempo se acorta</h3>
+      <p>La calculadora del bloque 6 es el objetivo de la clase, no un extra: es el único momento en que el alumno ve para qué servían las cinco herramientas anteriores. El orden de recorte es este:</p>
+      <ul>
+        <li>Primero se sacan los ejercicios de alumnos de los bloques 3, 4 y 5, y pasan a ser tarea.</li>
+        <li>Del bloque 3 se puede saltear <code>while</code> y <code>for...of</code>: con el <code>for</code> clásico alcanza para todo lo que viene después.</li>
+        <li>Del bloque 5, el promedio y el conteo pueden caer; el total con <code>for</code> no, porque se usa en el integrador.</li>
+        <li>Del bloque 1 no se recorta nada. Si no queda claro que un campo devuelve texto, el resto de la clase se cae sola.</li>
+        <li>Del bloque 6, si el reloj aprieta, se entregan los pasos 1 y 2 ya escritos y se codea desde el paso 3. El botón de limpiar es lo primero que se cae.</li>
+        <li>Nunca se recorta la apertura. Son 12 minutos que le dan sentido a las otras tres horas.</li>
+      </ul>
+      <p style="margin-top:14px;margin-bottom:0"><b>Sobre el estilo del código de hoy:</b> los archivos 01 al 05 usan <code>onclick</code> en el HTML y funciones declaradas con <code>function</code>, a propósito. Es la forma más corta de llegar al primer resultado con un grupo que recién empieza, y es exactamente el código que la clase 4 va a limpiar cuando aparezcan <code>addEventListener</code>, las arrow functions y los template literals. Conviene decírselo hoy en una frase, para que la clase que viene se lea como una mejora y no como una contradicción.</p>
+    </div>
+  </section>
+
+  <footer>Clase 03 · Programación Web Fullstack · 20 de agosto de 2026</footer>
+
+</div>
+
+</body>
+
+</html>

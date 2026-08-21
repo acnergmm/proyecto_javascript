@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios - Clase 3</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 820px; line-height: 1.6; }
+        .ej { border-left: 4px solid #1976d2; padding: 14px 18px; margin-bottom: 26px; background: #f5f7f9; border-radius: 0 6px 6px 0; }
+        .ej h3 { margin-top: 0; }
+        .ej.desafio { border-left-color: #e53935; }
+        .pista { color: #607d8b; font-size: 14px; font-style: italic; }
+        .zona { border: 1px dashed #b0bec5; padding: 14px; margin-top: 12px; background: white; border-radius: 4px; }
+        .grande { font-size: 26px; color: #1976d2; font-weight: bold; }
+        .monospace { font-family: Consolas, monospace; font-size: 14px; white-space: pre-line; }
+        input { padding: 8px; border: 1px solid #b0bec5; border-radius: 4px; }
+        button { padding: 8px 14px; margin: 3px 3px 3px 0; cursor: pointer; border: none;
+                 border-radius: 4px; background: #1976d2; color: white; }
+        ul { padding-left: 20px; }
+        code { background: #eceff1; padding: 2px 5px; border-radius: 3px; font-size: 13px; }
+        label { font-size: 14px; }
+        #ej5_lista { list-style: none; padding: 0; }
+        #ej5_lista li { background: #eceff1; padding: 8px; margin-bottom: 4px; border-radius: 4px;
+                        display: flex; justify-content: space-between; }
+    </style>
+</head>
+
+<body>
+    <h2>Ejercicios — Clase 3</h2>
+    <p>
+        <b>Regla general:</b> variables con <code>const</code> o <code>let</code> (nunca
+        <code>var</code>), y todo lo que salga de un campo pasa por <code>Number()</code> antes de
+        hacer cuentas. Los botones ya tienen su <code>id</code>: conectalos con
+        <code>addEventListener</code> como en el bloque 6. Escribi tu codigo en el
+        <code>&lt;script&gt;</code> del final de este archivo.
+    </p>
+    <p>
+        <b>Antes de pedir ayuda:</b> abri la consola con F12 y leé el error. La mitad de los
+        problemas se resuelven ahi.
+    </p>
+
+    <!-- ============ 1 ============ -->
+    <div class="ej">
+        <h3>1. Conversor de guaranies a dolares</h3>
+        <p>El usuario carga un monto y una cotizacion, y la pagina muestra cuanto es en dolares.</p>
+        <ul>
+            <li>El calculo va dentro de una funcion <code>convertir(guaranies, cotizacion)</code> que
+                devuelve el resultado con <code>return</code>.</li>
+            <li>Mostrar el resultado con dos decimales: <code>resultado.toFixed(2)</code>.</li>
+            <li>Si algun campo esta vacio, mostrar "Faltan datos" en vez de <code>NaN</code>.</li>
+        </ul>
+        <p class="pista">Pista: si te aparece <code>NaN</code>, es que le pediste una cuenta a un texto vacio.</p>
+        <div class="zona">
+            <label>Guaranies: <input id="ej1_monto" type="number" value="1500000"></label>
+            <label>Cotizacion: <input id="ej1_cotizacion" type="number" value="7300"></label>
+            <button id="ej1_boton">Convertir</button>
+            <p class="grande" id="ej1_resultado">—</p>
+        </div>
+    </div>
+
+    <!-- ============ 2 ============ -->
+    <div class="ej">
+        <h3>2. Escala de notas</h3>
+        <p>Segun la nota (0 a 100), la pagina dice en que categoria cae.</p>
+        <ul>
+            <li>90 o mas: <b>Excelente</b> · 70 a 89: <b>Aprobado</b> · 50 a 69: <b>Recuperatorio</b> · menos de 50: <b>Reprobado</b></li>
+            <li>Usar una cadena de <code>if</code> / <code>else if</code> / <code>else</code>, del tramo mas alto al mas bajo.</li>
+            <li>Si la nota es mayor a 100 o menor a 0, avisar que el dato es invalido.</li>
+        </ul>
+        <p class="pista">Pista: probá con 95, 70, 69 y 0. Los bordes de cada tramo son donde aparecen los errores.</p>
+        <div class="zona">
+            <label>Nota: <input id="ej2_nota" type="number" value="85"></label>
+            <button id="ej2_boton">Evaluar</button>
+            <p class="grande" id="ej2_resultado">—</p>
+        </div>
+    </div>
+
+    <!-- ============ 3 ============ -->
+    <div class="ej">
+        <h3>3. La tabla de multiplicar en la pagina</h3>
+        <p>
+            En el bloque 3 la tabla la mostramos en un solo bloque de texto. Ahora, ademas, marcar
+            los resultados pares.
+        </p>
+        <ul>
+            <li>Un <code>for</code> del 1 al 10 que arme el texto linea por linea.</li>
+            <li>Si el resultado es par, agregarle un <code>*</code> al final de la linea.</li>
+            <li>Para saber si un numero es par: <code>numero % 2 === 0</code> (el resto de dividir por 2 es cero).</li>
+        </ul>
+        <p class="pista">Pista: el salto de linea dentro del texto se escribe <code>"\n"</code>, y el CSS de <code>.monospace</code> ya lo respeta.</p>
+        <div class="zona">
+            <label>Tabla del: <input id="ej3_numero" type="number" value="7"></label>
+            <button id="ej3_boton">Mostrar</button>
+            <div class="monospace" id="ej3_resultado">—</div>
+        </div>
+    </div>
+
+    <!-- ============ 4 ============ -->
+    <div class="ej">
+        <h3>4. Estadisticas de un array</h3>
+        <p>
+            Con el array de sueldos que ya esta en el codigo, mostrar cuatro datos: cuantos hay, el
+            total, el promedio y el mas alto.
+        </p>
+        <ul>
+            <li>Un solo <code>for</code> alcanza para el total y el maximo a la vez.</li>
+            <li>Cada dato se calcula en su propia funcion con <code>return</code>:
+                <code>calcularTotal(sueldos)</code>, <code>calcularPromedio(sueldos)</code>,
+                <code>buscarMaximo(sueldos)</code>.</li>
+            <li>Mostrar los numeros con puntos de miles: <code>numero.toLocaleString("es-PY")</code>.</li>
+        </ul>
+        <p class="pista">Pista: para el maximo, arranca suponiendo que el primero es el mayor y recorre desde el indice 1.</p>
+        <div class="zona">
+            <button id="ej4_boton">Calcular</button>
+            <div class="monospace" id="ej4_resultado">—</div>
+        </div>
+    </div>
+
+    <!-- ============ 5 ============ -->
+    <div class="ej desafio">
+        <h3>5. Desafio: lista de compras</h3>
+        <p>
+            El integrador de la tarea. Junta todo: array, ciclo, funciones, <code>if</code> y eventos.
+        </p>
+        <ul>
+            <li>El usuario carga un producto y un precio, aprieta <b>Agregar</b>, y el item aparece en la lista.</li>
+            <li>Los datos se guardan en dos arrays en paralelo (<code>productos</code> y <code>precios</code>), como en el archivo 05.</li>
+            <li>Cada vez que se agrega algo, volver a dibujar la lista completa recorriendo el array con un <code>for</code>.</li>
+            <li>Mostrar el total abajo, y la cantidad de items.</li>
+            <li>Si el producto esta vacio o el precio no es mayor a cero, no agregar nada y avisar.</li>
+            <li>El boton <b>Vaciar</b> deja los arrays en cero y limpia la lista.</li>
+        </ul>
+        <p class="pista">
+            Pista: para dibujar la lista, armá el HTML en una variable de texto dentro del ciclo y
+            recien al final asignalo a <code>lista.innerHTML</code>. Si lo asignas adentro del ciclo,
+            cada vuelta borra la anterior.
+        </p>
+        <div class="zona">
+            <label>Producto: <input id="ej5_producto" type="text" placeholder="Yerba"></label>
+            <label>Precio: <input id="ej5_precio" type="number" placeholder="35000"></label>
+            <button id="ej5_agregar">Agregar</button>
+            <button id="ej5_vaciar" style="background:#78909c">Vaciar</button>
+            <p id="ej5_aviso" style="color:#c62828;font-size:14px;min-height:20px"></p>
+            <ul id="ej5_lista"></ul>
+            <p class="grande" id="ej5_total">Total: 0</p>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================
+        // Tu codigo va aca. Un ejercicio por bloque.
+        // =========================================================
+
+
+        // ---------- 1. Conversor ----------
+        // const ej1Boton = document.getElementById("ej1_boton");
+        // ej1Boton.addEventListener("click", ...);
+
+
+        // ---------- 2. Escala de notas ----------
+
+
+        // ---------- 3. Tabla de multiplicar ----------
+
+
+        // ---------- 4. Estadisticas ----------
+        // Estos son los datos del ejercicio 4:
+        const sueldos = [2680000, 3400000, 5200000, 2680000, 8100000, 4300000];
+
+
+        // ---------- 5. Lista de compras ----------
+        // Arrancan vacios y se van llenando con push:
+        const productos = [];
+        const precios = [];
+    </script>
+</body>
+
+</html>

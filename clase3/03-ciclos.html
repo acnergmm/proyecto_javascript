@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>3 - Repetir: ciclos</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 780px; }
+        .caja { border: 1px solid #cfd8dc; border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+        .caja h3 { margin-top: 0; color: #1976d2; }
+        .codigo { font-family: Consolas, monospace; font-size: 13px; background: #eceff1; padding: 8px 12px; border-radius: 4px; white-space: pre-line; }
+        .mal { background: #fbe9e7; border-left: 3px solid #d84315; font-family: Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 4px; }
+        .partes { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+        .parte { border: 1px solid #90caf9; background: #e3f2fd; border-radius: 4px; padding: 8px 12px; font-size: 13px; }
+        .parte b { display: block; font-family: Consolas, monospace; color: #1565c0; }
+        .aviso { background: #fff9c4; border-left: 3px solid #fbc02d; padding: 10px 12px; font-size: 14px; }
+        button { padding: 8px 14px; margin: 4px 4px 4px 0; cursor: pointer; }
+        input { padding: 6px 8px; width: 130px; }
+        #salida { font-family: Consolas, monospace; font-size: 14px; background: #eceff1; border-radius: 4px; padding: 12px; white-space: pre-line; min-height: 40px; }
+        label { font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <h2>Ciclos: hacer cien veces lo mismo sin escribirlo cien veces</h2>
+    <p>Todo lo de hoy se puede hacer copiando y pegando. La pregunta es que pasa cuando son mil.</p>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>1. El for y sus tres partes</h3>
+        <div class="codigo">for (let i = 1; i &lt;= 10; i++) {
+    console.log(i);
+}</div>
+        <div class="partes">
+            <div class="parte"><b>let i = 1</b>donde arranca</div>
+            <div class="parte"><b>i &lt;= 10</b>hasta cuando</div>
+            <div class="parte"><b>i++</b>como avanza</div>
+        </div>
+        <p>
+            Esas tres partes van siempre, en ese orden, separadas por punto y coma.
+            <code>i++</code> es la forma corta de <code>i = i + 1</code>.
+        </p>
+        <button onclick="contarHastaDiez()">Contar del 1 al 10</button>
+        <button onclick="contarAlReves()">Contar del 10 al 1</button>
+        <button onclick="contarDeDosEnDos()">De dos en dos (i += 2)</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>2. La tabla de multiplicar</h3>
+        <p>
+            A mano son diez lineas casi identicas. Con un <code>for</code> son tres, y sirve para
+            cualquier numero.
+        </p>
+        <p><label>Tabla del: <input id="tabla" type="number" value="7"></label></p>
+        <button onclick="mostrarTabla()">Mostrar la tabla</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>3. El plan de cuotas</h3>
+        <p>
+            Esto va derecho a la calculadora del final de la clase: un monto, una cantidad de cuotas,
+            y el detalle cuota por cuota.
+        </p>
+        <p>
+            <label>Monto: <input id="monto" type="number" value="1200000"></label>
+            <label>Cuotas: <input id="cuotas" type="number" value="6"></label>
+        </p>
+        <button onclick="mostrarCuotas()">Ver el plan</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>4. while: cuando no sabes cuantas vueltas son</h3>
+        <div class="codigo">let saldo = 1000000;
+while (saldo > 0) {
+    saldo = saldo - 250000;
+}</div>
+        <p>
+            El <code>for</code> se usa cuando sabes la cantidad de vueltas; el <code>while</code>
+            cuando la condicion depende de otra cosa. Aca vamos descontando hasta que el saldo se
+            termine, sin saber de antemano cuantas veces va a ser.
+        </p>
+        <div class="mal">while (saldo > 0) { }&nbsp;&nbsp;// sin cambiar el saldo -> ciclo infinito, pestaña colgada</div>
+        <button onclick="descontarSaldo()">Descontar hasta cero</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>5. for...of: recorrer sin llevar la cuenta</h3>
+        <div class="codigo">for (const letra of "Paraguay") {
+    console.log(letra);
+}</div>
+        <p>
+            Cuando lo unico que queres es pasar por todos los elementos y no te importa el numero de
+            vuelta, <code>for...of</code> es mas corto y se lee mejor. En la clase que viene lo vamos
+            a usar sobre listas.
+        </p>
+        <button onclick="deletrear()">Deletrear una palabra</button>
+    </div>
+
+    <div class="aviso">
+        Si la pestaña se congela, es un ciclo infinito: cerrala y revisa que la variable del
+        <code>while</code> cambie adentro del ciclo.
+    </div>
+
+    <div id="salida"></div>
+
+    <script>
+        const salida = document.getElementById("salida");
+
+
+        // =========================================================
+        // 1 - El for basico
+        // =========================================================
+        function contarHastaDiez() {
+            let texto = "";
+
+            for (let i = 1; i <= 10; i++) {
+                texto = texto + i + " ";
+            }
+
+            salida.textContent = texto;
+        }
+
+        function contarAlReves() {
+            let texto = "";
+
+            // arranca en 10, sigue mientras sea >= 1, y baja de uno en uno
+            for (let i = 10; i >= 1; i--) {
+                texto = texto + i + " ";
+            }
+
+            salida.textContent = texto;
+        }
+
+        function contarDeDosEnDos() {
+            let texto = "";
+
+            // i += 2 es lo mismo que i = i + 2
+            for (let i = 2; i <= 20; i += 2) {
+                texto = texto + i + " ";
+            }
+
+            salida.textContent = "Pares del 2 al 20: " + texto;
+        }
+
+
+        // =========================================================
+        // 2 - Tabla de multiplicar
+        // =========================================================
+        function mostrarTabla() {
+            const numero = Number(document.getElementById("tabla").value);
+            let texto = "";
+
+            for (let i = 1; i <= 10; i++) {
+                texto = texto + numero + " x " + i + " = " + (numero * i) + "\n";
+            }
+
+            salida.textContent = texto;
+        }
+
+
+        // =========================================================
+        // 3 - Plan de cuotas
+        // =========================================================
+        function mostrarCuotas() {
+            const monto = Number(document.getElementById("monto").value);
+            const cuotas = Number(document.getElementById("cuotas").value);
+
+            const valorCuota = monto / cuotas;
+            let texto = "Total: " + monto.toLocaleString("es-PY") + " en " + cuotas + " cuotas\n\n";
+
+            for (let i = 1; i <= cuotas; i++) {
+                texto = texto + "Cuota " + i + " de " + cuotas + ": " +
+                    valorCuota.toLocaleString("es-PY") + "\n";
+            }
+
+            salida.textContent = texto;
+        }
+
+
+        // =========================================================
+        // 4 - while
+        // =========================================================
+        function descontarSaldo() {
+            let saldo = 1000000;
+            let vuelta = 0;
+            let texto = "";
+
+            while (saldo > 0) {
+                vuelta = vuelta + 1;
+                saldo = saldo - 250000;         // si borras esta linea, la pestaña se cuelga
+                texto = texto + "Pago " + vuelta + " -> queda " + saldo.toLocaleString("es-PY") + "\n";
+            }
+
+            salida.textContent = texto + "\nHicieron falta " + vuelta + " pagos";
+        }
+
+
+        // =========================================================
+        // 5 - for...of
+        // =========================================================
+        function deletrear() {
+            let texto = "";
+
+            for (const letra of "Paraguay") {
+                texto = texto + letra + " - ";
+            }
+
+            salida.textContent = texto;
+        }
+    </script>
+</body>
+
+</html>

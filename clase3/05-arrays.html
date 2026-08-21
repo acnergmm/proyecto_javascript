@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>5 - Arrays</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 780px; }
+        .caja { border: 1px solid #cfd8dc; border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+        .caja h3 { margin-top: 0; color: #1976d2; }
+        .codigo { font-family: Consolas, monospace; font-size: 13px; background: #eceff1; padding: 8px 12px; border-radius: 4px; white-space: pre-line; }
+        .mal, .bien { font-family: Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 4px; }
+        .mal { background: #fbe9e7; border-left: 3px solid #d84315; }
+        .bien { background: #e8f5e9; border-left: 3px solid #2e7d32; margin-top: 6px; }
+        .aviso { background: #fff9c4; border-left: 3px solid #fbc02d; padding: 10px 12px; font-size: 14px; }
+        .cajitas { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+        .cajita { border: 1px solid #90caf9; background: #e3f2fd; border-radius: 4px; padding: 8px 10px; font-family: Consolas, monospace; font-size: 13px; text-align: center; }
+        .cajita span { display: block; color: #1565c0; font-size: 11px; }
+        button { padding: 8px 14px; margin: 4px 4px 4px 0; cursor: pointer; }
+        input { padding: 6px 8px; width: 130px; }
+        #salida { font-family: Consolas, monospace; font-size: 14px; background: #eceff1; border-radius: 4px; padding: 12px; white-space: pre-line; min-height: 40px; }
+        label { font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <h2>Arrays: muchos datos con un solo nombre</h2>
+    <p>
+        Cuatro precios se pueden guardar en cuatro variables. Cuarenta, no. Para eso esta el array:
+        una caja con muchos compartimentos numerados.
+    </p>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>1. Crear y leer por indice</h3>
+        <div class="codigo">const precios = [290000, 75000, 2200000, 440000];</div>
+        <div class="cajitas">
+            <div class="cajita"><span>[0]</span>290000</div>
+            <div class="cajita"><span>[1]</span>75000</div>
+            <div class="cajita"><span>[2]</span>2200000</div>
+            <div class="cajita"><span>[3]</span>440000</div>
+        </div>
+        <p>
+            <b>Se cuenta desde cero.</b> El primero es <code>precios[0]</code> y el ultimo es
+            <code>precios[precios.length - 1]</code>. <code>length</code> dice cuantos hay.
+        </p>
+        <div class="mal">precios[4]&nbsp;&nbsp;// undefined: ese compartimento no existe</div>
+        <div class="bien">precios[precios.length - 1]&nbsp;// el ultimo, siempre</div>
+        <button onclick="leerIndices()">Leer primero, ultimo y length</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>2. Agregar, sacar y buscar</h3>
+        <div class="codigo">productos.push("Webcam");&nbsp;&nbsp;// agrega al final
+productos.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// saca el ultimo
+productos.includes("Mouse");&nbsp;// true o false</div>
+        <p>
+            Fijate que el array se declara con <code>const</code> y aun asi se le pueden agregar
+            cosas: lo que no se puede es reemplazar el array entero por otro.
+        </p>
+        <button onclick="agregar()">push</button>
+        <button onclick="sacar()">pop</button>
+        <button onclick="buscar()">includes</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>3. Array + ciclo: el total</h3>
+        <div class="codigo">let total = 0;                       // afuera del ciclo
+for (let i = 0; i &lt; precios.length; i++) {
+    total = total + precios[i];      // se actualiza adentro
+}</div>
+        <p>
+            Este esqueleto es el mas usado de la clase: <b>variable afuera, ciclo, actualizar
+            adentro</b>. Si la declaras adentro, se reinicia en cada vuelta y el total sale mal.
+        </p>
+        <button onclick="sumarTotal()">Sumar el total</button>
+        <button onclick="calcularPromedio()">Sacar el promedio</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>4. Array + ciclo: el mas caro</h3>
+        <p>
+            Mismo esqueleto, pero en vez de sumar comparamos. Arrancamos suponiendo que el primero es
+            el mayor, y cada vez que encontramos uno mas grande lo reemplazamos.
+        </p>
+        <div class="codigo">let mayor = precios[0];
+for (let i = 1; i &lt; precios.length; i++) {
+    if (precios[i] &gt; mayor) {
+        mayor = precios[i];
+    }
+}</div>
+        <button onclick="buscarMayor()">Buscar el mas caro</button>
+        <button onclick="contarCaros()">Contar los de mas de 400.000</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>5. Dos arrays en paralelo</h3>
+        <p>
+            Los nombres en un array y los precios en otro, en el mismo orden: el
+            <code>nombres[i]</code> corresponde al <code>precios[i]</code>. Es la forma mas simple de
+            armar un catalogo antes de aprender objetos.
+        </p>
+        <button onclick="mostrarCatalogo()">Mostrar el catalogo</button>
+    </div>
+
+    <div class="aviso">
+        Cuando algo sale <code>undefined</code> con arrays, el 90% de las veces es un indice de mas:
+        acordate que el ultimo es <code>length - 1</code>.
+    </div>
+
+    <div id="salida"></div>
+
+    <script>
+        const salida = document.getElementById("salida");
+
+        // Los datos de todo el archivo. Los dos arrays van en el mismo orden.
+        const nombres = ["Teclado", "Mouse", "Monitor", "Webcam"];
+        const precios = [290000, 75000, 2200000, 440000];
+
+        // Este lo vamos a modificar con push y pop
+        const carrito = ["Teclado", "Mouse"];
+
+
+        // =========================================================
+        // 1 - Indices
+        // =========================================================
+        function leerIndices() {
+            salida.textContent =
+                "precios[0] = " + precios[0] + "   (el primero)\n" +
+                "precios[3] = " + precios[3] + "   (el ultimo)\n" +
+                "precios[4] = " + precios[4] + "   (no existe)\n" +
+                "precios.length = " + precios.length + "   (cuantos hay)\n" +
+                "precios[precios.length - 1] = " + precios[precios.length - 1];
+        }
+
+
+        // =========================================================
+        // 2 - push, pop, includes
+        // =========================================================
+        function agregar() {
+            carrito.push("Monitor");
+            salida.textContent = "Carrito (" + carrito.length + "): " + carrito.join(", ");
+        }
+
+        function sacar() {
+            const sacado = carrito.pop();       // pop devuelve lo que saco
+            salida.textContent = "Saque " + sacado + ". Quedo: " + carrito.join(", ");
+        }
+
+        function buscar() {
+            if (carrito.includes("Mouse")) {
+                salida.textContent = "El Mouse esta en el carrito";
+            } else {
+                salida.textContent = "El Mouse no esta en el carrito";
+            }
+        }
+
+
+        // =========================================================
+        // 3 - Total y promedio
+        // =========================================================
+        function sumarTotal() {
+            let total = 0;                                  // afuera del ciclo
+
+            for (let i = 0; i < precios.length; i++) {
+                total = total + precios[i];
+            }
+
+            salida.textContent = "Total de los " + precios.length + " productos: " +
+                total.toLocaleString("es-PY");
+        }
+
+        function calcularPromedio() {
+            let total = 0;
+
+            for (let i = 0; i < precios.length; i++) {
+                total = total + precios[i];
+            }
+
+            const promedio = total / precios.length;
+
+            salida.textContent = "Promedio: " + promedio.toLocaleString("es-PY");
+        }
+
+
+        // =========================================================
+        // 4 - Maximo y conteo
+        // =========================================================
+        function buscarMayor() {
+            let mayor = precios[0];         // suponemos que el primero es el mayor
+            let cual = nombres[0];
+
+            for (let i = 1; i < precios.length; i++) {
+                if (precios[i] > mayor) {
+                    mayor = precios[i];
+                    cual = nombres[i];
+                }
+            }
+
+            salida.textContent = "El mas caro es el " + cual + ": " + mayor.toLocaleString("es-PY");
+        }
+
+        function contarCaros() {
+            let cuantos = 0;
+
+            for (let i = 0; i < precios.length; i++) {
+                if (precios[i] > 400000) {
+                    cuantos = cuantos + 1;
+                }
+            }
+
+            salida.textContent = "Hay " + cuantos + " productos de mas de 400.000";
+        }
+
+
+        // =========================================================
+        // 5 - Dos arrays en paralelo
+        // =========================================================
+        function mostrarCatalogo() {
+            let texto = "";
+
+            for (let i = 0; i < nombres.length; i++) {
+                texto = texto + nombres[i] + ": " + precios[i].toLocaleString("es-PY") + "\n";
+            }
+
+            salida.textContent = texto;
+        }
+    </script>
+</body>
+
+</html>

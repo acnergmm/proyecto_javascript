@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>4 - Funciones</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 780px; }
+        .caja { border: 1px solid #cfd8dc; border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+        .caja h3 { margin-top: 0; color: #1976d2; }
+        .codigo { font-family: Consolas, monospace; font-size: 13px; background: #eceff1; padding: 8px 12px; border-radius: 4px; white-space: pre-line; }
+        .mal, .bien { font-family: Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 4px; white-space: pre-line; }
+        .mal { background: #fbe9e7; border-left: 3px solid #d84315; }
+        .bien { background: #e8f5e9; border-left: 3px solid #2e7d32; margin-top: 6px; }
+        .aviso { background: #fff9c4; border-left: 3px solid #fbc02d; padding: 10px 12px; font-size: 14px; }
+        button { padding: 8px 14px; margin: 4px 4px 4px 0; cursor: pointer; }
+        input { padding: 6px 8px; width: 130px; }
+        #salida { font-family: Consolas, monospace; font-size: 14px; background: #eceff1; border-radius: 4px; padding: 12px; white-space: pre-line; min-height: 40px; }
+        label { font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <h2>Funciones: escribirlo una vez y usarlo siempre</h2>
+    <p>Una funcion es una receta con nombre. Se escribe una vez y se usa las veces que haga falta.</p>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>1. Declarar y llamar</h3>
+        <div class="codigo">function saludar(nombre) {      // el molde
+    return "Hola " + nombre;
+}
+
+saludar("Ana");                 // la llamada</div>
+        <p>
+            El parentesis de arriba es el <b>molde</b>: dice que datos espera. El de abajo son los
+            datos <b>reales</b>. La funcion no hace nada hasta que la llamas.
+        </p>
+        <button onclick="probarSaludo()">Llamarla dos veces</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>2. return devuelve, console.log solo muestra</h3>
+        <div class="mal">function calcularIva(monto) {
+    console.log(monto * 0.10);   // muestra y se olvida
+}
+const iva = calcularIva(100000);  // iva queda undefined</div>
+        <div class="bien">function calcularIva(monto) {
+    return monto * 0.10;         // entrega el valor
+}
+const iva = calcularIva(100000);  // iva vale 10000</div>
+        <p>
+            <code>return</code> hace dos cosas: entrega el valor a quien llamo la funcion y
+            <b>corta</b> la ejecucion ahi mismo. Sin <code>return</code>, la funcion devuelve
+            <code>undefined</code>.
+        </p>
+        <button onclick="compararReturn()">Ver la diferencia</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>3. Llamar sin parentesis no ejecuta nada</h3>
+        <div class="mal">calcularIva&nbsp;&nbsp;&nbsp;&nbsp;// muestra la funcion</div>
+        <div class="bien">calcularIva(100000)&nbsp;// la ejecuta</div>
+        <p>Abri la consola (F12) y apreta el boton: vas a ver las dos cosas una debajo de la otra.</p>
+        <button onclick="conYSinParentesis()">Mostrar en la consola</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>4. El descuento del bloque 2, ahora como funcion</h3>
+        <p>
+            En el archivo anterior el calculo del descuento estaba suelto dentro del boton. Si lo
+            necesitamos en otro lugar hay que copiarlo, y si cambia un tramo hay que acordarse de
+            cambiarlo en los dos lados. <b>Codigo repetido = funcion.</b>
+        </p>
+        <div class="codigo">function calcularDescuento(monto) {
+    if (monto >= 2000000) return 10;
+    if (monto >= 500000) return 5;
+    return 0;
+}</div>
+        <p>
+            Fijate que aca no hace falta <code>else</code>: como <code>return</code> corta la
+            funcion, si entro por el primero nunca llega al segundo.
+        </p>
+        <button onclick="probarDescuento()">Probar con tres montos</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>5. Combinar funciones</h3>
+        <p>
+            Cada funcion hace una cosa sola, y despues se usan juntas. Estas dos son de la vida real
+            paraguaya: el IVA del 10% y la conversion a dolares.
+        </p>
+        <p>
+            <label>Monto: <input id="monto" type="number" value="1500000"></label>
+            <label>Cotizacion: <input id="cotizacion" type="number" value="7300"></label>
+        </p>
+        <button onclick="calcularTotal()">Calcular IVA y dolares</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>6. Alcance: lo de adentro se queda adentro</h3>
+        <div class="codigo">function calcular() {
+    const resultado = 5 * 3;
+}
+console.log(resultado);   // Error: resultado is not defined</div>
+        <p>
+            Lo que se declara dentro de una funcion existe solo ahi. Si lo necesitas afuera, la
+            funcion tiene que <code>return</code>-earlo.
+        </p>
+        <button onclick="probarAlcance()">Ver el error en la consola</button>
+    </div>
+
+    <div class="aviso">
+        Una funcion bien hecha se entiende por el nombre sin leer el cuerpo.
+        Si no sabes como llamarla, probablemente hace demasiadas cosas.
+    </div>
+
+    <div id="salida"></div>
+
+    <script>
+        const salida = document.getElementById("salida");
+
+
+        // =========================================================
+        // 1 - Declarar y llamar
+        // =========================================================
+        function saludar(nombre) {
+            return "Hola " + nombre;
+        }
+
+        function probarSaludo() {
+            // La misma funcion, dos datos distintos
+            salida.textContent = saludar("Ana") + "\n" + saludar("Pedro");
+        }
+
+
+        // =========================================================
+        // 2 - return contra console.log
+        // =========================================================
+        function ivaSinReturn(monto) {
+            console.log(monto * 0.10);       // muestra, pero no devuelve
+        }
+
+        function ivaConReturn(monto) {
+            return monto * 0.10;
+        }
+
+        function compararReturn() {
+            const sinReturn = ivaSinReturn(100000);
+            const conReturn = ivaConReturn(100000);
+
+            salida.textContent =
+                "Sin return -> " + sinReturn + "\n" +
+                "Con return -> " + conReturn;
+        }
+
+
+        // =========================================================
+        // 3 - Con y sin parentesis
+        // =========================================================
+        function conYSinParentesis() {
+            console.log("Sin parentesis:", ivaConReturn);        // la funcion en si
+            console.log("Con parentesis:", ivaConReturn(100000)); // el resultado
+
+            salida.textContent = "Mira la consola: arriba la funcion, abajo el resultado";
+        }
+
+
+        // =========================================================
+        // 4 - El descuento como funcion
+        // =========================================================
+        function calcularDescuento(monto) {
+            if (monto >= 2000000) return 10;    // si entra aca, la funcion termina
+            if (monto >= 500000) return 5;
+            return 0;
+        }
+
+        function probarDescuento() {
+            salida.textContent =
+                "300.000 -> " + calcularDescuento(300000) + "%\n" +
+                "750.000 -> " + calcularDescuento(750000) + "%\n" +
+                "3.000.000 -> " + calcularDescuento(3000000) + "%";
+        }
+
+
+        // =========================================================
+        // 5 - Combinar funciones
+        // =========================================================
+        function calcularIva(monto) {
+            return monto * 0.10;                // 10% en Paraguay
+        }
+
+        function convertirADolares(guaranies, cotizacion) {
+            return guaranies / cotizacion;
+        }
+
+        function calcularTotal() {
+            const monto = Number(document.getElementById("monto").value);
+            const cotizacion = Number(document.getElementById("cotizacion").value);
+
+            const iva = calcularIva(monto);
+            const total = monto + iva;
+            const dolares = convertirADolares(total, cotizacion);
+
+            salida.textContent =
+                "Monto:  " + monto.toLocaleString("es-PY") + "\n" +
+                "IVA 10%: " + iva.toLocaleString("es-PY") + "\n" +
+                "Total:  " + total.toLocaleString("es-PY") + "\n" +
+                "En dolares: USD " + dolares.toFixed(2);
+        }
+
+
+        // =========================================================
+        // 6 - Alcance
+        // =========================================================
+        function calcularAdentro() {
+            const resultado = 5 * 3;        // vive solo dentro de esta funcion
+            console.log("Adentro si existe:", resultado);
+        }
+
+        function probarAlcance() {
+            calcularAdentro();
+
+            // Descomenta la linea de abajo y mira el error en la consola:
+            // console.log(resultado);   ->  ReferenceError: resultado is not defined
+
+            salida.textContent = "Descomenta la linea comentada de esta funcion y mira la consola";
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>1 - Variables y tipos</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 780px; }
+        .caja { border: 1px solid #cfd8dc; border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+        .caja h3 { margin-top: 0; color: #1976d2; }
+        .codigo { font-family: Consolas, monospace; font-size: 13px; background: #eceff1; padding: 8px 12px; border-radius: 4px; }
+        .mal, .bien { font-family: Consolas, monospace; font-size: 13px; padding: 8px 12px; border-radius: 4px; }
+        .mal { background: #fbe9e7; border-left: 3px solid #d84315; }
+        .bien { background: #e8f5e9; border-left: 3px solid #2e7d32; margin-top: 6px; }
+        .aviso { background: #fff9c4; border-left: 3px solid #fbc02d; padding: 10px 12px; font-size: 14px; }
+        button { padding: 8px 14px; margin: 4px 4px 4px 0; cursor: pointer; }
+        input { padding: 6px 8px; width: 130px; }
+        #salida { font-size: 18px; color: #1976d2; min-height: 26px; font-weight: bold; }
+        label { font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <h2>Variables y tipos: guardar datos con un nombre</h2>
+    <p>
+        Abri la consola del navegador con <b>F12</b> antes de empezar, y dejala abierta toda la clase.
+        Ahi el navegador te explica que salio mal.
+    </p>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>1. Donde vive el JavaScript</h3>
+        <div class="codigo">&lt;script&gt; ... aca va el codigo ... &lt;/script&gt;</div>
+        <p>
+            La etiqueta <code>&lt;script&gt;</code> va <b>al final del body</b>, despues de todo el HTML.
+            Si la pones arriba, el JavaScript busca elementos que todavia no existen y tira
+            <code>Cannot read properties of null</code>.
+        </p>
+        <p><code>console.log()</code> escribe en la consola, no en la pagina. Es tu herramienta numero uno.</p>
+        <button onclick="probarConsola()">Escribir en la consola (F12)</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>2. let y const</h3>
+        <div class="codigo">
+            let puntos = 0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// va a cambiar<br>
+            const nombre = "Ana";&nbsp;// no va a cambiar
+        </div>
+        <p>
+            Una variable es una caja con nombre. Usa <code>let</code> cuando el valor va a cambiar y
+            <code>const</code> cuando no. Regla practica: <b>arranca siempre con const</b>, y si el
+            navegador se queja porque necesitas reasignar, recien ahi pasalo a <code>let</code>.
+        </p>
+        <button onclick="sumarPuntos()">Sumar un punto (let)</button>
+        <button onclick="intentarCambiarConst()">Intentar cambiar una const</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>3. Los tres tipos que importan hoy</h3>
+        <div class="codigo">
+            const texto = "Ana";&nbsp;&nbsp;&nbsp;&nbsp;// string, entre comillas<br>
+            const precio = 290000;&nbsp;&nbsp;// number, sin comillas<br>
+            const activo = true;&nbsp;&nbsp;&nbsp;&nbsp;// boolean, true o false
+        </div>
+        <p>
+            La diferencia se ve con <code>typeof</code>. Ojo con <code>"290000"</code> entre comillas:
+            <b>parece</b> un numero pero es texto, y con texto no se puede hacer cuentas.
+        </p>
+        <button onclick="mostrarTipos()">Ver los tipos</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>4. Pegar textos con +</h3>
+        <div class="codigo">"Hola " + nombre + ", tenes " + edad + " años"</div>
+        <p>
+            El signo <code>+</code> entre textos los pega uno atras del otro. Cuidado con los espacios:
+            van adentro de las comillas, si no las palabras quedan juntas.
+        </p>
+        <button onclick="saludar()">Armar el saludo</button>
+    </div>
+
+    <!-- ======================================================= -->
+    <div class="caja">
+        <h3>5. El error mas comun de toda la clase</h3>
+        <p>
+            <label>Monto: <input id="campo-a" type="number" value="10"></label>
+            <label>Cuotas: <input id="campo-b" type="number" value="50"></label>
+        </p>
+        <div class="mal">campoA.value + campoB.value&nbsp;&nbsp;// "1050" &lt;- pego los textos</div>
+        <div class="bien">Number(campoA.value) + Number(campoB.value)&nbsp;&nbsp;// 60 &lt;- ahora suma</div>
+        <p>
+            <b>Todo lo que sale de un input es texto</b>, incluso cuando el campo dice
+            <code>type="number"</code>. Para hacer cuentas hay que convertirlo con
+            <code>Number()</code>. Proba los dos botones y mira la diferencia.
+        </p>
+        <button onclick="sumarMal()">Sumar sin Number()</button>
+        <button onclick="sumarBien()">Sumar con Number()</button>
+    </div>
+
+    <div class="aviso">
+        Cuando algo no funcione, la primera pregunta es siempre la misma:
+        <b>¿que dice la consola?</b>
+    </div>
+
+    <p id="salida"></p>
+
+    <script>
+        // El lugar de la pagina donde vamos a escribir los resultados
+        const salida = document.getElementById("salida");
+
+
+        // =========================================================
+        // 1 - console.log
+        // =========================================================
+        function probarConsola() {
+            console.log("Hola desde el JavaScript");
+            console.log("Tambien puedo mostrar numeros:", 290000);
+
+            salida.textContent = "Listo: mira la consola (F12), no la pagina";
+        }
+
+
+        // =========================================================
+        // 2 - let y const
+        // =========================================================
+        let puntos = 0;                 // let: lo vamos a reasignar
+        const jugador = "Ana";          // const: no cambia nunca
+
+        function sumarPuntos() {
+            puntos = puntos + 1;        // se puede, porque es let
+            salida.textContent = jugador + " tiene " + puntos + " punto(s)";
+        }
+
+        function intentarCambiarConst() {
+            // Descomenta la linea de abajo y mira el error en la consola:
+            // jugador = "Pedro";   ->  TypeError: Assignment to constant variable
+
+            salida.textContent = "Descomenta la linea 3 de esta funcion y mira la consola";
+        }
+
+
+        // =========================================================
+        // 3 - Tipos de datos
+        // =========================================================
+        function mostrarTipos() {
+            const texto = "Ana";
+            const precio = 290000;
+            const activo = true;
+            const precioFalso = "290000";       // ojo: esto es texto
+
+            console.log(typeof texto, typeof precio, typeof activo, typeof precioFalso);
+
+            salida.textContent = 'typeof "Ana" es ' + typeof texto +
+                " | typeof 290000 es " + typeof precio +
+                " | typeof true es " + typeof activo +
+                ' | typeof "290000" es ' + typeof precioFalso;
+        }
+
+
+        // =========================================================
+        // 4 - Concatenar con +
+        // =========================================================
+        function saludar() {
+            const nombre = "Ana";
+            const edad = 25;
+
+            salida.textContent = "Hola " + nombre + ", tenes " + edad + " años";
+        }
+
+
+        // =========================================================
+        // 5 - Texto contra numero
+        // =========================================================
+        function sumarMal() {
+            const a = document.getElementById("campo-a").value;   // texto
+            const b = document.getElementById("campo-b").value;   // texto
+
+            salida.textContent = "Sin Number(): " + (a + b) + "   <- pego los textos";
+        }
+
+        function sumarBien() {
+            const a = Number(document.getElementById("campo-a").value);   // numero
+            const b = Number(document.getElementById("campo-b").value);   // numero
+
+            salida.textContent = "Con Number(): " + (a + b) + "   <- ahora si sumo";
+        }
+    </script>
+</body>
+
+</html>
