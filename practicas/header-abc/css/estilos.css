@@ -1,0 +1,381 @@
+/* ==========================================================
+   Header de portal de noticias
+
+   Practica de maquetado con flexbox. La idea del archivo:
+   los colores y medidas repetidas viven arriba en variables, y
+   despues cada bloque del header tiene su seccion.
+   ========================================================== */
+
+:root {
+    --amarillo: #ffdd00;
+    --rojo: #e2001a;
+    --negro: #111111;
+    --gris: #6f6f6f;
+    --gris-claro: #8d8d8d;
+    --linea: #e4e4e4;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: white;
+    color: var(--negro);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+
+/* Los enlaces del header no van subrayados y toman el color del texto */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Los <p> traen margen de arriba y abajo por defecto: aca estorba */
+p {
+    margin: 0;
+}
+
+/* ==========================================================
+   BARRA SUPERIOR
+   ========================================================== */
+
+/* display:flex pone a los hijos en fila.
+   align-items:center los centra verticalmente entre si.
+   gap es la separacion, sin tener que poner margenes uno por uno. */
+.barra-superior {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding: 12px 20px;
+}
+
+/* ---------- Logo ---------- */
+
+.logo {
+    /* flex + center es la forma mas comoda de centrar algo adentro
+       de una caja, tanto horizontal como verticalmente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 138px;
+    height: 62px;
+    background: var(--amarillo);
+    font-family: "Arial Black", "Segoe UI", sans-serif;
+    font-size: 44px;
+    font-weight: 900;
+    /* letter-spacing negativo junta las letras, como en los logos */
+    letter-spacing: -2px;
+    line-height: 1;
+}
+
+/* ---------- Bloques de texto ---------- */
+
+.bloque {
+    /* shrink 0 = "no te achiques": sin esto, en pantallas medianas los
+       textos se van cortando en dos lineas antes que aparecer el scroll */
+    flex-shrink: 0;
+}
+
+.fecha {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .3px;
+}
+
+.edicion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.logo-mini {
+    font-family: "Arial Black", "Segoe UI", sans-serif;
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+/* El circulito que separa. Es un <span> vacio al que le damos tamano:
+   por eso necesita display:inline-block, ya que un span en linea
+   ignora el ancho y el alto. */
+.punto {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;   /* la mitad del ancho lo vuelve un circulo */
+    background: var(--negro);
+}
+
+.punto.rojo {
+    background: var(--rojo);
+}
+
+.emisora {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.programa {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.horario {
+    margin-top: 2px;
+    font-size: 11.5px;
+    color: var(--gris);
+    letter-spacing: .2px;
+}
+
+/* ---------- Clima y dolar ---------- */
+
+.dato {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.valor {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.etiqueta {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--gris-claro);
+    letter-spacing: 1px;
+}
+
+/* El dolar apila el grafico arriba y el texto abajo:
+   flex-direction column cambia la fila por una columna */
+.dolar {
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* ---------- Iconos ---------- */
+
+/* Todos los SVG miden lo mismo desde un solo lugar. El color no se fija
+   aca: los iconos usan currentColor, asi que toman el color del texto
+   del elemento que los contiene. */
+.icono {
+    width: 21px;
+    height: 21px;
+    display: block;
+}
+
+.icono.chico { width: 18px; height: 18px; }
+.icono.grande { width: 25px; height: 25px; }
+
+.icono.grafico {
+    width: 46px;
+    height: 20px;
+    color: var(--negro);
+}
+
+/* ---------- Redes y botones ---------- */
+
+/* margin-left:auto se come todo el espacio sobrante y empuja este
+   bloque (y los que siguen) contra el borde derecho */
+.derecha {
+    margin-left: auto;
+}
+
+.redes {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.redes a:hover {
+    color: var(--rojo);
+}
+
+.acciones {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #3b3b3b;
+}
+
+/* Un <button> viene con fondo gris, borde y fuente propia del sistema:
+   hay que apagarle todo eso para que se vea como un icono suelto */
+.acciones button,
+.buscar {
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.acciones button:hover,
+.buscar:hover {
+    color: var(--rojo);
+}
+
+/* El borde de foco se muestra solo cuando se navega con el teclado.
+   Sacarlo sin reemplazarlo deja la pagina inusable sin mouse. */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--rojo);
+    outline-offset: 3px;
+}
+
+/* ==========================================================
+   MENU DE SECCIONES
+   ========================================================== */
+
+.barra-secciones {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
+    border-top: 1px solid var(--linea);
+    border-bottom: 1px solid var(--linea);
+}
+
+/* Un <ul> trae vinetas y sangria: se las sacamos para usarlo como
+   barra de navegacion */
+.secciones {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin: 0;
+    /* Los 6px de arriba son para la etiqueta NUEVO: como esta barra
+       recorta lo que se sale (overflow), la etiqueta necesita que le
+       hagan lugar adentro o queda cortada por la mitad */
+    padding: 6px 0 0;
+    list-style: none;
+    /* Si no entran todas, esta barra scrollea sola en lugar de
+       desarmar el header */
+    overflow-x: auto;
+    scrollbar-width: none;    /* Firefox: sin barra visible */
+}
+
+/* Chrome y Edge: tampoco mostramos la barra */
+.secciones::-webkit-scrollbar {
+    display: none;
+}
+
+.secciones a {
+    display: block;
+    padding: 13px 0;
+    font-size: 13px;
+    font-weight: 700;
+    /* uppercase deja el texto en mayusculas desde el CSS, asi el HTML
+       conserva el texto normal y sigue siendo legible */
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    white-space: nowrap;   /* que ningun nombre se parta en dos lineas */
+}
+
+.secciones a:hover {
+    color: var(--rojo);
+}
+
+/* ---------- Etiqueta NUEVO ---------- */
+
+/* position:relative en el padre + absolute en el hijo: el hijo se
+   ubica respecto del padre y no respecto de la pagina */
+.con-etiqueta {
+    position: relative;
+}
+
+.nuevo {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    /* left 50% empuja el borde izquierdo al centro; el translate -50%
+       corre la etiqueta media ancho hacia atras y la deja centrada */
+    transform: translateX(-50%);
+    padding: 2px 7px;
+    border-radius: 9px;
+    background: var(--amarillo);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .4px;
+}
+
+/* ---------- Marcas de la derecha ---------- */
+
+.marcas {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+    padding-left: 10px;
+    flex-shrink: 0;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.marca .punto {
+    width: 6px;
+    height: 6px;
+}
+
+/* El logo de dos renglones: line-height chico para que las dos lineas
+   queden pegadas como en un logotipo */
+.marca-doble {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: .5px;
+}
+
+.marca-doble b {
+    color: var(--rojo);
+}
+
+.buscar {
+    display: flex;
+    align-items: center;
+}
+
+/* ==========================================================
+   PANTALLAS CHICAS
+   ========================================================== */
+
+/* Una media query aplica reglas solo cuando se cumple la condicion.
+   Abajo de 1100px de ancho escondemos lo secundario y achicamos el
+   logo, que es lo primero que hace cualquier portal en el celular. */
+@media (max-width: 1100px) {
+    .barra-superior {
+        gap: 16px;
+    }
+
+    .logo {
+        width: 104px;
+        height: 48px;
+        font-size: 33px;
+    }
+
+    /* :nth-of-type elige por posicion entre los hermanos del mismo
+       tipo. Del tercer div en adelante (programa, clima y dolar) no se
+       muestra nada; los botones de la punta si, porque no son .bloque. */
+    .bloque:nth-of-type(n + 3),
+    .redes {
+        display: none;
+    }
+}
